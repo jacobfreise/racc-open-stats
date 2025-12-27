@@ -2731,12 +2731,12 @@ const compactData = [
   ],
   [
     "Eva",
-    "Symboli Rudolf (Original)",
+    "Symboli Rudolf (Festival)",
     0,
     "2000m Turf (L)",
     "Open 22",
     "Symboli Rudolf",
-    "Original",
+    "Festival",
     0.0
   ],
   [
@@ -2861,12 +2861,12 @@ const compactData = [
   ],
   [
     "Eva",
-    "Symboli Rudolf (Original)",
+    "Symboli Rudolf (Festival)",
     2,
     "2500m Turf (R)",
     "Open 23",
     "Symboli Rudolf",
-    "Original",
+    "Festival",
     0.1333
   ],
   [
@@ -2941,12 +2941,12 @@ const compactData = [
   ],
   [
     "Alfheix",
-    "Symboli Rudolf (Original)",
+    "Symboli Rudolf (Festival)",
     0,
     "2500m Turf (R)",
     "Open 23",
     "Symboli Rudolf",
-    "Original",
+    "Festival",
     0.0
   ],
   [
@@ -2991,12 +2991,12 @@ const compactData = [
   ],
   [
     "FuHua",
-    "Symboli Rudolf (Original)",
+    "Symboli Rudolf (Festival)",
     0,
     "2500m Turf (R)",
     "Open 23",
     "Symboli Rudolf",
-    "Original",
+    "Festival",
     0.0
   ],
   [
@@ -3011,12 +3011,12 @@ const compactData = [
   ],
   [
     "CarmineView",
-    "Symboli Rudolf (Original)",
+    "Symboli Rudolf (Festival)",
     4,
     "2400m Turf (L)",
     "Open 24",
     "Symboli Rudolf",
-    "Original",
+    "Festival",
     0.2667
   ],
   [
@@ -4121,4 +4121,5 @@ const tournamentRaceResults = {
         ]
     }
 };
+
 
