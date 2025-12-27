@@ -7,7 +7,7 @@ const compactData = [
     "Open 1",
     "Maruzensky",
     "Summer",
-    0.4
+    5
   ],
   [
     "Eva",
@@ -17,7 +17,7 @@ const compactData = [
     "Open 1",
     "Oguri Cap",
     "Original",
-    0.0
+    5
   ],
   [
     "Kenesu",
@@ -27,7 +27,7 @@ const compactData = [
     "Open 1",
     "El Condor Pasa",
     "Fantasy",
-    0.0
+    5
   ],
   [
     "Spyder",
@@ -37,7 +37,7 @@ const compactData = [
     "Open 1",
     "Smart Falcon",
     "Original",
-    0.0
+    5
   ],
   [
     "Cefiro",
@@ -47,7 +47,7 @@ const compactData = [
     "Open 1",
     "Meisho Doto",
     "Original",
-    0.2
+    5
   ],
   [
     "Pines",
@@ -57,7 +57,7 @@ const compactData = [
     "Open 1",
     "Mayano Top Gun",
     "Wedding",
-    0.0
+    5
   ],
   [
     "Raccoon",
@@ -67,7 +67,7 @@ const compactData = [
     "Open 1",
     "Smart Falcon",
     "Original",
-    0.0
+    5
   ],
   [
     "Leficious",
@@ -77,7 +77,7 @@ const compactData = [
     "Open 1",
     "Smart Falcon",
     "Original",
-    0.4
+    5
   ],
   [
     "Frozt",
@@ -87,7 +87,7 @@ const compactData = [
     "Open 1",
     "Oguri Cap",
     "Original",
-    0.0
+    5
   ],
   [
     "MetaHayato",
@@ -97,7 +97,7 @@ const compactData = [
     "Open 2",
     "Gold Ship",
     "Original",
-    0.2
+    5
   ],
   [
     "Frozt",
@@ -107,7 +107,7 @@ const compactData = [
     "Open 2",
     "Gold Ship",
     "Original",
-    0.0
+    5
   ],
   [
     "Pines",
@@ -117,7 +117,7 @@ const compactData = [
     "Open 2",
     "Rice Shower",
     "Original",
-    0.2
+    5
   ],
   [
     "Spyder",
@@ -127,7 +127,7 @@ const compactData = [
     "Open 2",
     "Mejiro McQueen",
     "Original",
-    0.0
+    5
   ],
   [
     "Raccoon",
@@ -137,7 +137,7 @@ const compactData = [
     "Open 2",
     "Meisho Doto",
     "Original",
-    0.4
+    5
   ],
   [
     "Kenesu",
@@ -147,7 +147,7 @@ const compactData = [
     "Open 2",
     "Symboli Rudolf",
     "Original",
-    0.0
+    5
   ],
   [
     "Leficious",
@@ -157,7 +157,7 @@ const compactData = [
     "Open 2",
     "Mejiro McQueen",
     "Original",
-    0.2
+    5
   ],
   [
     "Eva",
@@ -167,7 +167,7 @@ const compactData = [
     "Open 2",
     "T.M. Opera O",
     "Original",
-    0.0
+    5
   ],
   [
     "Giga",
@@ -177,7 +177,7 @@ const compactData = [
     "Open 2",
     "Gold Ship",
     "Original",
-    0.0
+    5
   ],
   [
     "Raccoon",
@@ -187,7 +187,7 @@ const compactData = [
     "Open 3",
     "Taiki Shuttle",
     "Original",
-    0.4
+    5
   ],
   [
     "Jans",
@@ -197,7 +197,7 @@ const compactData = [
     "Open 3",
     "Oguri Cap",
     "Original",
-    0.0
+    5
   ],
   [
     "Leficious",
@@ -207,7 +207,7 @@ const compactData = [
     "Open 3",
     "Haru Urara",
     "Original",
-    0.2
+    5
   ],
   [
     "Synocra",
@@ -217,7 +217,7 @@ const compactData = [
     "Open 3",
     "Taiki Shuttle",
     "Original",
-    0.0
+    5
   ],
   [
     "Teki",
@@ -227,7 +227,7 @@ const compactData = [
     "Open 3",
     "Oguri Cap",
     "Original",
-    0.4
+    5
   ],
   [
     "Frozt",
@@ -237,7 +237,7 @@ const compactData = [
     "Open 3",
     "Haru Urara",
     "Original",
-    0.0
+    5
   ],
   [
     "MetaHayato",
@@ -247,7 +247,7 @@ const compactData = [
     "Open 3",
     "El Condor Pasa",
     "Fantasy",
-    0.0
+    5
   ],
   [
     "Koto",
@@ -257,7 +257,7 @@ const compactData = [
     "Open 3",
     "Haru Urara",
     "Original",
-    0.0
+    5
   ],
   [
     "Pines",
@@ -267,7 +267,7 @@ const compactData = [
     "Open 3",
     "Taiki Shuttle",
     "Original",
-    0.0
+    5
   ],
   [
     "Leficious",
@@ -277,7 +277,7 @@ const compactData = [
     "Open 4",
     "Special Week",
     "Original",
-    0.2
+    5
   ],
   [
     "Honsler",
@@ -287,7 +287,7 @@ const compactData = [
     "Open 4",
     "Maruzensky",
     "Summer",
-    0.2
+    5
   ],
   [
     "Sumpfranze",
@@ -297,7 +297,7 @@ const compactData = [
     "Open 4",
     "Vodka",
     "Original",
-    0.0
+    5
   ],
   [
     "MetaHayato",
@@ -307,7 +307,7 @@ const compactData = [
     "Open 4",
     "Vodka",
     "Original",
-    0.0
+    5
   ],
   [
     "Raccoon",
@@ -317,7 +317,7 @@ const compactData = [
     "Open 4",
     "Seiun Sky",
     "Original",
-    0.6
+    5
   ],
   [
     "Kenesu",
@@ -327,7 +327,7 @@ const compactData = [
     "Open 4",
     "Mejiro Ryan",
     "Original",
-    0.0
+    5
   ],
   [
     "Eva",
@@ -337,7 +337,7 @@ const compactData = [
     "Open 4",
     "Fuji Kiseki",
     "Original",
-    0.0
+    5
   ],
   [
     "Buster",
@@ -347,7 +347,7 @@ const compactData = [
     "Open 4",
     "Oguri Cap",
     "Original",
-    0.0
+    5
   ],
   [
     "Sayo",
@@ -357,7 +357,7 @@ const compactData = [
     "Open 4",
     "Narita Taishin",
     "Original",
-    0.0
+    5
   ],
   [
     "Synocra",
@@ -367,7 +367,7 @@ const compactData = [
     "Open 4",
     "Taiki Shuttle",
     "Original",
-    0.0
+    5
   ],
   [
     "Spyder",
@@ -377,7 +377,7 @@ const compactData = [
     "Open 4",
     "King Halo",
     "Original",
-    0.0
+    5
   ],
   [
     "Divine",
@@ -387,7 +387,7 @@ const compactData = [
     "Open 4",
     "Grass Wonder",
     "Original",
-    0.0
+    5
   ],
   [
     "Synocra",
@@ -397,7 +397,7 @@ const compactData = [
     "Open 5",
     "Smart Falcon",
     "Original",
-    0.0
+    5
   ],
   [
     "HoriYon",
@@ -407,7 +407,7 @@ const compactData = [
     "Open 5",
     "Taiki Shuttle",
     "Original",
-    0.4
+    5
   ],
   [
     "Kenesu",
@@ -417,7 +417,7 @@ const compactData = [
     "Open 5",
     "Sakura Bakushin O",
     "Original",
-    0.4
+    5
   ],
   [
     "MetaHayato",
@@ -427,7 +427,7 @@ const compactData = [
     "Open 5",
     "Sakura Bakushin O",
     "Original",
-    0.0
+    5
   ],
   [
     "Frozt",
@@ -437,7 +437,7 @@ const compactData = [
     "Open 5",
     "Sakura Bakushin O",
     "Original",
-    0.0
+    5
   ],
   [
     "Cefiro",
@@ -447,7 +447,7 @@ const compactData = [
     "Open 5",
     "Taiki Shuttle",
     "Original",
-    0.2
+    5
   ],
   [
     "Leficious",
@@ -457,7 +457,7 @@ const compactData = [
     "Open 5",
     "Maruzensky",
     "Original",
-    0.0
+    5
   ],
   [
     "Spyder",
@@ -467,7 +467,7 @@ const compactData = [
     "Open 5",
     "King Halo",
     "Original",
-    0.0
+    5
   ],
   [
     "Pines",
@@ -477,7 +477,7 @@ const compactData = [
     "Open 5",
     "Taiki Shuttle",
     "Original",
-    0.0
+    5
   ],
   [
     "Raccoon",
@@ -487,7 +487,7 @@ const compactData = [
     "Open 5",
     "King Halo",
     "Original",
-    0.0
+    5
   ],
   [
     "FuHua",
@@ -497,7 +497,7 @@ const compactData = [
     "Open 5",
     "Silence Suzuka",
     "Original",
-    0.0
+    5
   ],
   [
     "Eva",
@@ -507,7 +507,7 @@ const compactData = [
     "Open 5",
     "Fuji Kiseki",
     "Original",
-    0.0
+    5
   ],
   [
     "MetaHayato",
@@ -517,7 +517,7 @@ const compactData = [
     "Open 6",
     "Maruzensky",
     "Summer",
-    0.8
+    5
   ],
   [
     "BossNerd",
@@ -527,7 +527,7 @@ const compactData = [
     "Open 6",
     "Mejiro Ryan",
     "Original",
-    0.0
+    5
   ],
   [
     "Sayo",
@@ -537,7 +537,7 @@ const compactData = [
     "Open 6",
     "Seiun Sky",
     "Original",
-    0.0
+    5
   ],
   [
     "Raccoon",
@@ -547,7 +547,7 @@ const compactData = [
     "Open 6",
     "Meisho Doto",
     "Original",
-    0.0
+    5
   ],
   [
     "Kenesu",
@@ -557,7 +557,7 @@ const compactData = [
     "Open 6",
     "Special Week",
     "Original",
-    0.0
+    5
   ],
   [
     "FuHua",
@@ -567,7 +567,7 @@ const compactData = [
     "Open 6",
     "Silence Suzuka",
     "Original",
-    0.0
+    5
   ],
   [
     "HoriYon",
@@ -577,7 +577,7 @@ const compactData = [
     "Open 6",
     "Daiwa Scarlet",
     "Original",
-    0.2
+    5
   ],
   [
     "Leficious",
@@ -587,7 +587,7 @@ const compactData = [
     "Open 6",
     "Mayano Top Gun",
     "Wedding",
-    0.0
+    5
   ],
   [
     "Cefiro",
@@ -597,7 +597,7 @@ const compactData = [
     "Open 6",
     "Seiun Sky",
     "Original",
-    0.0
+    5
   ],
   [
     "Buster",
@@ -607,7 +607,7 @@ const compactData = [
     "Open 6",
     "Agnes Tachyon",
     "Original",
-    0.0
+    5
   ],
   [
     "Eva",
@@ -617,7 +617,7 @@ const compactData = [
     "Open 6",
     "Grass Wonder",
     "Original",
-    0.0
+    5
   ],
   [
     "Teki",
@@ -627,7 +627,7 @@ const compactData = [
     "Open 6",
     "Grass Wonder",
     "Original",
-    0.0
+    5
   ],
   [
     "Synocra",
@@ -637,7 +637,7 @@ const compactData = [
     "Open 6",
     "Silence Suzuka",
     "Original",
-    0.0
+    5
   ],
   [
     "Frozt",
@@ -647,7 +647,7 @@ const compactData = [
     "Open 6",
     "Seiun Sky",
     "Original",
-    0.0
+    5
   ],
   [
     "Rihito",
@@ -657,7 +657,7 @@ const compactData = [
     "Open 6",
     "Special Week",
     "Summer",
-    0.0
+    5
   ],
   [
     "Teki",
@@ -667,7 +667,7 @@ const compactData = [
     "Open 7",
     "Vodka",
     "Original",
-    0.0
+    5
   ],
   [
     "Synocra",
@@ -677,7 +677,7 @@ const compactData = [
     "Open 7",
     "Silence Suzuka",
     "Original",
-    0.0
+    5
   ],
   [
     "Kenesu",
@@ -687,7 +687,7 @@ const compactData = [
     "Open 7",
     "Air Groove",
     "Wedding",
-    0.0
+    5
   ],
   [
     "Raccoon",
@@ -697,7 +697,7 @@ const compactData = [
     "Open 7",
     "Silence Suzuka",
     "Original",
-    0.4
+    5
   ],
   [
     "Cefiro",
@@ -707,7 +707,7 @@ const compactData = [
     "Open 7",
     "Tokai Teio",
     "Anime",
-    0.2
+    5
   ],
   [
     "Eva",
@@ -717,7 +717,7 @@ const compactData = [
     "Open 7",
     "Fuji Kiseki",
     "Original",
-    0.0
+    5
   ],
   [
     "HoriYon",
@@ -727,7 +727,7 @@ const compactData = [
     "Open 7",
     "Air Groove",
     "Original",
-    0.0
+    5
   ],
   [
     "Pines",
@@ -737,7 +737,7 @@ const compactData = [
     "Open 7",
     "Fuji Kiseki",
     "Original",
-    0.0
+    5
   ],
   [
     "Giga",
@@ -747,7 +747,7 @@ const compactData = [
     "Open 7",
     "Special Week",
     "Original",
-    0.0
+    5
   ],
   [
     "MetaHayato",
@@ -757,7 +757,7 @@ const compactData = [
     "Open 7",
     "Mejiro Ryan",
     "Original",
-    0.2
+    5
   ],
   [
     "Spyder",
@@ -767,7 +767,7 @@ const compactData = [
     "Open 7",
     "Mejiro Ryan",
     "Original",
-    0.2
+    5
   ],
   [
     "Divine",
@@ -777,7 +777,7 @@ const compactData = [
     "Open 7",
     "Mejiro Ryan",
     "Original",
-    0.0
+    5
   ],
   [
     "MetaHayato",
@@ -787,7 +787,7 @@ const compactData = [
     "Open 8",
     "Maruzensky",
     "Summer",
-    0.4
+    5
   ],
   [
     "Pines",
@@ -797,7 +797,7 @@ const compactData = [
     "Open 8",
     "Gold Ship",
     "Original",
-    0.2
+    5
   ],
   [
     "Bresto",
@@ -807,7 +807,7 @@ const compactData = [
     "Open 8",
     "Oguri Cap",
     "Original",
-    0.0
+    5
   ],
   [
     "HoriYon",
@@ -817,7 +817,7 @@ const compactData = [
     "Open 8",
     "Oguri Cap",
     "Original",
-    0.2
+    5
   ],
   [
     "Kenesu",
@@ -827,7 +827,7 @@ const compactData = [
     "Open 8",
     "Narita Brian",
     "Original",
-    0.0
+    5
   ],
   [
     "Eva",
@@ -837,7 +837,7 @@ const compactData = [
     "Open 8",
     "Special Week",
     "Summer",
-    0.0
+    5
   ],
   [
     "Teki",
@@ -847,7 +847,7 @@ const compactData = [
     "Open 8",
     "Mejiro McQueen",
     "Original",
-    0.0
+    5
   ],
   [
     "Cefiro",
@@ -857,7 +857,7 @@ const compactData = [
     "Open 8",
     "Meisho Doto",
     "Original",
-    0.2
+    5
   ],
   [
     "FuHua",
@@ -867,7 +867,7 @@ const compactData = [
     "Open 8",
     "Agnes Tachyon",
     "Original",
-    0.0
+    5
   ],
   [
     "Raccoon",
@@ -877,7 +877,7 @@ const compactData = [
     "Open 8",
     "Seiun Sky",
     "Original",
-    0.0
+    5
   ],
   [
     "Frozt",
@@ -887,7 +887,7 @@ const compactData = [
     "Open 8",
     "Gold Ship",
     "Original",
-    0.0
+    5
   ],
   [
     "Divine",
@@ -897,7 +897,7 @@ const compactData = [
     "Open 8",
     "Silence Suzuka",
     "Original",
-    0.0
+    5
   ],
   [
     "HoriYon",
@@ -907,7 +907,7 @@ const compactData = [
     "Open 9",
     "Air Groove",
     "Original",
-    0.4
+    5
   ],
   [
     "FuHua",
@@ -917,7 +917,7 @@ const compactData = [
     "Open 9",
     "Hishi Akebono",
     "Original",
-    0.0
+    5
   ],
   [
     "Kenesu",
@@ -927,7 +927,7 @@ const compactData = [
     "Open 9",
     "Fuji Kiseki",
     "Original",
-    0.2
+    5
   ],
   [
     "MetaHayato",
@@ -937,7 +937,7 @@ const compactData = [
     "Open 9",
     "Maruzensky",
     "Summer",
-    0.0
+    5
   ],
   [
     "Teki",
@@ -947,7 +947,7 @@ const compactData = [
     "Open 9",
     "Air Groove",
     "Original",
-    0.0
+    5
   ],
   [
     "Giga",
@@ -957,7 +957,7 @@ const compactData = [
     "Open 9",
     "King Halo",
     "Original",
-    0.0
+    5
   ],
   [
     "Raccoon",
@@ -967,7 +967,7 @@ const compactData = [
     "Open 9",
     "Smart Falcon",
     "Original",
-    0.0
+    5
   ],
   [
     "Pines",
@@ -977,7 +977,7 @@ const compactData = [
     "Open 9",
     "Fuji Kiseki",
     "Original",
-    0.2
+    5
   ],
   [
     "Divine",
@@ -987,7 +987,7 @@ const compactData = [
     "Open 9",
     "Curren Chan",
     "Original",
-    0.2
+    5
   ],
   [
     "HoriYon",
@@ -997,7 +997,7 @@ const compactData = [
     "Open 10",
     "El Condor Pasa",
     "Original",
-    0.2
+    5
   ],
   [
     "Roidee",
@@ -1007,7 +1007,7 @@ const compactData = [
     "Open 10",
     "Curren Chan",
     "Original",
-    0.0
+    5
   ],
   [
     "Spyder",
@@ -1017,7 +1017,7 @@ const compactData = [
     "Open 10",
     "Vodka",
     "Original",
-    0.0
+    5
   ],
   [
     "MetaHayato",
@@ -1027,7 +1027,7 @@ const compactData = [
     "Open 10",
     "Daiwa Scarlet",
     "Original",
-    0.0
+    5
   ],
   [
     "Rihito",
@@ -1037,7 +1037,7 @@ const compactData = [
     "Open 10",
     "El Condor Pasa",
     "Original",
-    0.0
+    5
   ],
   [
     "Giga",
@@ -1047,7 +1047,7 @@ const compactData = [
     "Open 10",
     "Hishi Amazon",
     "Original",
-    0.2
+    5
   ],
   [
     "Teki",
@@ -1057,7 +1057,7 @@ const compactData = [
     "Open 10",
     "Mayano Top Gun",
     "Original",
-    0.0
+    5
   ],
   [
     "Divine",
@@ -1067,7 +1067,7 @@ const compactData = [
     "Open 10",
     "El Condor Pasa",
     "Original",
-    0.0
+    5
   ],
   [
     "Pines",
@@ -1077,7 +1077,7 @@ const compactData = [
     "Open 10",
     "Vodka",
     "Original",
-    0.4
+    5
   ],
   [
     "Raccoon",
@@ -1087,7 +1087,7 @@ const compactData = [
     "Open 10",
     "El Condor Pasa",
     "Original",
-    0.0
+    5
   ],
   [
     "Cefiro",
@@ -1097,7 +1097,7 @@ const compactData = [
     "Open 10",
     "Daiwa Scarlet",
     "Original",
-    0.2
+    5
   ],
   [
     "KN",
@@ -1107,7 +1107,7 @@ const compactData = [
     "Open 10",
     "Symboli Rudolf",
     "Original",
-    0.0
+    5
   ],
   [
     "Sumpfranze",
@@ -1117,7 +1117,7 @@ const compactData = [
     "Open 10",
     "Hishi Amazon",
     "Original",
-    0.0
+    5
   ],
   [
     "Kenesu",
@@ -1127,7 +1127,7 @@ const compactData = [
     "Open 10",
     "Special Week",
     "Original",
-    0.0
+    5
   ],
   [
     "FuHua",
@@ -1137,7 +1137,7 @@ const compactData = [
     "Open 10",
     "El Condor Pasa",
     "Original",
-    0.0
+    5
   ],
   [
     "MetaHayato",
@@ -1147,7 +1147,7 @@ const compactData = [
     "Open 11",
     "Oguri Cap",
     "Original",
-    0.4
+    5
   ],
   [
     "Roidee",
@@ -1157,7 +1157,7 @@ const compactData = [
     "Open 11",
     "Mihono Bourbon",
     "Original",
-    0.2
+    5
   ],
   [
     "FuHua",
@@ -1167,7 +1167,7 @@ const compactData = [
     "Open 11",
     "Silence Suzuka",
     "Original",
-    0.0
+    5
   ],
   [
     "Cefiro",
@@ -1177,7 +1177,7 @@ const compactData = [
     "Open 11",
     "T.M. Opera O",
     "Original",
-    0.4
+    5
   ],
   [
     "Kenesu",
@@ -1187,7 +1187,7 @@ const compactData = [
     "Open 11",
     "Meisho Doto",
     "Original",
-    0.0
+    5
   ],
   [
     "Divine",
@@ -1197,7 +1197,7 @@ const compactData = [
     "Open 11",
     "Narita Brian",
     "Original",
-    0.0
+    5
   ],
   [
     "Raccoon",
@@ -1207,7 +1207,7 @@ const compactData = [
     "Open 11",
     "Meisho Doto",
     "Original",
-    0.0
+    5
   ],
   [
     "Pines",
@@ -1217,7 +1217,7 @@ const compactData = [
     "Open 11",
     "Agnes Tachyon",
     "Original",
-    0.0
+    5
   ],
   [
     "Mudflap",
@@ -1227,7 +1227,7 @@ const compactData = [
     "Open 11",
     "Maruzensky",
     "Original",
-    0.0
+    5
   ],
   [
     "HoriYon",
@@ -1237,7 +1237,7 @@ const compactData = [
     "Open 11",
     "Mejiro Ryan",
     "Original",
-    0.0
+    5
   ],
   [
     "Rihito",
@@ -1247,7 +1247,7 @@ const compactData = [
     "Open 11",
     "Oguri Cap",
     "Original",
-    0.0
+    5
   ],
   [
     "KN",
@@ -1257,7 +1257,7 @@ const compactData = [
     "Open 11",
     "Special Week",
     "Original",
-    0.0
+    5
   ],
   [
     "Sumpfranze",
@@ -1267,7 +1267,7 @@ const compactData = [
     "Open 11",
     "Mayano Top Gun",
     "Wedding",
-    0.0
+    5
   ],
   [
     "Teki",
@@ -1277,7 +1277,7 @@ const compactData = [
     "Open 11",
     "Mayano Top Gun",
     "Wedding",
-    0.0
+    5
   ],
   [
     "Eva",
@@ -1287,7 +1287,7 @@ const compactData = [
     "Open 11",
     "T.M. Opera O",
     "Original",
-    0.0
+    5
   ],
   [
     "Dedratermi",
@@ -1297,7 +1297,7 @@ const compactData = [
     "Open 12",
     "Special Week",
     "Original",
-    0.1333
+    10
   ],
   [
     "Frozt",
@@ -1307,27 +1307,17 @@ const compactData = [
     "Open 12",
     "Gold Ship",
     "Original",
-    0.0
+    10
   ],
   [
     "Spyder",
     "Special Week (Summer)",
-    1,
-    "3600m Turf (L)",
-    "Open 12",
-    "Special Week",
-    "Summer",
-    0.0667
-  ],
-  [
-    "Spyder",
-    "Agnes Tachyon (Original)",
-    2,
+    4,
     "3600m Turf (L)",
     "Open 12",
     "Agnes Tachyon",
-    "Original",
-    0.1333
+    "Summer",
+    10
   ],
   [
     "Cefiro",
@@ -1337,7 +1327,7 @@ const compactData = [
     "Open 12",
     "Gold Ship",
     "Original",
-    0.2667
+    10
   ],
   [
     "Synocra",
@@ -1347,17 +1337,17 @@ const compactData = [
     "Open 12",
     "Gold Ship",
     "Original",
-    0.0
+    10
   ],
   [
     "Vocaloid",
-    "Gold Ship (Original)",
+    "Agnes Tachyon (Original)",
     0,
     "3600m Turf (L)",
     "Open 12",
-    "Gold Ship",
+    "Agnes Tachyon",
     "Original",
-    0.0
+    10
   ],
   [
     "MetaHayato",
@@ -1367,7 +1357,7 @@ const compactData = [
     "Open 12",
     "Maruzensky",
     "Summer",
-    0.0
+    5
   ],
   [
     "Rihito",
@@ -1377,7 +1367,7 @@ const compactData = [
     "Open 12",
     "Maruzensky",
     "Summer",
-    0.0
+    5
   ],
   [
     "Eva",
@@ -1387,7 +1377,7 @@ const compactData = [
     "Open 12",
     "Agnes Tachyon",
     "Original",
-    0.0
+    5
   ],
   [
     "HoriYon",
@@ -1397,7 +1387,7 @@ const compactData = [
     "Open 12",
     "Agnes Tachyon",
     "Original",
-    0.0
+    10
   ],
   [
     "Roidee",
@@ -1407,7 +1397,7 @@ const compactData = [
     "Open 12",
     "Gold Ship",
     "Original",
-    0.2
+    10
   ],
   [
     "KN",
@@ -1417,7 +1407,7 @@ const compactData = [
     "Open 12",
     "Gold Ship",
     "Original",
-    0.1333
+    10
   ],
   [
     "Raccoon",
@@ -1427,7 +1417,7 @@ const compactData = [
     "Open 12",
     "Gold Ship",
     "Original",
-    0.0
+    5
   ],
   [
     "Pines",
@@ -1437,7 +1427,7 @@ const compactData = [
     "Open 12",
     "Mayano Top Gun",
     "Wedding",
-    0.0
+    5
   ],
   [
     "Kenesu",
@@ -1447,7 +1437,7 @@ const compactData = [
     "Open 12",
     "Narita Brian",
     "Original",
-    0.0
+    5
   ],
   [
     "Jedmumu",
@@ -1457,7 +1447,7 @@ const compactData = [
     "Open 12",
     "Symboli Rudolf",
     "Original",
-    0.0
+    5
   ],
   [
     "FuHua",
@@ -1467,7 +1457,7 @@ const compactData = [
     "Open 12",
     "Oguri Cap",
     "Original",
-    0.0667
+    5
   ],
   [
     "Bresto",
@@ -1477,7 +1467,7 @@ const compactData = [
     "Open 12",
     "Tokai Teio",
     "Anime",
-    0.0
+    5
   ],
   [
     "FuHua",
@@ -1487,7 +1477,7 @@ const compactData = [
     "Open 13",
     "Seiun Sky",
     "Original",
-    0.2
+    5
   ],
   [
     "Dedratermi",
@@ -1497,7 +1487,7 @@ const compactData = [
     "Open 13",
     "Special Week",
     "Original",
-    0.2
+    5
   ],
   [
     "Teki",
@@ -1507,7 +1497,7 @@ const compactData = [
     "Open 13",
     "Vodka",
     "Original",
-    0.2
+    5
   ],
   [
     "Kenesu",
@@ -1517,7 +1507,7 @@ const compactData = [
     "Open 13",
     "Taiki Shuttle",
     "Original",
-    0.0
+    5
   ],
   [
     "Sumpfranze",
@@ -1527,7 +1517,7 @@ const compactData = [
     "Open 13",
     "Mayano Top Gun",
     "Original",
-    0.2
+    5
   ],
   [
     "Jedmumu",
@@ -1537,7 +1527,7 @@ const compactData = [
     "Open 13",
     "Agnes Digital",
     "Original",
-    0.2
+    5
   ],
   [
     "Rihito",
@@ -1547,7 +1537,7 @@ const compactData = [
     "Open 13",
     "Gold Ship",
     "Original",
-    0.0
+    5
   ],
   [
     "Draguin",
@@ -1557,7 +1547,7 @@ const compactData = [
     "Open 13",
     "Seiun Sky",
     "Original",
-    0.0
+    5
   ],
   [
     "Raccoon",
@@ -1567,7 +1557,7 @@ const compactData = [
     "Open 13",
     "Agnes Tachyon",
     "Original",
-    0.0
+    5
   ],
   [
     "Spyder",
@@ -1577,7 +1567,7 @@ const compactData = [
     "Open 13",
     "Seiun Sky",
     "Original",
-    0.0
+    5
   ],
   [
     "MetaHayato",
@@ -1587,7 +1577,7 @@ const compactData = [
     "Open 13",
     "Vodka",
     "Original",
-    0.0
+    5
   ],
   [
     "HoriYon",
@@ -1597,7 +1587,7 @@ const compactData = [
     "Open 13",
     "Seiun Sky",
     "Original",
-    0.0
+    5
   ],
   [
     "Frozt",
@@ -1607,7 +1597,7 @@ const compactData = [
     "Open 13",
     "Vodka",
     "Original",
-    0.0
+    5
   ],
   [
     "Cefiro",
@@ -1617,7 +1607,7 @@ const compactData = [
     "Open 13",
     "Gold Ship",
     "Original",
-    0.0
+    5
   ],
   [
     "Mudflap",
@@ -1627,7 +1617,7 @@ const compactData = [
     "Open 13",
     "Narita Taishin",
     "Original",
-    0.0
+    5
   ],
   [
     "MetaHayato",
@@ -1637,7 +1627,7 @@ const compactData = [
     "Open 14",
     "Oguri Cap",
     "Original",
-    0.4
+    5
   ],
   [
     "Kenesu",
@@ -1647,7 +1637,7 @@ const compactData = [
     "Open 14",
     "Mayano Top Gun",
     "Original",
-    0.0
+    5
   ],
   [
     "Jedmumu",
@@ -1657,7 +1647,7 @@ const compactData = [
     "Open 14",
     "Tokai Teio",
     "Anime",
-    0.4
+    5
   ],
   [
     "Raccoon",
@@ -1667,7 +1657,7 @@ const compactData = [
     "Open 14",
     "Seiun Sky",
     "Original",
-    0.0
+    5
   ],
   [
     "Pines",
@@ -1677,7 +1667,7 @@ const compactData = [
     "Open 14",
     "Mayano Top Gun",
     "Wedding",
-    0.0
+    5
   ],
   [
     "NarrativeCrocodiles",
@@ -1687,7 +1677,7 @@ const compactData = [
     "Open 14",
     "Meisho Doto",
     "Original",
-    0.0
+    5
   ],
   [
     "Dedratermi",
@@ -1697,7 +1687,7 @@ const compactData = [
     "Open 14",
     "Special Week",
     "Original",
-    0.2
+    5
   ],
   [
     "Spyder",
@@ -1707,7 +1697,7 @@ const compactData = [
     "Open 14",
     "Special Week",
     "Summer",
-    0.0
+    5
   ],
   [
     "Eva",
@@ -1717,7 +1707,7 @@ const compactData = [
     "Open 14",
     "Oguri Cap",
     "Original",
-    0.0
+    5
   ],
   [
     "HoriYon",
@@ -1727,7 +1717,7 @@ const compactData = [
     "Open 14",
     "Seiun Sky",
     "Original",
-    0.0
+    5
   ],
   [
     "Synocra",
@@ -1737,7 +1727,7 @@ const compactData = [
     "Open 14",
     "Mejiro Ryan",
     "Original",
-    0.0
+    5
   ],
   [
     "FuHua",
@@ -1747,7 +1737,7 @@ const compactData = [
     "Open 14",
     "Oguri Cap",
     "Original",
-    0.0
+    5
   ],
   [
     "MetaHayato",
@@ -1757,7 +1747,7 @@ const compactData = [
     "Open 15",
     "Maruzensky",
     "Original",
-    0.1333
+    10
   ],
   [
     "Pines",
@@ -1767,7 +1757,7 @@ const compactData = [
     "Open 15",
     "El Condor Pasa",
     "Original",
-    0.2
+    10
   ],
   [
     "Rihito",
@@ -1777,7 +1767,7 @@ const compactData = [
     "Open 15",
     "Maruzensky",
     "Original",
-    0.0
+    10
   ],
   [
     "HoriYon",
@@ -1787,7 +1777,7 @@ const compactData = [
     "Open 15",
     "Mayano Top Gun",
     "Original",
-    0.0
+    5
   ],
   [
     "Eva",
@@ -1797,7 +1787,7 @@ const compactData = [
     "Open 15",
     "T.M. Opera O",
     "Original",
-    0.0667
+    5
   ],
   [
     "Spyder",
@@ -1807,7 +1797,7 @@ const compactData = [
     "Open 15",
     "Mejiro McQueen",
     "Original",
-    0.0
+    5
   ],
   [
     "Jedmumu",
@@ -1817,7 +1807,7 @@ const compactData = [
     "Open 15",
     "Gold City",
     "Original",
-    0.0667
+    5
   ],
   [
     "Alfheix",
@@ -1827,7 +1817,7 @@ const compactData = [
     "Open 15",
     "Mayano Top Gun",
     "Wedding",
-    0.0
+    5
   ],
   [
     "Synocra",
@@ -1837,7 +1827,7 @@ const compactData = [
     "Open 15",
     "El Condor Pasa",
     "Original",
-    0.0
+    5
   ],
   [
     "Raccoon",
@@ -1847,7 +1837,7 @@ const compactData = [
     "Open 15",
     "Meisho Doto",
     "Original",
-    0.0
+    10
   ],
   [
     "Kenesu",
@@ -1857,7 +1847,7 @@ const compactData = [
     "Open 15",
     "Meisho Doto",
     "Original",
-    0.0
+    10
   ],
   [
     "NarrativeCrocodiles",
@@ -1867,7 +1857,7 @@ const compactData = [
     "Open 15",
     "Hishi Amazon",
     "Original",
-    0.0
+    10
   ],
   [
     "Dedratermi",
@@ -1877,7 +1867,7 @@ const compactData = [
     "Open 15",
     "Special Week",
     "Original",
-    0.5333
+    10
   ],
   [
     "Teki",
@@ -1887,7 +1877,7 @@ const compactData = [
     "Open 15",
     "Mejiro McQueen",
     "Original",
-    0.0
+    10
   ],
   [
     "Frozt",
@@ -1897,7 +1887,7 @@ const compactData = [
     "Open 15",
     "Nice Nature",
     "Original",
-    0.0
+    10
   ],
   [
     "MrTurtlez",
@@ -1907,7 +1897,7 @@ const compactData = [
     "Open 15",
     "Mejiro McQueen",
     "Original",
-    0.0
+    5
   ],
   [
     "Merlin",
@@ -1917,7 +1907,7 @@ const compactData = [
     "Open 15",
     "El Condor Pasa",
     "Original",
-    0.0
+    5
   ],
   [
     "FuHua",
@@ -1927,7 +1917,7 @@ const compactData = [
     "Open 15",
     "Haru Urara",
     "Original",
-    0.0
+    5
   ],
   [
     "Dedratermi",
@@ -1937,7 +1927,7 @@ const compactData = [
     "Open 16",
     "Special Week",
     "Original",
-    0.2
+    10
   ],
   [
     "Frozt",
@@ -1947,7 +1937,7 @@ const compactData = [
     "Open 16",
     "Hishi Amazon",
     "Original",
-    0.0
+    10
   ],
   [
     "Merlin",
@@ -1957,7 +1947,7 @@ const compactData = [
     "Open 16",
     "Agnes Tachyon",
     "Original",
-    0.0667
+    10
   ],
   [
     "MetaHayato",
@@ -1967,7 +1957,7 @@ const compactData = [
     "Open 16",
     "Nice Nature",
     "Original",
-    0.0
+    5
   ],
   [
     "Sumpfranze",
@@ -1977,7 +1967,7 @@ const compactData = [
     "Open 16",
     "Silence Suzuka",
     "Original",
-    0.0667
+    5
   ],
   [
     "Minty",
@@ -1987,7 +1977,7 @@ const compactData = [
     "Open 16",
     "Oguri Cap",
     "Original",
-    0.0
+    5
   ],
   [
     "Cefiro",
@@ -1997,7 +1987,7 @@ const compactData = [
     "Open 16",
     "Silence Suzuka",
     "Original",
-    0.0
+    5
   ],
   [
     "Pines",
@@ -2007,7 +1997,7 @@ const compactData = [
     "Open 16",
     "Mayano Top Gun",
     "Wedding",
-    0.0
+    5
   ],
   [
     "Alfheix",
@@ -2017,7 +2007,7 @@ const compactData = [
     "Open 16",
     "Symboli Rudolf",
     "Original",
-    0.0667
+    5
   ],
   [
     "Draguin",
@@ -2027,7 +2017,7 @@ const compactData = [
     "Open 16",
     "Super Creek",
     "Original",
-    0.2667
+    10
   ],
   [
     "FuHua",
@@ -2037,7 +2027,7 @@ const compactData = [
     "Open 16",
     "Oguri Cap",
     "Original",
-    0.0
+    10
   ],
   [
     "Rihito",
@@ -2047,7 +2037,7 @@ const compactData = [
     "Open 16",
     "Oguri Cap",
     "Original",
-    0.0
+    10
   ],
   [
     "HoriYon",
@@ -2057,7 +2047,7 @@ const compactData = [
     "Open 16",
     "Oguri Cap",
     "Original",
-    0.2667
+    10
   ],
   [
     "Kenesu",
@@ -2067,7 +2057,7 @@ const compactData = [
     "Open 16",
     "Mejiro Ryan",
     "Original",
-    0.0
+    10
   ],
   [
     "Eva",
@@ -2077,7 +2067,7 @@ const compactData = [
     "Open 16",
     "Special Week",
     "Summer",
-    0.0
+    10
   ],
   [
     "Raccoon",
@@ -2087,7 +2077,7 @@ const compactData = [
     "Open 16",
     "Daiwa Scarlet",
     "Original",
-    0.0
+    5
   ],
   [
     "Jedmumu",
@@ -2097,7 +2087,7 @@ const compactData = [
     "Open 16",
     "Tokai Teio",
     "Anime",
-    0.0667
+    5
   ],
   [
     "Synocra",
@@ -2107,7 +2097,7 @@ const compactData = [
     "Open 16",
     "Silence Suzuka",
     "Original",
-    0.0
+    5
   ],
   [
     "MetaHayato",
@@ -2117,7 +2107,7 @@ const compactData = [
     "Open 17",
     "Gold Ship",
     "Original",
-    0.2
+    5
   ],
   [
     "Teki",
@@ -2127,7 +2117,7 @@ const compactData = [
     "Open 17",
     "Gold Ship",
     "Original",
-    0.0
+    5
   ],
   [
     "Synocra",
@@ -2137,7 +2127,7 @@ const compactData = [
     "Open 17",
     "Gold Ship",
     "Original",
-    0.2
+    5
   ],
   [
     "HoriYon",
@@ -2147,7 +2137,7 @@ const compactData = [
     "Open 17",
     "Agnes Tachyon",
     "Original",
-    0.0
+    5
   ],
   [
     "Pines",
@@ -2157,7 +2147,7 @@ const compactData = [
     "Open 17",
     "Mayano Top Gun",
     "Original",
-    0.2
+    5
   ],
   [
     "Frozt",
@@ -2167,7 +2157,7 @@ const compactData = [
     "Open 17",
     "Gold Ship",
     "Original",
-    0.0
+    5
   ],
   [
     "Jedmumu",
@@ -2177,7 +2167,7 @@ const compactData = [
     "Open 17",
     "Tokai Teio",
     "Anime",
-    0.2
+    5
   ],
   [
     "Rihito",
@@ -2187,7 +2177,7 @@ const compactData = [
     "Open 17",
     "Gold Ship",
     "Original",
-    0.0
+    5
   ],
   [
     "Kenesu",
@@ -2197,7 +2187,7 @@ const compactData = [
     "Open 17",
     "Gold Ship",
     "Original",
-    0.0
+    5
   ],
   [
     "Cefiro",
@@ -2207,7 +2197,7 @@ const compactData = [
     "Open 17",
     "Mayano Top Gun",
     "Original",
-    0.2
+    5
   ],
   [
     "Raccoon",
@@ -2217,7 +2207,7 @@ const compactData = [
     "Open 17",
     "Meisho Doto",
     "Original",
-    0.0
+    5
   ],
   [
     "Eva",
@@ -2227,7 +2217,7 @@ const compactData = [
     "Open 17",
     "Gold Ship",
     "Original",
-    0.0
+    5
   ],
   [
     "Sumpfranze",
@@ -2237,7 +2227,7 @@ const compactData = [
     "Open 17",
     "Gold Ship",
     "Original",
-    0.0
+    5
   ],
   [
     "Alfheix",
@@ -2247,7 +2237,7 @@ const compactData = [
     "Open 17",
     "Grass Wonder",
     "Fantasy",
-    0.0
+    5
   ],
   [
     "FuHua",
@@ -2257,7 +2247,7 @@ const compactData = [
     "Open 17",
     "Seiun Sky",
     "Original",
-    0.0
+    5
   ],
   [
     "Alfheix",
@@ -2267,7 +2257,7 @@ const compactData = [
     "Open 19",
     "Maruzensky",
     "Summer",
-    0.0667
+    10
   ],
   [
     "Sumpfranze",
@@ -2277,7 +2267,7 @@ const compactData = [
     "Open 19",
     "El Condor Pasa",
     "Fantasy",
-    0.1333
+    10
   ],
   [
     "Divine",
@@ -2287,7 +2277,7 @@ const compactData = [
     "Open 19",
     "Grass Wonder",
     "Original",
-    0.0
+    10
   ],
   [
     "HoriYon",
@@ -2297,7 +2287,7 @@ const compactData = [
     "Open 19",
     "Oguri Cap",
     "Original",
-    0.4
+    10
   ],
   [
     "FuHua",
@@ -2307,7 +2297,7 @@ const compactData = [
     "Open 19",
     "Hishi Akebono",
     "Original",
-    0.0
+    10
   ],
   [
     "NarrativeCrocodiles",
@@ -2317,7 +2307,7 @@ const compactData = [
     "Open 19",
     "Air Groove",
     "Original",
-    0.0
+    10
   ],
   [
     "Spyder",
@@ -2327,7 +2317,7 @@ const compactData = [
     "Open 19",
     "Mihono Bourbon",
     "Original",
-    0.0
+    5
   ],
   [
     "Viistar",
@@ -2337,7 +2327,7 @@ const compactData = [
     "Open 19",
     "Taiki Shuttle",
     "Original",
-    0.0
+    5
   ],
   [
     "Raccoon",
@@ -2347,7 +2337,7 @@ const compactData = [
     "Open 19",
     "Manhattan Cafe",
     "Original",
-    0.0
+    5
   ],
   [
     "Jedmumu",
@@ -2357,7 +2347,7 @@ const compactData = [
     "Open 19",
     "El Condor Pasa",
     "Fantasy",
-    0.3333
+    10
   ],
   [
     "Rihito",
@@ -2367,7 +2357,7 @@ const compactData = [
     "Open 19",
     "Oguri Cap",
     "Original",
-    0.0
+    10
   ],
   [
     "Merlin",
@@ -2377,7 +2367,7 @@ const compactData = [
     "Open 19",
     "Oguri Cap",
     "Original",
-    0.0
+    10
   ],
   [
     "Boop",
@@ -2387,7 +2377,7 @@ const compactData = [
     "Open 19",
     "Fuji Kiseki",
     "Original",
-    0.0667
+    5
   ],
   [
     "Kenesu",
@@ -2397,7 +2387,7 @@ const compactData = [
     "Open 19",
     "Narita Brian",
     "Original",
-    0.0
+    5
   ],
   [
     "Cefiro",
@@ -2407,7 +2397,7 @@ const compactData = [
     "Open 19",
     "Daiwa Scarlet",
     "Original",
-    0.0
+    5
   ],
   [
     "Pines",
@@ -2417,7 +2407,7 @@ const compactData = [
     "Open 19",
     "Fuji Kiseki",
     "Original",
-    0.0
+    5
   ],
   [
     "Minty",
@@ -2427,7 +2417,7 @@ const compactData = [
     "Open 19",
     "Daiwa Scarlet",
     "Original",
-    0.0
+    5
   ],
   [
     "Dedratermi",
@@ -2437,7 +2427,7 @@ const compactData = [
     "Open 19",
     "Special Week",
     "Original",
-    0.0
+    5
   ],
   [
     "Roidee",
@@ -2447,7 +2437,7 @@ const compactData = [
     "Open 20",
     "Oguri Cap",
     "Original",
-    0.0
+    5
   ],
   [
     "Cefiro",
@@ -2457,7 +2447,7 @@ const compactData = [
     "Open 20",
     "Tokai Teio",
     "Anime",
-    0.2
+    5
   ],
   [
     "Minty",
@@ -2467,7 +2457,7 @@ const compactData = [
     "Open 20",
     "Kawakami Princess",
     "Original",
-    0.0
+    5
   ],
   [
     "Spyder",
@@ -2477,7 +2467,7 @@ const compactData = [
     "Open 20",
     "Mihono Bourbon",
     "Original",
-    0.2
+    5
   ],
   [
     "Sumpfranze",
@@ -2487,7 +2477,7 @@ const compactData = [
     "Open 20",
     "Oguri Cap",
     "Original",
-    0.0
+    5
   ],
   [
     "Pines",
@@ -2497,7 +2487,7 @@ const compactData = [
     "Open 20",
     "Fuji Kiseki",
     "Original",
-    0.0
+    5
   ],
   [
     "Raccoon",
@@ -2507,7 +2497,7 @@ const compactData = [
     "Open 20",
     "Maruzensky",
     "Summer",
-    0.4
+    5
   ],
   [
     "FuHua",
@@ -2517,7 +2507,7 @@ const compactData = [
     "Open 20",
     "Hishi Akebono",
     "Original",
-    0.0
+    5
   ],
   [
     "Jedmumu",
@@ -2527,7 +2517,7 @@ const compactData = [
     "Open 20",
     "Narita Brian",
     "Original",
-    0.0
+    5
   ],
   [
     "Dedratermi",
@@ -2537,7 +2527,7 @@ const compactData = [
     "Open 20",
     "Special Week",
     "Original",
-    0.2
+    5
   ],
   [
     "Lain",
@@ -2547,7 +2537,7 @@ const compactData = [
     "Open 20",
     "Gold City",
     "Original",
-    0.0
+    5
   ],
   [
     "Synocra",
@@ -2557,7 +2547,7 @@ const compactData = [
     "Open 20",
     "Seiun Sky",
     "Original",
-    0.0
+    5
   ],
   [
     "HoriYon",
@@ -2567,7 +2557,7 @@ const compactData = [
     "Open 21",
     "Oguri Cap",
     "Original",
-    0.4
+    5
   ],
   [
     "Pines",
@@ -2577,7 +2567,7 @@ const compactData = [
     "Open 21",
     "Agnes Tachyon",
     "Original",
-    0.0
+    5
   ],
   [
     "Kenesu",
@@ -2587,7 +2577,7 @@ const compactData = [
     "Open 21",
     "Grass Wonder",
     "Original",
-    0.0
+    5
   ],
   [
     "Boop",
@@ -2597,7 +2587,7 @@ const compactData = [
     "Open 21",
     "T.M. Opera O",
     "Original",
-    0.0
+    5
   ],
   [
     "FuHua",
@@ -2607,7 +2597,7 @@ const compactData = [
     "Open 21",
     "Gold Ship",
     "Original",
-    0.0
+    5
   ],
   [
     "Raccoon",
@@ -2617,7 +2607,7 @@ const compactData = [
     "Open 21",
     "Meisho Doto",
     "Original",
-    0.0
+    5
   ],
   [
     "Synocra",
@@ -2627,7 +2617,7 @@ const compactData = [
     "Open 21",
     "Silence Suzuka",
     "Original",
-    0.2
+    5
   ],
   [
     "Frozt",
@@ -2637,7 +2627,7 @@ const compactData = [
     "Open 21",
     "Meisho Doto",
     "Original",
-    0.2
+    5
   ],
   [
     "Dedratermi",
@@ -2647,7 +2637,7 @@ const compactData = [
     "Open 21",
     "Gold Ship",
     "Original",
-    0.0
+    5
   ],
   [
     "Lain",
@@ -2657,7 +2647,7 @@ const compactData = [
     "Open 21",
     "Gold Ship",
     "Original",
-    0.2
+    5
   ],
   [
     "Roidee",
@@ -2667,7 +2657,7 @@ const compactData = [
     "Open 21",
     "Mejiro Ryan",
     "Original",
-    0.0
+    5
   ],
   [
     "Eva",
@@ -2677,7 +2667,7 @@ const compactData = [
     "Open 21",
     "Oguri Cap",
     "Original",
-    0.0
+    5
   ],
   [
     "Jedmumu",
@@ -2687,7 +2677,7 @@ const compactData = [
     "Open 21",
     "Tokai Teio",
     "Anime",
-    0.0
+    5
   ],
   [
     "Mysteri",
@@ -2697,7 +2687,7 @@ const compactData = [
     "Open 21",
     "Hishi Amazon",
     "Original",
-    0.0
+    5
   ],
   [
     "Spyder",
@@ -2707,7 +2697,7 @@ const compactData = [
     "Open 21",
     "Mihono Bourbon",
     "Original",
-    0.0
+    5
   ],
   [
     "Boop",
@@ -2717,7 +2707,7 @@ const compactData = [
     "Open 22",
     "T.M. Opera O",
     "Original",
-    0.2
+    5
   ],
   [
     "Sumpfranze",
@@ -2727,7 +2717,7 @@ const compactData = [
     "Open 22",
     "Super Creek",
     "Halloween",
-    0.2
+    5
   ],
   [
     "Eva",
@@ -2737,7 +2727,7 @@ const compactData = [
     "Open 22",
     "Symboli Rudolf",
     "Festival",
-    0.0
+    5
   ],
   [
     "Alfheix",
@@ -2747,7 +2737,7 @@ const compactData = [
     "Open 22",
     "Gold City",
     "Original",
-    0.4
+    5
   ],
   [
     "FuHua",
@@ -2757,7 +2747,7 @@ const compactData = [
     "Open 22",
     "Narita Brian",
     "Original",
-    0.0
+    5
   ],
   [
     "Dedratermi",
@@ -2767,7 +2757,7 @@ const compactData = [
     "Open 22",
     "Silence Suzuka",
     "Original",
-    0.0
+    5
   ],
   [
     "Raccoon",
@@ -2777,7 +2767,7 @@ const compactData = [
     "Open 22",
     "Manhattan Cafe",
     "Original",
-    0.2
+    5
   ],
   [
     "HoriYon",
@@ -2787,7 +2777,7 @@ const compactData = [
     "Open 22",
     "Tokai Teio",
     "Original",
-    0.0
+    5
   ],
   [
     "Synocra",
@@ -2797,7 +2787,7 @@ const compactData = [
     "Open 22",
     "Silence Suzuka",
     "Original",
-    0.0
+    5
   ],
   [
     "Kenesu",
@@ -2807,7 +2797,7 @@ const compactData = [
     "Open 22",
     "Mayano Top Gun",
     "Wedding",
-    0.0
+    5
   ],
   [
     "Spyder",
@@ -2817,7 +2807,7 @@ const compactData = [
     "Open 22",
     "Special Week",
     "Summer",
-    0.0
+    5
   ],
   [
     "MrTurtlez",
@@ -2827,7 +2817,7 @@ const compactData = [
     "Open 22",
     "Nice Nature",
     "Original",
-    0.0
+    5
   ],
   [
     "Roidee",
@@ -2837,7 +2827,7 @@ const compactData = [
     "Open 23",
     "Daiwa Scarlet",
     "Original",
-    0.2
+    10
   ],
   [
     "KN",
@@ -2847,7 +2837,7 @@ const compactData = [
     "Open 23",
     "Oguri Cap",
     "Original",
-    0.0
+    10
   ],
   [
     "Pines",
@@ -2857,7 +2847,7 @@ const compactData = [
     "Open 23",
     "Mayano Top Gun",
     "Original",
-    0.0
+    10
   ],
   [
     "Eva",
@@ -2867,7 +2857,7 @@ const compactData = [
     "Open 23",
     "Symboli Rudolf",
     "Festival",
-    0.1333
+    10
   ],
   [
     "Boop",
@@ -2877,7 +2867,7 @@ const compactData = [
     "Open 23",
     "Seiun Sky",
     "Original",
-    0.0
+    10
   ],
   [
     "MrTurtlez",
@@ -2887,7 +2877,7 @@ const compactData = [
     "Open 23",
     "Narita Brian",
     "Original",
-    0.0
+    10
   ],
   [
     "Sumpfranze",
@@ -2897,7 +2887,7 @@ const compactData = [
     "Open 23",
     "Eishin Flash",
     "Original",
-    0.0667
+    5
   ],
   [
     "Kenesu",
@@ -2907,7 +2897,7 @@ const compactData = [
     "Open 23",
     "Mejiro Ryan",
     "Original",
-    0.0
+    5
   ],
   [
     "Bresto",
@@ -2917,7 +2907,7 @@ const compactData = [
     "Open 23",
     "Oguri Cap",
     "Original",
-    0.0
+    5
   ],
   [
     "Synocra",
@@ -2927,7 +2917,7 @@ const compactData = [
     "Open 23",
     "Silence Suzuka",
     "Original",
-    0.1333
+    5
   ],
   [
     "Jedmumu",
@@ -2937,7 +2927,7 @@ const compactData = [
     "Open 23",
     "Tokai Teio",
     "Anime",
-    0.0
+    5
   ],
   [
     "Alfheix",
@@ -2947,7 +2937,7 @@ const compactData = [
     "Open 23",
     "Symboli Rudolf",
     "Festival",
-    0.0
+    5
   ],
   [
     "Dedratermi",
@@ -2957,7 +2947,7 @@ const compactData = [
     "Open 23",
     "Seiun Sky",
     "Original",
-    0.0667
+    10
   ],
   [
     "Frozt",
@@ -2967,7 +2957,7 @@ const compactData = [
     "Open 23",
     "Hishi Amazon",
     "Original",
-    0.2667
+    10
   ],
   [
     "Spyder",
@@ -2977,7 +2967,7 @@ const compactData = [
     "Open 23",
     "Mihono Bourbon",
     "Original",
-    0.0667
+    10
   ],
   [
     "Raccoon",
@@ -2987,7 +2977,7 @@ const compactData = [
     "Open 23",
     "Maruzensky",
     "Summer",
-    0.0667
+    5
   ],
   [
     "FuHua",
@@ -2997,7 +2987,7 @@ const compactData = [
     "Open 23",
     "Symboli Rudolf",
     "Festival",
-    0.0
+    5
   ],
   [
     "HoriYon",
@@ -3007,7 +2997,7 @@ const compactData = [
     "Open 23",
     "Maruzensky",
     "Summer",
-    0.0
+    5
   ],
   [
     "CarmineView",
@@ -3017,7 +3007,7 @@ const compactData = [
     "Open 24",
     "Symboli Rudolf",
     "Festival",
-    0.2667
+    10
   ],
   [
     "Cefiro",
@@ -3027,7 +3017,7 @@ const compactData = [
     "Open 24",
     "Meisho Doto",
     "Original",
-    0.0667
+    10
   ],
   [
     "Synocra",
@@ -3037,7 +3027,7 @@ const compactData = [
     "Open 24",
     "Silence Suzuka",
     "Original",
-    0.0
+    10
   ],
   [
     "HoriYon",
@@ -3047,7 +3037,7 @@ const compactData = [
     "Open 24",
     "Oguri Cap",
     "Original",
-    0.1333
+    10
   ],
   [
     "Boop",
@@ -3057,7 +3047,7 @@ const compactData = [
     "Open 24",
     "Agnes Digital",
     "Original",
-    0.2
+    10
   ],
   [
     "Minty",
@@ -3067,7 +3057,7 @@ const compactData = [
     "Open 24",
     "King Halo",
     "Original",
-    0.0
+    10
   ],
   [
     "Zixen",
@@ -3077,7 +3067,7 @@ const compactData = [
     "Open 24",
     "Mayano Top Gun",
     "Original",
-    0.0
+    5
   ],
   [
     "Raccoon",
@@ -3087,7 +3077,7 @@ const compactData = [
     "Open 24",
     "Manhattan Cafe",
     "Original",
-    0.0
+    5
   ],
   [
     "FuHua",
@@ -3097,7 +3087,7 @@ const compactData = [
     "Open 24",
     "Manhattan Cafe",
     "Original",
-    0.0
+    5
   ],
   [
     "Dedratermi",
@@ -3107,7 +3097,7 @@ const compactData = [
     "Open 24",
     "Silence Suzuka",
     "Original",
-    0.2667
+    10
   ],
   [
     "Teki",
@@ -3117,7 +3107,7 @@ const compactData = [
     "Open 24",
     "Mejiro Ryan",
     "Original",
-    0.0
+    10
   ],
   [
     "Kenesu",
@@ -3127,7 +3117,7 @@ const compactData = [
     "Open 24",
     "Narita Brian",
     "Original",
-    0.0
+    10
   ],
   [
     "Frozt",
@@ -3137,7 +3127,7 @@ const compactData = [
     "Open 24",
     "Hishi Amazon",
     "Original",
-    0.0667
+    5
   ],
   [
     "Alfheix",
@@ -3147,7 +3137,7 @@ const compactData = [
     "Open 24",
     "Gold City",
     "Festival",
-    0.0
+    5
   ],
   [
     "Pines",
@@ -3157,7 +3147,7 @@ const compactData = [
     "Open 24",
     "Oguri Cap",
     "Original",
-    0.0
+    5
   ],
   [
     "Sumpfranze",
@@ -3167,7 +3157,7 @@ const compactData = [
     "Open 24",
     "Mayano Top Gun",
     "Wedding",
-    0.0
+    5
   ],
   [
     "Jedmumu",
@@ -3177,7 +3167,7 @@ const compactData = [
     "Open 24",
     "Matikanefukukitaru",
     "Original",
-    0.0
+    5
   ],
   [
     "Spyder",
@@ -3187,7 +3177,7 @@ const compactData = [
     "Open 24",
     "Mihono Bourbon",
     "Original",
-    0.0
+    5
   ],
   [
     "Roidee",
@@ -3197,7 +3187,7 @@ const compactData = [
     "Open 25",
     "Daiwa Scarlet",
     "Original",
-    0.0
+    10
   ],
   [
     "KN",
@@ -3207,7 +3197,7 @@ const compactData = [
     "Open 25",
     "Mayano Top Gun",
     "Wedding",
-    0.1333
+    10
   ],
   [
     "Kenesu",
@@ -3217,7 +3207,7 @@ const compactData = [
     "Open 25",
     "Agnes Tachyon",
     "Original",
-    0.0
+    10
   ],
   [
     "Rihito",
@@ -3227,7 +3217,7 @@ const compactData = [
     "Open 25",
     "Agnes Tachyon",
     "Original",
-    0.0
+    5
   ],
   [
     "Lain",
@@ -3237,7 +3227,7 @@ const compactData = [
     "Open 25",
     "Gold City",
     "Festival",
-    0.0667
+    5
   ],
   [
     "Sumpfranze",
@@ -3247,7 +3237,7 @@ const compactData = [
     "Open 25",
     "Mayano Top Gun",
     "Original",
-    0.0
+    5
   ],
   [
     "Eva",
@@ -3257,7 +3247,7 @@ const compactData = [
     "Open 25",
     "Narita Brian",
     "Original",
-    0.2
+    5
   ],
   [
     "Dedratermi",
@@ -3267,7 +3257,7 @@ const compactData = [
     "Open 25",
     "Mayano Top Gun",
     "Original",
-    0.0
+    5
   ],
   [
     "Synocra",
@@ -3277,7 +3267,7 @@ const compactData = [
     "Open 25",
     "Gold City",
     "Festival",
-    0.0
+    5
   ],
   [
     "Jedmumu",
@@ -3287,7 +3277,7 @@ const compactData = [
     "Open 25",
     "Tokai Teio",
     "Anime",
-    0.2667
+    10
   ],
   [
     "Alfheix",
@@ -3297,7 +3287,7 @@ const compactData = [
     "Open 25",
     "Gold Ship",
     "Original",
-    0.0
+    10
   ],
   [
     "Pines",
@@ -3307,7 +3297,7 @@ const compactData = [
     "Open 25",
     "Mihono Bourbon",
     "Original",
-    0.0
+    10
   ],
   [
     "Zixen",
@@ -3317,7 +3307,7 @@ const compactData = [
     "Open 25",
     "Nice Nature",
     "Original",
-    0.2667
+    10
   ],
   [
     "Raccoon",
@@ -3327,7 +3317,7 @@ const compactData = [
     "Open 25",
     "Agnes Tachyon",
     "Original",
-    0.0
+    10
   ],
   [
     "Frozt",
@@ -3337,7 +3327,7 @@ const compactData = [
     "Open 25",
     "Daiwa Scarlet",
     "Original",
-    0.0
+    10
   ],
   [
     "HoriYon",
@@ -3347,7 +3337,7 @@ const compactData = [
     "Open 25",
     "Tokai Teio",
     "Original",
-    0.0667
+    5
   ],
   [
     "Boop",
@@ -3357,7 +3347,7 @@ const compactData = [
     "Open 25",
     "Tokai Teio",
     "Anime",
-    0.0
+    5
   ],
   [
     "FuHua",
@@ -3367,7 +3357,7 @@ const compactData = [
     "Open 25",
     "Hishi Akebono",
     "Original",
-    0.0
+    5
   ],
   [
     "Cefiro",
@@ -3377,7 +3367,7 @@ const compactData = [
     "Open 26",
     "Tokai Teio",
     "Anime",
-    0.2667
+    10
   ],
   [
     "Zixen",
@@ -3387,7 +3377,7 @@ const compactData = [
     "Open 26",
     "El Condor Pasa",
     "Original",
-    0.1333
+    10
   ],
   [
     "NarrativeCrocodiles",
@@ -3397,7 +3387,7 @@ const compactData = [
     "Open 26",
     "Mejiro Ryan",
     "Original",
-    0.0
+    10
   ],
   [
     "Rihito",
@@ -3407,7 +3397,7 @@ const compactData = [
     "Open 26",
     "Mejiro Ryan",
     "Original",
-    0.0
+    5
   ],
   [
     "Frozt",
@@ -3417,7 +3407,7 @@ const compactData = [
     "Open 26",
     "Sakura Bakushin O",
     "Original",
-    0.0
+    5
   ],
   [
     "Jedmumu",
@@ -3427,7 +3417,7 @@ const compactData = [
     "Open 26",
     "Tokai Teio",
     "Anime",
-    0.0
+    5
   ],
   [
     "HoriYon",
@@ -3437,7 +3427,7 @@ const compactData = [
     "Open 26",
     "Air Groove",
     "Original",
-    0.0667
+    5
   ],
   [
     "Kenesu",
@@ -3447,7 +3437,7 @@ const compactData = [
     "Open 26",
     "Grass Wonder",
     "Fantasy",
-    0.0
+    5
   ],
   [
     "Alfheix",
@@ -3457,7 +3447,7 @@ const compactData = [
     "Open 26",
     "Grass Wonder",
     "Original",
-    0.0
+    5
   ],
   [
     "Dedratermi",
@@ -3467,7 +3457,7 @@ const compactData = [
     "Open 26",
     "Maruzensky",
     "Original",
-    0.2
+    10
   ],
   [
     "Synocra",
@@ -3477,7 +3467,7 @@ const compactData = [
     "Open 26",
     "Gold City",
     "Festival",
-    0.2667
+    10
   ],
   [
     "Eva",
@@ -3487,7 +3477,7 @@ const compactData = [
     "Open 26",
     "Narita Brian",
     "Original",
-    0.0
+    10
   ],
   [
     "Roidee",
@@ -3497,7 +3487,7 @@ const compactData = [
     "Open 26",
     "Maruzensky",
     "Original",
-    0.0
+    10
   ],
   [
     "Boop",
@@ -3507,7 +3497,7 @@ const compactData = [
     "Open 26",
     "Maruzensky",
     "Original",
-    0.0667
+    10
   ],
   [
     "Divine",
@@ -3517,7 +3507,7 @@ const compactData = [
     "Open 26",
     "Kawakami Princess",
     "Original",
-    0.0
+    10
   ],
   [
     "Mixsy",
@@ -3527,7 +3517,7 @@ const compactData = [
     "Open 26",
     "T.M. Opera O",
     "Original",
-    0.0
+    5
   ],
   [
     "Raccoon",
@@ -3537,7 +3527,7 @@ const compactData = [
     "Open 26",
     "Smart Falcon",
     "Original",
-    0.0
+    5
   ],
   [
     "Minty",
@@ -3547,7 +3537,7 @@ const compactData = [
     "Open 26",
     "Mejiro Ryan",
     "Original",
-    0.0
+    5
   ],
   [
     "Jedmumu",
@@ -3557,7 +3547,7 @@ const compactData = [
     "Open 27",
     "Oguri Cap",
     "Original",
-    0.1333
+    10
   ],
   [
     "Divine",
@@ -3567,7 +3557,7 @@ const compactData = [
     "Open 27",
     "Kawakami Princess",
     "Original",
-    0.0667
+    10
   ],
   [
     "Alfheix",
@@ -3577,7 +3567,7 @@ const compactData = [
     "Open 27",
     "Maruzensky",
     "Original",
-    0.0
+    10
   ],
   [
     "Teki",
@@ -3587,7 +3577,7 @@ const compactData = [
     "Open 27",
     "Gold Ship",
     "Original",
-    0.2667
+    10
   ],
   [
     "Cefiro",
@@ -3597,7 +3587,7 @@ const compactData = [
     "Open 27",
     "Tokai Teio",
     "Anime",
-    0.0667
+    10
   ],
   [
     "Pines",
@@ -3607,7 +3597,7 @@ const compactData = [
     "Open 27",
     "Mayano Top Gun",
     "Wedding",
-    0.0
+    10
   ],
   [
     "Zixen",
@@ -3617,7 +3607,7 @@ const compactData = [
     "Open 27",
     "Super Creek",
     "Original",
-    0.0
+    5
   ],
   [
     "Boop",
@@ -3627,7 +3617,7 @@ const compactData = [
     "Open 27",
     "T.M. Opera O",
     "Original",
-    0.0
+    5
   ],
   [
     "Kenesu",
@@ -3637,7 +3627,7 @@ const compactData = [
     "Open 27",
     "Agnes Tachyon",
     "Original",
-    0.0
+    5
   ],
   [
     "Roidee",
@@ -3647,7 +3637,7 @@ const compactData = [
     "Open 27",
     "Mihono Bourbon",
     "Original",
-    0.2
+    10
   ],
   [
     "Bunsen",
@@ -3657,7 +3647,7 @@ const compactData = [
     "Open 27",
     "Fuji Kiseki",
     "Original",
-    0.0667
+    10
   ],
   [
     "Minty",
@@ -3667,7 +3657,7 @@ const compactData = [
     "Open 27",
     "Matikanefukukitaru",
     "Original",
-    0.0
+    10
   ],
   [
     "Raccoon",
@@ -3677,7 +3667,7 @@ const compactData = [
     "Open 27",
     "Meisho Doto",
     "Original",
-    0.0667
+    5
   ],
   [
     "Rihito",
@@ -3687,7 +3677,7 @@ const compactData = [
     "Open 27",
     "Gold Ship",
     "Original",
-    0.0667
+    5
   ],
   [
     "Synocra",
@@ -3697,7 +3687,7 @@ const compactData = [
     "Open 27",
     "Gold City",
     "Festival",
-    0.0
+    5
   ],
   [
     "HoriYon",
@@ -3707,7 +3697,7 @@ const compactData = [
     "Open 27",
     "Oguri Cap",
     "Original",
-    0.0667
+    5
   ],
   [
     "KN",
@@ -3717,7 +3707,7 @@ const compactData = [
     "Open 27",
     "Daiwa Scarlet",
     "Original",
-    0.0
+    5
   ],
   [
     "Mixsy",
@@ -3727,7 +3717,7 @@ const compactData = [
     "Open 27",
     "Mejiro McQueen",
     "Original",
-    0.0
+    5
   ],
   [
     "Roidee",
@@ -3737,7 +3727,7 @@ const compactData = [
     "Open 28",
     "Curren Chan",
     "Original",
-    0.0667
+    10
   ],
   [
     "Synocra",
@@ -3747,7 +3737,7 @@ const compactData = [
     "Open 28",
     "Seiun Sky",
     "Original",
-    0.1333
+    10
   ],
   [
     "Zixen",
@@ -3757,7 +3747,7 @@ const compactData = [
     "Open 28",
     "Taiki Shuttle",
     "Original",
-    0.0
+    10
   ],
   [
     "Frozt",
@@ -3767,7 +3757,7 @@ const compactData = [
     "Open 28",
     "Seiun Sky",
     "Original",
-    0.4667
+    10
   ],
   [
     "Bunsen",
@@ -3777,7 +3767,7 @@ const compactData = [
     "Open 28",
     "Sakura Bakushin O",
     "Original",
-    0.0
+    10
   ],
   [
     "FuHua",
@@ -3787,7 +3777,7 @@ const compactData = [
     "Open 28",
     "Hishi Akebono",
     "Original",
-    0.0
+    10
   ],
   [
     "Raccoon",
@@ -3797,7 +3787,7 @@ const compactData = [
     "Open 28",
     "King Halo",
     "Original",
-    0.0
+    5
   ],
   [
     "Pines",
@@ -3807,7 +3797,7 @@ const compactData = [
     "Open 28",
     "Fuji Kiseki",
     "Original",
-    0.0
+    5
   ],
   [
     "Cefiro",
@@ -3817,7 +3807,7 @@ const compactData = [
     "Open 28",
     "Seiun Sky",
     "Original",
-    0.0
+    5
   ],
   [
     "Kenesu",
@@ -3827,7 +3817,7 @@ const compactData = [
     "Open 28",
     "Daiwa Scarlet",
     "Original",
-    0.1333
+    10
   ],
   [
     "Rihito",
@@ -3837,7 +3827,7 @@ const compactData = [
     "Open 28",
     "Taiki Shuttle",
     "Original",
-    0.0
+    10
   ],
   [
     "Jedmumu",
@@ -3847,7 +3837,7 @@ const compactData = [
     "Open 28",
     "Mayano Top Gun",
     "Wedding",
-    0.0
+    10
   ],
   [
     "Draguin",
@@ -3857,7 +3847,7 @@ const compactData = [
     "Open 28",
     "Daiwa Scarlet",
     "Original",
-    0.2
+    5
   ],
   [
     "HoriYon",
@@ -3867,7 +3857,7 @@ const compactData = [
     "Open 28",
     "Tokai Teio",
     "Original",
-    0.0
+    5
   ],
   [
     "Boop",
@@ -3877,7 +3867,7 @@ const compactData = [
     "Open 28",
     "Mayano Top Gun",
     "Wedding",
-    0.0
+    5
   ],
   [
     "Mixsy",
@@ -3887,7 +3877,7 @@ const compactData = [
     "Open 28",
     "Grass Wonder",
     "Original",
-    0.0
+    5
   ],
   [
     "Dedratermi",
@@ -3897,7 +3887,7 @@ const compactData = [
     "Open 28",
     "Special Week",
     "Original",
-    0.0
+    5
   ],
   [
     "KN",
@@ -3907,7 +3897,7 @@ const compactData = [
     "Open 28",
     "Daiwa Scarlet",
     "Original",
-    0.0
+    5
   ]
 ];
 
@@ -4121,5 +4111,6 @@ const tournamentRaceResults = {
         ]
     }
 };
+
 
 

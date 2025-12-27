@@ -23,7 +23,8 @@ const rawData = compactData.map(r => {
         DistanceCategory: distCat,
         UmaPick: r[5],
         Variant: r[6],
-        WinShare: r[7]
+        // UPDATED: Now mapping index 7 to RacesRun
+        RacesRun: r[7] 
     };
 });
 
@@ -54,7 +55,6 @@ function calculateStats(filteredData) {
     const trainerMap = {};
 
     // 1. Identify which tournaments are currently active based on filters
-    // This allows us to calculate Ban Rate accurately (only for visible tournaments)
     const activeTournaments = new Set();
     filteredData.forEach(row => activeTournaments.add(row.RawLength));
 
@@ -66,17 +66,16 @@ function calculateStats(filteredData) {
                 name: row.UniqueName, 
                 picks: 0, 
                 wins: 0, 
-                totalShare: 0, 
+                totalRacesRun: 0, // UPDATED: Track actual races run
                 tourneyWins: 0,
-                bans: 0 // Initialize bans
+                bans: 0 
             }; 
         }
         umaMap[row.UniqueName].picks++;
         umaMap[row.UniqueName].wins += row.Wins;
-        umaMap[row.UniqueName].totalShare += row.WinShare;
+        umaMap[row.UniqueName].totalRacesRun += row.RacesRun; // Summing actual races
 
         // Check tourney wins
-        // (This naturally filters because filteredData only contains active rows)
         if (typeof tournamentWinners !== 'undefined' && tournamentWinners[row.RawLength]) {
             if (tournamentWinners[row.RawLength].includes(row.Trainer)) {
                 umaMap[row.UniqueName].tourneyWins++;
@@ -89,7 +88,7 @@ function calculateStats(filteredData) {
                 name: row.Trainer,
                 entries: 0,
                 wins: 0,
-                totalShare: 0,
+                totalRacesRun: 0, // UPDATED: Track actual races run
                 characterHistory: {},
                 playedTourneys: new Set(),
                 tournamentWins: 0
@@ -99,7 +98,7 @@ function calculateStats(filteredData) {
         let t = trainerMap[row.Trainer];
         t.entries++;
         t.wins += row.Wins;
-        t.totalShare += row.WinShare;
+        t.totalRacesRun += row.RacesRun; // Summing actual races
         t.playedTourneys.add(row.RawLength);
 
         if (!t.characterHistory[row.UniqueName]) {
@@ -121,22 +120,19 @@ function calculateStats(filteredData) {
     });
 
     // 4. Process Bans (DYNAMICALLY FILTERED)
-    // We only count bans if the tournament they belong to is currently in 'activeTournaments'
     let validBanTourneyCount = 0;
 
     if (typeof tournamentBans !== 'undefined') {
         Object.keys(tournamentBans).forEach(tourneyID => {
-            // CRITICAL CHECK: Only process bans if this tournament matches our filters
             if (activeTournaments.has(tourneyID)) {
                 validBanTourneyCount++; 
                 
                 const banList = tournamentBans[tourneyID];
                 banList.forEach(umaName => {
-                    // Ensure Uma exists in map (even if 0 picks)
                     if (!umaMap[umaName]) {
                         umaMap[umaName] = { 
                             name: umaName, 
-                            picks: 0, wins: 0, totalShare: 0, tourneyWins: 0, 
+                            picks: 0, wins: 0, totalRacesRun: 0, tourneyWins: 0, 
                             bans: 0 
                         };
                     }
@@ -148,20 +144,21 @@ function calculateStats(filteredData) {
 
     // 5. Formatting for Display
     const formatStats = (obj, type) => Object.values(obj).map(item => {
+        // UPDATED CALCULATION: Wins / Total Races Run * 100
+        const winRate = item.totalRacesRun > 0 
+            ? (item.wins / item.totalRacesRun * 100).toFixed(1) 
+            : "0.0";
+
         const stats = {
             ...item,
             displayName: formatName(item.name),
-            dom: item[type === 'uma' ? 'picks' : 'entries'] > 0 
-                 ? (item.totalShare / item[type === 'uma' ? 'picks' : 'entries'] * 100).toFixed(1) 
-                 : 0
+            dom: winRate // 'dom' now represents the True Win Rate %
         };
 
         if (type === 'uma') {
-            // Tourney Win Rate
             const tWinRate = item.picks > 0 ? (item.tourneyWins / item.picks * 100).toFixed(1) : "0.0";
             stats.tourneyStatsDisplay = `${tWinRate}% <span style="font-size:0.8em; color:#888">(${item.tourneyWins}/${item.picks})</span>`;
 
-            // Ban Rate (Uses validBanTourneyCount as denominator)
             const banRate = validBanTourneyCount > 0 ? (item.bans / validBanTourneyCount * 100).toFixed(1) : "0.0";
             stats.banStatsDisplay = `${banRate}% <span style="font-size:0.8em; color:#888">(${item.bans}/${validBanTourneyCount})</span>`;
         }
@@ -198,6 +195,8 @@ function renderTable(tableId, data, columns) {
     tbody.innerHTML = data.map(row => {
         const cells = columns.map(col => {
             if (col === 'name') return `<td>${row.displayName}</td>`;
+            // Add % symbol to 'dom' column for clarity
+            if (col === 'dom') return `<td>${row[col]}%</td>`;
             return `<td>${row[col]}</td>`;
         });
         return `<tr>${cells.join('')}</tr>`;
@@ -211,12 +210,13 @@ function renderTierList(containerId, data, countKey, minReq) {
         if (item[countKey] < minReq) return;
 
         const val = parseFloat(item.dom);
+        // Note: Thresholds might need adjusting now that percentages are higher (True Win Rate)
         let tier = 'D';
         if (val <= 1.0) tier = 'F';
-        else if (val >= 12.0) tier = 'S';
-        else if (val >= 8.0) tier = 'A';
-        else if (val >= 5.0) tier = 'B';
-        else if (val >= 2.0) tier = 'C';
+        else if (val >= 20.0) tier = 'S'; // Bumped S to 20% (1 win in 5 races)
+        else if (val >= 12.0) tier = 'A';
+        else if (val >= 8.0) tier = 'B';
+        else if (val >= 4.0) tier = 'C';
 
         tiers[tier].push(item);
     });
@@ -319,8 +319,6 @@ window.onload = function() {
 
     updateData();
 };
-
-
 
 function calculateIndividualStats() {
     let stats = {};
