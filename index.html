@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Racc Open Analysis</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>Racc Open Dashboard</h1>
+    
+    <div class="controls">
+        <div class="control-group">
+            <label>Theme</label>
+            <select id="themeSelector" onchange="switchTheme()">
+                <option value="">Default (Dark)</option>
+                <option value="ram">Ram (Pink)</option>
+                <option value="rem">Rem (Blue)</option>
+                <option value="cappuchin">Cappuchin (Brown)</option>
+                <option value="miku">Miku (Teal)</option>
+                <option value="teto">Teto (Red)</option>
+                <option value="macchiato">Macchiato (Purple)</option>
+                <option value="nature">Nature (Green)</option>
+                <option value="hina">Hina (Violet)</option>
+            </select>
+        </div>
+        <div class="control-group">
+            <label>Surface</label>
+            <select id="surfaceFilter" onchange="updateData()">
+                <option value="All">All Surfaces</option>
+                <option value="Turf">Turf</option>
+                <option value="Dirt">Dirt</option>
+            </select>
+        </div>
+        <div class="control-group">
+            <label>Distance</label>
+            <select id="lengthFilter" onchange="updateData()">
+            <option value="All">All Distances</option>
+            <option value="Short">Short (≤1400m)</option>
+            <option value="Mile">Mile (1401-1800m)</option>
+            <option value="Medium">Medium (1801-2400m)</option>
+            <option value="Long">Long (>2400m)</option>
+        </select>
+        </div>
+        <div class="control-group" style="flex:1; max-width:300px;">
+            <label>Min Entries for Tier List: <span id="minEntriesVal" style="color:#4ecca3">5</span></label>
+            <div class="slider-container">
+                <input type="range" id="minEntries" min="1" max="20" value="5" oninput="updateData()">
+            </div>
+        </div>
+    </div>
+
+    <div class="tabs">
+        <div class="tab active" onclick="switchTab('tier-lists')">Tier Lists</div>
+        <div class="tab" onclick="switchTab('uma-stats')">Uma Stats</div>
+        <div class="tab" onclick="switchTab('trainer-stats')">Trainer Stats</div>
+    </div>
+
+    <div id="tier-lists" class="view-section active">
+        <div class="grid-container">
+            <div class="card">
+                <h2>Uma Tier List</h2>
+                <div id="umaTierList"></div>
+            </div>
+            <div class="card">
+                <h2>Trainer Tier List</h2>
+                <div id="trainerTierList"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="uma-stats" class="view-section">
+        <div class="card">
+            <h2>Uma Statistics</h2>
+            <div style="overflow-x:auto;">
+                <table id="umaTable">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable('umaTable', 0)">Name</th>
+                            <th onclick="sortTable('umaTable', 1, true)">Picks</th>
+                            <th onclick="sortTable('umaTable', 2, true)">Wins</th>
+                            <th onclick="sortTable('umaTable', 3, true)">Dominance %</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="trainer-stats" class="view-section">
+        <div class="card">
+            <h2>Trainer Statistics</h2>
+            <div style="overflow-x:auto;">
+                <table id="trainerTable">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable('trainerTable', 0)">Trainer</th>
+                            <th onclick="sortTable('trainerTable', 1, true)">Entries</th>
+                            <th onclick="sortTable('trainerTable', 2, true)">Wins</th>
+                            <th onclick="sortTable('trainerTable', 3, true)">Dominance %</th>
+                            <th onclick="sortTable('trainerTable', 4, true)">Tourney Win %</th>
+                            <th>Most Picked</th>
+                            <th>Best Uma</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="data.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
