@@ -60,14 +60,29 @@
     </div>
 
     <div id="tier-lists" class="view-section active">
-        <div class="grid-container">
-            <div class="card">
-                <h2>Uma Tier List</h2>
-                <div id="umaTierList"></div>
+        <div class="tier-list-container">
+            <div class="tier-column">
+                <h2 class="tier-header">Win Rate Tier List <span style="font-size:0.6em; color:#888">(1st Place %)</span></h2>
+                <h3 style="text-align:center; color:var(--primary);">Umas</h3>
+                <div id="umaTierListWR"></div>
+                <h3 style="text-align:center; color:var(--primary); margin-top:20px;">Trainers</h3>
+                <div id="trainerTierListWR"></div>
             </div>
-            <div class="card">
-                <h2>Trainer Tier List</h2>
-                <div id="trainerTierList"></div>
+
+            <div class="tier-column">
+                <h2 class="tier-header">Dominance Tier List <span style="font-size:0.6em; color:#888">(Pts Efficiency)</span></h2>
+                <h3 style="text-align:center; color:var(--primary);">Umas</h3>
+                <div id="umaTierListDom"></div>
+                <h3 style="text-align:center; color:var(--primary); margin-top:20px;">Trainers</h3>
+                <div id="trainerTierListDom"></div>
+            </div>
+
+            <div class="tier-column">
+                <h2 class="tier-header">Champion Tier List <span style="font-size:0.6em; color:#888">(Tourney Wins)</span></h2>
+                <h3 style="text-align:center; color:var(--primary);">Umas</h3>
+                <div id="umaTierListChamp"></div>
+                <h3 style="text-align:center; color:var(--primary); margin-top:20px;">Trainers</h3>
+                <div id="trainerTierListChamp"></div>
             </div>
         </div>
     </div>
@@ -143,4 +158,3 @@
 
 </body>
 </html>
-

@@ -48,25 +48,50 @@ function formatName(fullName) {
     return `${mainName} <span class="variant-tag">(${variant})</span>`;
 }
 
-// --- NEW: Calculate Points from Race Results ---
-function getChampionshipPoints() {
-    let stats = {};
+// --- NEW: Calculate Points (Filtered) ---
+function getChampionshipPoints(activeTournaments, filteredData) {
+    let stats = { trainer: {}, uma: {} };
     
-    // Iterate over the detailed race results in data.js
+    // 1. Create a Map to link Trainer+Tourney -> UmaName
+    // This allows us to assign points from the race results (which only have Trainer names) to the specific Uma.
+    const lookupMap = {};
+    filteredData.forEach(row => {
+        const key = `${row.RawLength}_${row.Trainer}`;
+        lookupMap[key] = row.UniqueName;
+    });
+
+    // 2. Iterate detailed race results
     for (const [tournamentName, stages] of Object.entries(tournamentRaceResults)) {
+        // FILTER CHECK: Only process this tournament if it passed the filters
+        if (!activeTournaments.has(tournamentName)) continue;
+
         for (const [stageName, races] of Object.entries(stages)) {
             races.forEach((raceResult) => {
                 raceResult.forEach((player, rankIndex) => {
-                    // Skip placeholders if you haven't filled them yet
                     if(player.includes("Player")) return; 
 
-                    if (!stats[player]) {
-                        stats[player] = { points: 0, races: 0 };
+                    // --- Process Trainer Points ---
+                    if (!stats.trainer[player]) {
+                        stats.trainer[player] = { points: 0, races: 0 };
                     }
                     if (rankIndex < POINTS_SYSTEM.length) {
-                        stats[player].points += POINTS_SYSTEM[rankIndex];
+                        stats.trainer[player].points += POINTS_SYSTEM[rankIndex];
                     }
-                    stats[player].races += 1;
+                    stats.trainer[player].races += 1;
+
+                    // --- Process Uma Points (via Lookup) ---
+                    const key = `${tournamentName}_${player}`;
+                    const umaName = lookupMap[key];
+                    
+                    if (umaName) {
+                        if (!stats.uma[umaName]) {
+                            stats.uma[umaName] = { points: 0, races: 0 };
+                        }
+                        if (rankIndex < POINTS_SYSTEM.length) {
+                            stats.uma[umaName].points += POINTS_SYSTEM[rankIndex];
+                        }
+                        stats.uma[umaName].races += 1;
+                    }
                 });
             });
         }
@@ -80,10 +105,10 @@ function calculateStats(filteredData) {
     const trainerMap = {};
     const activeTournaments = new Set();
     
-    // 1. Get Points Data (New Dominance Source)
-    const pointsData = getChampionshipPoints();
-
     filteredData.forEach(row => activeTournaments.add(row.RawLength));
+
+    // 1. Get Points Data (Now respects Filters & calculates Uma points)
+    const pointsData = getChampionshipPoints(activeTournaments, filteredData);
 
     // 2. Process Basic Data
     filteredData.forEach(row => {
@@ -156,97 +181,107 @@ function calculateStats(filteredData) {
         });
     }
 
-    // 5. Formatting
-    const formatStats = (obj, type) => Object.values(obj).map(item => {
-        // --- Win Rate % Calculation (Old Dominance) ---
+    // 5. Formatting Helper
+    const formatItem = (item, type) => {
+        // A. Win Rate %
         const winRateVal = item.totalRacesRun > 0 
             ? (item.wins / item.totalRacesRun * 100).toFixed(1) 
             : "0.0";
 
-        // --- Dominance % Calculation (Points Based) ---
+        // B. Dominance % (Points Based)
         let dominanceVal = "0.0";
+        // Check either trainer or uma stats in pointsData
+        const pStats = type === 'trainer' ? pointsData.trainer[item.name] : pointsData.uma[item.name];
         
-        // Only calculate Points Dominance for Trainers (since we have the data)
-        if (type === 'trainer' && pointsData[item.name]) {
-            const p = pointsData[item.name];
-            // Max points possible = Races Run * 25 (1st place points)
-            const maxPoints = p.races * 25;
-            if (maxPoints > 0) {
-                dominanceVal = ((p.points / maxPoints) * 100).toFixed(1);
-            }
-        } else if (type === 'uma') {
-            // For Umas, we stick to Win Rate as "Dom" for now until we have detailed uma race results
-            dominanceVal = winRateVal; 
+        if (pStats && pStats.races > 0) {
+            const maxPoints = pStats.races * 25;
+            dominanceVal = ((pStats.points / maxPoints) * 100).toFixed(1);
+        }
+
+        // C. Tourney Win %
+        let tWinPct = "0.0";
+        if (type === 'uma') {
+            tWinPct = item.picks > 0 ? (item.tourneyWins / item.picks * 100).toFixed(1) : "0.0";
+        } else {
+            const tourneyCount = item.playedTourneys.size;
+            tWinPct = tourneyCount > 0 ? (item.tournamentWins / tourneyCount * 100).toFixed(1) : "0.0";
         }
 
         const stats = {
             ...item,
             displayName: formatName(item.name),
-            winRate: winRateVal,    // Explicit Win Rate
-            dom: dominanceVal       // Explicit Dominance (Points for Trainers, WR for Umas)
+            winRate: winRateVal,
+            dom: dominanceVal,
+            tourneyWinPct: tWinPct
         };
 
+        // Specific fields
         if (type === 'uma') {
-            const tWinRate = item.picks > 0 ? (item.tourneyWins / item.picks * 100).toFixed(1) : "0.0";
-            stats.tourneyStatsDisplay = `${tWinRate}% <span style="font-size:0.8em; color:#888">(${item.tourneyWins}/${item.picks})</span>`;
+            stats.tourneyStatsDisplay = `${tWinPct}% <span style="font-size:0.8em; color:#888">(${item.tourneyWins}/${item.picks})</span>`;
             const banRate = validBanTourneyCount > 0 ? (item.bans / validBanTourneyCount * 100).toFixed(1) : "0.0";
             stats.banStatsDisplay = `${banRate}% <span style="font-size:0.8em; color:#888">(${item.bans}/${validBanTourneyCount})</span>`;
         }
 
         if (type === 'trainer') {
-            const tourneyCount = item.playedTourneys.size;
-            const tWinRate = tourneyCount > 0 ? (item.tournamentWins / tourneyCount * 100).toFixed(1) : "0.0";
-            stats.tourneyStatsDisplay = `${tWinRate}% <span style="font-size:0.8em; color:#888">(${item.tournamentWins}/${tourneyCount})</span>`;
-
+            stats.tourneyStatsDisplay = `${tWinPct}% <span style="font-size:0.8em; color:#888">(${item.tournamentWins}/${item.playedTourneys.size})</span>`;
             const historyArr = Object.entries(item.characterHistory).map(([key, val]) => ({ name: key, ...val }));
             historyArr.sort((a, b) => b.picks - a.picks);
             const fav = historyArr[0];
             stats.favorite = fav ? `${formatName(fav.name)} <span class="stat-badge">x${fav.picks}</span>` : '-';
-
             historyArr.sort((a, b) => b.wins - a.wins || a.picks - b.picks);
             const best = historyArr[0];
             stats.ace = (best && best.wins > 0) ? `${formatName(best.name)} <span class="stat-badge win-badge">★${best.wins}</span>` : '<span style="color:#666">-</span>';
         }
 
         return stats;
-    });
+    };
 
     return {
-        umaStats: formatStats(umaMap, 'uma'),
-        trainerStats: formatStats(trainerMap, 'trainer')
+        umaStats: Object.values(umaMap).map(i => formatItem(i, 'uma')),
+        trainerStats: Object.values(trainerMap).map(i => formatItem(i, 'trainer'))
     };
 }
 
 // --- Render Functions ---
 function renderTable(tableId, data, columns) {
     const tbody = document.querySelector(`#${tableId} tbody`);
-
     tbody.innerHTML = data.map(row => {
         const cells = columns.map(col => {
             if (col === 'name') return `<td>${row.displayName}</td>`;
-            if (col === 'winRate' || col === 'dom') return `<td>${row[col]}%</td>`;
+            if (col === 'winRate' || col === 'dom' || col === 'tourneyWinPct') return `<td>${row[col]}%</td>`;
             return `<td>${row[col]}</td>`;
         });
         return `<tr>${cells.join('')}</tr>`;
     }).join('');
 }
 
-function renderTierList(containerId, data, countKey, minReq) {
+// Updated Generic Tier List Render
+function renderTierList(containerId, data, countKey, minReq, sortKey) {
     const tiers = { S: [], A: [], B: [], C: [], D: [], F: [] };
 
     data.forEach(item => {
         if (item[countKey] < minReq) return;
 
-        // Use 'dom' (Dominance) for Tier List calculation
-        // For Trainers, this is now Points %. For Umas, it's still Win Rate %.
-        const val = parseFloat(item.dom);
-        
+        const val = parseFloat(item[sortKey]); // Use sortKey (dom, winRate, or tourneyWinPct)
         let tier = 'D';
+        
+        // Dynamic thresholds based on sortKey could be added here
+        // Using a general scale for now
         if (val <= 5.0) tier = 'F';
         else if (val >= 60.0) tier = 'S'; 
         else if (val >= 45.0) tier = 'A';
         else if (val >= 30.0) tier = 'B';
         else if (val >= 15.0) tier = 'C';
+
+        // Adjust thresholds for WinRate specifically if needed (since WR is harder to get than Dom pts)
+        if (sortKey === 'winRate') {
+             if (val <= 1.0) tier = 'F';
+             else if (val >= 25.0) tier = 'S'; 
+             else if (val >= 15.0) tier = 'A';
+             else if (val >= 10.0) tier = 'B';
+             else if (val >= 5.0) tier = 'C';
+             else tier = 'D';
+        }
 
         tiers[tier].push(item);
     });
@@ -256,17 +291,17 @@ function renderTierList(containerId, data, countKey, minReq) {
 
     ['S', 'A', 'B', 'C', 'D', 'F'].forEach(tier => {
         if (tiers[tier].length === 0 && tier !== 'S') return;
-        tiers[tier].sort((a, b) => b.dom - a.dom);
+        tiers[tier].sort((a, b) => b[sortKey] - a[sortKey]);
         html += `
             <div class="tier-row">
                 <div class="tier-label tier-${tier}">${tier}</div>
                 <div class="tier-content">
-                    ${tiers[tier].map(i => `<span class="tier-item">${i.displayName} <b>${i.dom}%</b></span>`).join('')}
+                    ${tiers[tier].map(i => `<span class="tier-item">${i.displayName} <b>${i[sortKey]}%</b></span>`).join('')}
                 </div>
             </div>`;
     });
 
-    if (html === '') html = '<div style="padding:20px; color:#888;">No data meets the criteria.</div>';
+    if (html === '') html = '<div style="padding:20px; color:#888;">No data.</div>';
     container.innerHTML = html;
 }
 
@@ -285,24 +320,33 @@ function updateData() {
 
     const stats = calculateStats(filtered);
 
-    // Render Uma Table (Uses Win Rate as Dom for now)
+    // Sort Tables by Dominance Default
     stats.umaStats.sort((a, b) => b.dom - a.dom);
     renderTable('umaTable', stats.umaStats, 
-        ['name', 'picks', 'wins', 'winRate', 'tourneyStatsDisplay', 'banStatsDisplay']
+        ['name', 'picks', 'wins', 'winRate', 'dom', 'tourneyStatsDisplay', 'banStatsDisplay']
     );
 
-    // Render Trainer Table (Uses Points for Dom, WinRate for WR)
-    // NOTE: We added 'winRate' and 'dom' to the columns list
     stats.trainerStats.sort((a, b) => b.dom - a.dom);
     renderTable('trainerTable', stats.trainerStats, 
         ['name', 'entries', 'wins', 'winRate', 'dom', 'tourneyStatsDisplay', 'favorite', 'ace']
     );
 
-    renderTierList('umaTierList', stats.umaStats, 'picks', minEntries);
-    renderTierList('trainerTierList', stats.trainerStats, 'entries', minEntries);
+    // --- Render the 3 Separate Tier Lists ---
+    
+    // 1. Win Rate Lists
+    renderTierList('umaTierListWR', stats.umaStats, 'picks', minEntries, 'winRate');
+    renderTierList('trainerTierListWR', stats.trainerStats, 'entries', minEntries, 'winRate');
+
+    // 2. Dominance Lists
+    renderTierList('umaTierListDom', stats.umaStats, 'picks', minEntries, 'dom');
+    renderTierList('trainerTierListDom', stats.trainerStats, 'entries', minEntries, 'dom');
+
+    // 3. Tourney Win Lists
+    renderTierList('umaTierListChamp', stats.umaStats, 'picks', minEntries, 'tourneyWinPct');
+    renderTierList('trainerTierListChamp', stats.trainerStats, 'entries', minEntries, 'tourneyWinPct');
 }
 
-// --- Sorting, Theme, Init (Standard) ---
+// --- Sorting, Theme, Init ---
 let sortState = {};
 function sortTable(tableId, colIndex, isNumeric = false) {
     const key = tableId + colIndex;
@@ -335,25 +379,7 @@ function switchTheme() {
     }
 }
 
-function renderStatsTable() {
-    const data = calculateIndividualStats(); 
-    // Uses the function you already had at the bottom of script.js
-    const tbody = document.getElementById('points-table-body');
-    if (!tbody) return;
-    tbody.innerHTML = '';
-    data.forEach((player, index) => {
-        const row = `
-            <tr>
-                <td>${index + 1}</td>
-                <td>${player.name}</td>
-                <td>${player.racesRun}</td> <td>${player.totalPoints}</td>
-                <td>${player.avgPoints}</td>
-            </tr>
-        `;
-        tbody.innerHTML += row;
-    });
-}
-
+// This function now just renders the raw total points table (unfiltered, for the Championship tab)
 function calculateIndividualStats() {
     let stats = {};
     for (const [tournamentName, stages] of Object.entries(tournamentRaceResults)) {
@@ -377,6 +403,24 @@ function calculateIndividualStats() {
         };
     });
     return leaderboard.sort((a, b) => b.totalPoints - a.totalPoints);
+}
+
+function renderStatsTable() {
+    const data = calculateIndividualStats(); 
+    const tbody = document.getElementById('points-table-body');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    data.forEach((player, index) => {
+        const row = `
+            <tr>
+                <td>${index + 1}</td>
+                <td>${player.name}</td>
+                <td>${player.racesRun}</td> <td>${player.totalPoints}</td>
+                <td>${player.avgPoints}</td>
+            </tr>
+        `;
+        tbody.innerHTML += row;
+    });
 }
 
 window.onload = function() {
