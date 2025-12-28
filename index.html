@@ -60,14 +60,56 @@
     </div>
 
     <div id="tier-lists" class="view-section active">
-        <div class="grid-container">
-            <div class="card">
-                <h2>Uma Tier List</h2>
-                <div id="umaTierList"></div>
+        <div class="card">
+            <div class="tier-switch-wrapper">
+                <div class="tier-switch">
+                    <div class="glider" id="tierGlider"></div>
+                    <button class="switch-option active" onclick="setTierView(0)">Win Rate %</button>
+                    <button class="switch-option" onclick="setTierView(1)">Dominance %</button>
+                    <button class="switch-option" onclick="setTierView(2)">Tourney Wins</button>
+                </div>
             </div>
-            <div class="card">
-                <h2>Trainer Tier List</h2>
-                <div id="trainerTierList"></div>
+
+            <div class="tier-view active" id="view-wr">
+                <h3 class="tier-subhead">Based on 1st Place finishes / Races Run</h3>
+                <div class="grid-container">
+                    <div>
+                        <h3 style="text-align:center; color:var(--accent-color);">Umas</h3>
+                        <div id="umaTierListWR"></div>
+                    </div>
+                    <div>
+                        <h3 style="text-align:center; color:var(--accent-color);">Trainers</h3>
+                        <div id="trainerTierListWR"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tier-view" id="view-dom">
+                <h3 class="tier-subhead">Based on Total Points Efficiency</h3>
+                <div class="grid-container">
+                    <div>
+                        <h3 style="text-align:center; color:var(--accent-color);">Umas</h3>
+                        <div id="umaTierListDom"></div>
+                    </div>
+                    <div>
+                        <h3 style="text-align:center; color:var(--accent-color);">Trainers</h3>
+                        <div id="trainerTierListDom"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tier-view" id="view-champ">
+                <h3 class="tier-subhead">Based on Tournament Victories</h3>
+                <div class="grid-container">
+                    <div>
+                        <h3 style="text-align:center; color:var(--accent-color);">Umas</h3>
+                        <div id="umaTierListChamp"></div>
+                    </div>
+                    <div>
+                        <h3 style="text-align:center; color:var(--accent-color);">Trainers</h3>
+                        <div id="trainerTierListChamp"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -77,18 +119,19 @@
             <h2>Uma Statistics</h2>
             <div style="overflow-x:auto;">
                 <table id="umaTable">
-                    <thead>
-                        <tr>
-                            <th onclick="sortTable('umaTable', 0)">Name</th>
-                            <th onclick="sortTable('umaTable', 1, true)">Picks</th>
-                            <th onclick="sortTable('umaTable', 2, true)">Wins</th>
-                            <th onclick="sortTable('umaTable', 3, true)">Dominance %</th>
-                            <th onclick="sortTable('umaTable', 4, true)">Tourney Win %</th>
-                            <th onclick="sortTable('umaTable', 5, true)">Ban Rate</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
+                <thead>
+                    <tr>
+                        <th onclick="sortTable('umaTable', 0)">Name</th>
+                        <th onclick="sortTable('umaTable', 1, true)">Picks</th>
+                        <th onclick="sortTable('umaTable', 2, true)">Wins</th>
+                        <th onclick="sortTable('umaTable', 3, true)">Win Rate %</th>
+                        <th onclick="sortTable('umaTable', 4, true)">Dominance %</th>
+                        <th onclick="sortTable('umaTable', 5, true)">Tourney Win %</th>
+                        <th onclick="sortTable('umaTable', 6, true)">Ban Rate</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
             </div>
         </div>
     </div>
@@ -97,14 +140,16 @@
         <div class="card">
             <h2>Trainer Statistics</h2>
             <div style="overflow-x:auto;">
-                <table id="trainerTable">
+               <table id="trainerTable">
                     <thead>
                         <tr>
                             <th onclick="sortTable('trainerTable', 0)">Trainer</th>
                             <th onclick="sortTable('trainerTable', 1, true)">Entries</th>
                             <th onclick="sortTable('trainerTable', 2, true)">Wins</th>
-                            <th onclick="sortTable('trainerTable', 3, true)">Dominance %</th>
-                            <th onclick="sortTable('trainerTable', 4, true)">Tourney Win %</th>
+                            <th onclick="sortTable('trainerTable', 3, true)">Win Rate %</th>
+                            <th onclick="sortTable('trainerTable', 4, true)">Dominance %</th> 
+                            
+                            <th onclick="sortTable('trainerTable', 5, true)">Tourney Win %</th>
                             <th>Most Picked</th>
                             <th>Best Uma</th>
                         </tr>
@@ -145,3 +190,4 @@
 
 </body>
 </html>
+

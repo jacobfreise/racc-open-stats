@@ -11,7 +11,6 @@ function getDistanceCategory(surfaceString) {
 }
 
 // --- Process Raw Data ---
-// Uses 'compactData' from data.js
 const rawData = compactData.map(r => {
     const distCat = getDistanceCategory(r[3]);
     return {
@@ -19,11 +18,10 @@ const rawData = compactData.map(r => {
         UniqueName: r[1],
         Wins: r[2],
         Surface: r[3],
-        RawLength: r[4], // Tournament ID (e.g., "Open 1")
+        RawLength: r[4], 
         DistanceCategory: distCat,
         UmaPick: r[5],
         Variant: r[6],
-        // UPDATED: Now mapping index 7 to RacesRun
         RacesRun: r[7] 
     };
 });
@@ -38,6 +36,31 @@ function switchTab(tabId) {
     if (tabId === 'tier-lists') tabs[0].classList.add('active');
     if (tabId === 'uma-stats') tabs[1].classList.add('active');
     if (tabId === 'trainer-stats') tabs[2].classList.add('active');
+    if (tabId === 'championship') tabs[3].classList.add('active');
+}
+
+// --- Tier List View Switcher (Slider Logic) ---
+function setTierView(index) {
+    // 1. Update Buttons
+    const buttons = document.querySelectorAll('.switch-option');
+    buttons.forEach((btn, i) => {
+        if (i === index) btn.classList.add('active');
+        else btn.classList.remove('active');
+    });
+
+    // 2. Move Glider
+    const glider = document.getElementById('tierGlider');
+    if(glider) glider.style.transform = `translateX(${index * 100}%)`;
+
+    // 3. Show Correct View
+    const views = ['view-wr', 'view-dom', 'view-champ'];
+    views.forEach((viewId, i) => {
+        const el = document.getElementById(viewId);
+        if(el) {
+            if (i === index) el.classList.add('active');
+            else el.classList.remove('active');
+        }
+    });
 }
 
 // --- Formatting Helper ---
@@ -49,33 +72,81 @@ function formatName(fullName) {
     return `${mainName} <span class="variant-tag">(${variant})</span>`;
 }
 
+// --- NEW: Calculate Points (Respects Filters & Links Umas) ---
+function getChampionshipPoints(activeTournaments, filteredData) {
+    let stats = { trainer: {}, uma: {} };
+    
+    // 1. Create a Map to link Trainer+Tourney -> UmaName
+    // This connects the race results (Trainer Name) to the correct Uma
+    const lookupMap = {};
+    filteredData.forEach(row => {
+        const key = `${row.RawLength}_${row.Trainer}`;
+        lookupMap[key] = row.UniqueName;
+    });
+
+    // 2. Iterate detailed race results
+    for (const [tournamentName, stages] of Object.entries(tournamentRaceResults)) {
+        // FILTER FIX: If tournament isn't in our filtered list (e.g. Surface=Dirt), skip it
+        if (!activeTournaments.has(tournamentName)) continue;
+
+        for (const [stageName, races] of Object.entries(stages)) {
+            races.forEach((raceResult) => {
+                raceResult.forEach((player, rankIndex) => {
+                    if(player.includes("Player")) return; 
+
+                    // --- A. Process Trainer Points ---
+                    if (!stats.trainer[player]) {
+                        stats.trainer[player] = { points: 0, races: 0 };
+                    }
+                    if (rankIndex < POINTS_SYSTEM.length) {
+                        stats.trainer[player].points += POINTS_SYSTEM[rankIndex];
+                    }
+                    stats.trainer[player].races += 1;
+
+                    // --- B. Process Uma Points (via Lookup) ---
+                    const key = `${tournamentName}_${player}`;
+                    const umaName = lookupMap[key];
+                    
+                    if (umaName) {
+                        if (!stats.uma[umaName]) {
+                            stats.uma[umaName] = { points: 0, races: 0 };
+                        }
+                        if (rankIndex < POINTS_SYSTEM.length) {
+                            stats.uma[umaName].points += POINTS_SYSTEM[rankIndex];
+                        }
+                        stats.uma[umaName].races += 1;
+                    }
+                });
+            });
+        }
+    }
+    return stats;
+}
+
 // --- Core Logic: Statistics Calculation ---
 function calculateStats(filteredData) {
     const umaMap = {};
     const trainerMap = {};
-
-    // 1. Identify which tournaments are currently active based on filters
     const activeTournaments = new Set();
+    
     filteredData.forEach(row => activeTournaments.add(row.RawLength));
 
-    // 2. Process Race Data (Picks & Wins)
+    // 1. Get Points Data (Using the new Filter-Aware function)
+    const pointsData = getChampionshipPoints(activeTournaments, filteredData);
+
+    // 2. Process Basic Data
     filteredData.forEach(row => {
         // --- Uma Stats ---
         if (!umaMap[row.UniqueName]) { 
             umaMap[row.UniqueName] = { 
                 name: row.UniqueName, 
-                picks: 0, 
-                wins: 0, 
-                totalRacesRun: 0, // UPDATED: Track actual races run
-                tourneyWins: 0,
-                bans: 0 
+                picks: 0, wins: 0, totalRacesRun: 0, tourneyWins: 0, bans: 0 
             }; 
         }
         umaMap[row.UniqueName].picks++;
         umaMap[row.UniqueName].wins += row.Wins;
-        umaMap[row.UniqueName].totalRacesRun += row.RacesRun; // Summing actual races
+        umaMap[row.UniqueName].totalRacesRun += row.RacesRun;
 
-        // Check tourney wins
         if (typeof tournamentWinners !== 'undefined' && tournamentWinners[row.RawLength]) {
             if (tournamentWinners[row.RawLength].includes(row.Trainer)) {
                 umaMap[row.UniqueName].tourneyWins++;
@@ -86,19 +157,15 @@ function calculateStats(filteredData) {
         if (!trainerMap[row.Trainer]) {
             trainerMap[row.Trainer] = {
                 name: row.Trainer,
-                entries: 0,
-                wins: 0,
-                totalRacesRun: 0, // UPDATED: Track actual races run
-                characterHistory: {},
-                playedTourneys: new Set(),
-                tournamentWins: 0
+                entries: 0, wins: 0, totalRacesRun: 0, 
+                characterHistory: {}, playedTourneys: new Set(), tournamentWins: 0
             };
         }
 
         let t = trainerMap[row.Trainer];
         t.entries++;
         t.wins += row.Wins;
-        t.totalRacesRun += row.RacesRun; // Summing actual races
+        t.totalRacesRun += row.RacesRun;
         t.playedTourneys.add(row.RawLength);
 
         if (!t.characterHistory[row.UniqueName]) {
@@ -108,7 +175,7 @@ function calculateStats(filteredData) {
         t.characterHistory[row.UniqueName].wins += row.Wins;
     });
 
-    // 3. Process Trainer Tourney Wins
+    // 3. Process Tourney Wins
     Object.values(trainerMap).forEach(t => {
         t.playedTourneys.forEach(tourneyID => {
             if (typeof tournamentWinners !== 'undefined' && tournamentWinners[tourneyID]) {
@@ -119,21 +186,17 @@ function calculateStats(filteredData) {
         });
     });
 
-    // 4. Process Bans (DYNAMICALLY FILTERED)
+    // 4. Process Bans
     let validBanTourneyCount = 0;
-
     if (typeof tournamentBans !== 'undefined') {
         Object.keys(tournamentBans).forEach(tourneyID => {
             if (activeTournaments.has(tourneyID)) {
                 validBanTourneyCount++; 
-                
                 const banList = tournamentBans[tourneyID];
                 banList.forEach(umaName => {
                     if (!umaMap[umaName]) {
                         umaMap[umaName] = { 
-                            name: umaName, 
-                            picks: 0, wins: 0, totalRacesRun: 0, tourneyWins: 0, 
-                            bans: 0 
+                            name: umaName, picks: 0, wins: 0, totalRacesRun: 0, tourneyWins: 0, bans: 0 
                         };
                     }
                     umaMap[umaName].bans++;
@@ -142,104 +205,133 @@ function calculateStats(filteredData) {
         });
     }
 
-    // 5. Formatting for Display
-    const formatStats = (obj, type) => Object.values(obj).map(item => {
-        // UPDATED CALCULATION: Wins / Total Races Run * 100
-        const winRate = item.totalRacesRun > 0 
+    // 5. Formatting Helper
+    const formatItem = (item, type) => {
+        // A. Win Rate %
+        const winRateVal = item.totalRacesRun > 0 
             ? (item.wins / item.totalRacesRun * 100).toFixed(1) 
             : "0.0";
+
+        // B. Dominance % (Points Based)
+        let dominanceVal = "0.0";
+        // Check either trainer or uma stats in pointsData
+        const pStats = type === 'trainer' ? pointsData.trainer[item.name] : pointsData.uma[item.name];
+        
+        if (pStats && pStats.races > 0) {
+            const maxPoints = pStats.races * 25; // 25 is max points per race
+            dominanceVal = ((pStats.points / maxPoints) * 100).toFixed(1);
+        }
+
+        // C. Tourney Win %
+        let tWinPct = "0.0";
+        if (type === 'uma') {
+            tWinPct = item.picks > 0 ? (item.tourneyWins / item.picks * 100).toFixed(1) : "0.0";
+        } else {
+            const tourneyCount = item.playedTourneys.size;
+            tWinPct = tourneyCount > 0 ? (item.tournamentWins / tourneyCount * 100).toFixed(1) : "0.0";
+        }
 
         const stats = {
             ...item,
             displayName: formatName(item.name),
-            dom: winRate // 'dom' now represents the True Win Rate %
+            winRate: winRateVal,
+            dom: dominanceVal,
+            tourneyWinPct: tWinPct
         };
 
         if (type === 'uma') {
-            const tWinRate = item.picks > 0 ? (item.tourneyWins / item.picks * 100).toFixed(1) : "0.0";
-            stats.tourneyStatsDisplay = `${tWinRate}% <span style="font-size:0.8em; color:#888">(${item.tourneyWins}/${item.picks})</span>`;
-
+            stats.tourneyStatsDisplay = `${tWinPct}% <span style="font-size:0.8em; color:#888">(${item.tourneyWins}/${item.picks})</span>`;
             const banRate = validBanTourneyCount > 0 ? (item.bans / validBanTourneyCount * 100).toFixed(1) : "0.0";
             stats.banStatsDisplay = `${banRate}% <span style="font-size:0.8em; color:#888">(${item.bans}/${validBanTourneyCount})</span>`;
         }
 
         if (type === 'trainer') {
-            const tourneyCount = item.playedTourneys.size;
-            const tWinRate = tourneyCount > 0 ? (item.tournamentWins / tourneyCount * 100).toFixed(1) : "0.0";
-            stats.tourneyStatsDisplay = `${tWinRate}% <span style="font-size:0.8em; color:#888">(${item.tournamentWins}/${tourneyCount})</span>`;
-
+            stats.tourneyStatsDisplay = `${tWinPct}% <span style="font-size:0.8em; color:#888">(${item.tournamentWins}/${item.playedTourneys.size})</span>`;
             const historyArr = Object.entries(item.characterHistory).map(([key, val]) => ({ name: key, ...val }));
-            
             historyArr.sort((a, b) => b.picks - a.picks);
             const fav = historyArr[0];
             stats.favorite = fav ? `${formatName(fav.name)} <span class="stat-badge">x${fav.picks}</span>` : '-';
-
             historyArr.sort((a, b) => b.wins - a.wins || a.picks - b.picks);
             const best = historyArr[0];
             stats.ace = (best && best.wins > 0) ? `${formatName(best.name)} <span class="stat-badge win-badge">★${best.wins}</span>` : '<span style="color:#666">-</span>';
         }
 
         return stats;
-    });
+    };
 
     return {
-        umaStats: formatStats(umaMap, 'uma'),
-        trainerStats: formatStats(trainerMap, 'trainer')
+        umaStats: Object.values(umaMap).map(i => formatItem(i, 'uma')),
+        trainerStats: Object.values(trainerMap).map(i => formatItem(i, 'trainer'))
     };
 }
 
 // --- Render Functions ---
 function renderTable(tableId, data, columns) {
     const tbody = document.querySelector(`#${tableId} tbody`);
-
+    if (!tbody) return;
     tbody.innerHTML = data.map(row => {
         const cells = columns.map(col => {
             if (col === 'name') return `<td>${row.displayName}</td>`;
-            // Add % symbol to 'dom' column for clarity
-            if (col === 'dom') return `<td>${row[col]}%</td>`;
+            if (col === 'winRate' || col === 'dom' || col === 'tourneyWinPct') return `<td>${row[col]}%</td>`;
             return `<td>${row[col]}</td>`;
         });
         return `<tr>${cells.join('')}</tr>`;
     }).join('');
 }
 
-function renderTierList(containerId, data, countKey, minReq) {
+// Updated Generic Tier List Render
+function renderTierList(containerId, data, countKey, minReq, sortKey) {
     const tiers = { S: [], A: [], B: [], C: [], D: [], F: [] };
 
     data.forEach(item => {
         if (item[countKey] < minReq) return;
 
-        const val = parseFloat(item.dom);
-        // Note: Thresholds might need adjusting now that percentages are higher (True Win Rate)
+        const val = parseFloat(item[sortKey]); 
         let tier = 'D';
-        if (val <= 1.0) tier = 'F';
-        else if (val >= 20.0) tier = 'S'; // Bumped S to 20% (1 win in 5 races)
-        else if (val >= 12.0) tier = 'A';
-        else if (val >= 8.0) tier = 'B';
-        else if (val >= 4.0) tier = 'C';
+        
+        // Thresholds based on metrics
+        if (sortKey === 'winRate') {
+             if (val <= 1.0) tier = 'F';
+             else if (val >= 25.0) tier = 'S'; 
+             else if (val >= 15.0) tier = 'A';
+             else if (val >= 10.0) tier = 'B';
+             else if (val >= 5.0) tier = 'C';
+        } else if (sortKey === 'tourneyWinPct') {
+             if (val <= 0.0) tier = 'F';
+             else if (val >= 25.0) tier = 'S';
+             else if (val >= 15.0) tier = 'A';
+             else if (val >= 10.0) tier = 'B';
+             else if (val >= 5.0) tier = 'C';
+        } else {
+            // Default Dominance (Points)
+            if (val <= 5.0) tier = 'F';
+            else if (val >= 60.0) tier = 'S'; 
+            else if (val >= 45.0) tier = 'A';
+            else if (val >= 30.0) tier = 'B';
+            else if (val >= 15.0) tier = 'C';
+        }
 
         tiers[tier].push(item);
     });
 
     const container = document.getElementById(containerId);
+    if (!container) return;
+    
     let html = '';
 
     ['S', 'A', 'B', 'C', 'D', 'F'].forEach(tier => {
         if (tiers[tier].length === 0 && tier !== 'S') return;
-
-        tiers[tier].sort((a, b) => b.dom - a.dom);
-
+        tiers[tier].sort((a, b) => b[sortKey] - a[sortKey]);
         html += `
             <div class="tier-row">
                 <div class="tier-label tier-${tier}">${tier}</div>
                 <div class="tier-content">
-                    ${tiers[tier].map(i => `<span class="tier-item">${i.displayName} <b>${i.dom}%</b></span>`).join('')}
+                    ${tiers[tier].map(i => `<span class="tier-item">${i.displayName} <b>${i[sortKey]}%</b></span>`).join('')}
                 </div>
             </div>`;
     });
 
-    if (html === '') html = '<div style="padding:20px; color:#888;">No data meets the criteria.</div>';
-
+    if (html === '') html = '<div style="padding:20px; color:#888;">No data.</div>';
     container.innerHTML = html;
 }
 
@@ -258,23 +350,29 @@ function updateData() {
 
     const stats = calculateStats(filtered);
 
-    // Render Uma Table (Sorted by Dom%, includes new Ban Stats column)
+    // Sort Tables
     stats.umaStats.sort((a, b) => b.dom - a.dom);
     renderTable('umaTable', stats.umaStats, 
-        ['name', 'picks', 'wins', 'dom', 'tourneyStatsDisplay', 'banStatsDisplay']
+        ['name', 'picks', 'wins', 'winRate', 'dom', 'tourneyStatsDisplay', 'banStatsDisplay']
     );
 
-    // Render Trainer Table
     stats.trainerStats.sort((a, b) => b.dom - a.dom);
     renderTable('trainerTable', stats.trainerStats, 
-        ['name', 'entries', 'wins', 'dom', 'tourneyStatsDisplay', 'favorite', 'ace']
+        ['name', 'entries', 'wins', 'winRate', 'dom', 'tourneyStatsDisplay', 'favorite', 'ace']
     );
 
-    renderTierList('umaTierList', stats.umaStats, 'picks', minEntries);
-    renderTierList('trainerTierList', stats.trainerStats, 'entries', minEntries);
+    // --- Render the 3 Separate Tier Lists ---
+    renderTierList('umaTierListWR', stats.umaStats, 'picks', minEntries, 'winRate');
+    renderTierList('trainerTierListWR', stats.trainerStats, 'entries', minEntries, 'winRate');
+
+    renderTierList('umaTierListDom', stats.umaStats, 'picks', minEntries, 'dom');
+    renderTierList('trainerTierListDom', stats.trainerStats, 'entries', minEntries, 'dom');
+
+    renderTierList('umaTierListChamp', stats.umaStats, 'picks', minEntries, 'tourneyWinPct');
+    renderTierList('trainerTierListChamp', stats.trainerStats, 'entries', minEntries, 'tourneyWinPct');
 }
 
-// --- Sorting & Utils ---
+// --- Sorting, Theme, Init ---
 let sortState = {};
 function sortTable(tableId, colIndex, isNumeric = false) {
     const key = tableId + colIndex;
@@ -287,20 +385,17 @@ function sortTable(tableId, colIndex, isNumeric = false) {
         let y = b.cells[colIndex].innerText;
 
         if (isNumeric) {
-            // Clean up string to number (handles "100%" or "50% (1/2)")
             x = parseFloat(x.split(' ')[0].replace(/[^\d.-]/g, ''));
             y = parseFloat(y.split(' ')[0].replace(/[^\d.-]/g, ''));
         }
         if (isNaN(x)) x = 0; if (isNaN(y)) y = 0;
         return sortState[key] ? (x < y ? -1 : 1) : (x > y ? -1 : 1);
     });
-
     tbody.append(...rows);
 }
 
 function switchTheme() {
     const theme = document.getElementById('themeSelector').value;
-    
     if (theme) {
         document.body.setAttribute('data-theme', theme);
         localStorage.setItem('siteTheme', theme);
@@ -310,73 +405,37 @@ function switchTheme() {
     }
 }
 
-window.onload = function() {
-    const savedTheme = localStorage.getItem('siteTheme');
-    if (savedTheme) {
-        document.getElementById('themeSelector').value = savedTheme;
-        document.body.setAttribute('data-theme', savedTheme);
-    }
-
-    updateData();
-};
-
+// Calculate total unfiltered stats for the Championship Tab
 function calculateIndividualStats() {
     let stats = {};
-
-    // 1. Loop through every Tournament
     for (const [tournamentName, stages] of Object.entries(tournamentRaceResults)) {
-        
-        // 2. Loop through every Stage (Group A, Group B, Finals)
         for (const [stageName, races] of Object.entries(stages)) {
-            
-            // 3. Loop through every Race
             races.forEach((raceResult) => {
-                
-                // 4. Loop through players in that race
                 raceResult.forEach((player, rankIndex) => {
-                    // Initialize player if not exists
-                    if (!stats[player]) {
-                        stats[player] = { 
-                            name: player, 
-                            totalPoints: 0, 
-                            racesRun: 0 
-                        };
-                    }
-
-                    // Assign Points (If rank is within 1-10)
-                    if (rankIndex < POINTS_SYSTEM.length) {
-                        stats[player].totalPoints += POINTS_SYSTEM[rankIndex];
-                    }
-
-                    // Increment race count for Average calc
+                    if(player.includes("Player")) return;
+                    if (!stats[player]) { stats[player] = { name: player, totalPoints: 0, racesRun: 0 }; }
+                    if (rankIndex < POINTS_SYSTEM.length) { stats[player].totalPoints += POINTS_SYSTEM[rankIndex]; }
                     stats[player].racesRun += 1;
                 });
             });
         }
     }
-
-    // 5. Convert to Array and Calculate Average
     const leaderboard = Object.values(stats).map(player => {
         return {
             name: player.name,
             totalPoints: player.totalPoints,
             racesRun: player.racesRun,
-            // Calculate Avg and round to 2 decimals
             avgPoints: (player.totalPoints / player.racesRun).toFixed(2)
         };
     });
-
-    // 6. Sort by Total Points (Highest to Lowest)
     return leaderboard.sort((a, b) => b.totalPoints - a.totalPoints);
 }
 
 function renderStatsTable() {
-    const data = calculateIndividualStats();
+    const data = calculateIndividualStats(); 
     const tbody = document.getElementById('points-table-body');
     if (!tbody) return;
-
     tbody.innerHTML = '';
-
     data.forEach((player, index) => {
         const row = `
             <tr>
@@ -390,7 +449,12 @@ function renderStatsTable() {
     });
 }
 
-// Init
-document.addEventListener('DOMContentLoaded', () => {
+window.onload = function() {
+    const savedTheme = localStorage.getItem('siteTheme');
+    if (savedTheme) {
+        document.getElementById('themeSelector').value = savedTheme;
+        document.body.setAttribute('data-theme', savedTheme);
+    }
+    updateData();
     renderStatsTable();
-});
+};
