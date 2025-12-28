@@ -218,9 +218,32 @@ tr:hover { background-color: var(--secondary-color); } /* Adapted hover to varia
     text-shadow: 0 0 2px rgba(0,0,0,0.5);
 }
 
+.tier-list-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+}
+
+@media (max-width: 1000px) {
+    .tier-list-container { grid-template-columns: 1fr; }
+}
+.tier-header {
+    text-align: center;
+    border-bottom: 2px solid var(--primary);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+.tier-column {
+    background: var(--card-bg);
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+}
+
 .tier-S { background: linear-gradient(135deg, #ff7f7f, #ff4c4c); }
 .tier-A { background: linear-gradient(135deg, #ffbf7f, #ff9f40); }
 .tier-B { background: linear-gradient(135deg, #ffdf7f, #ffc840); }
 .tier-C { background: linear-gradient(135deg, #ffff7f, #e6e600); }
 .tier-D { background: linear-gradient(135deg, #bfff7f, #76e600); }
+
 .tier-F { background: linear-gradient(135deg, #7f7fff, #4c4cff); }
