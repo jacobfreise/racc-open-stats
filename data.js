@@ -4087,7 +4087,7 @@ const tournamentRaceResults = {
         ]
     },
 
-    // Open 5-19 (Data not provided yet)
+    // Open 5-16 (Data not provided yet)
     "Open 5": { "Finals": [] },
     "Open 6": { "Finals": [] },
     "Open 7": { "Finals": [] },
@@ -4100,7 +4100,24 @@ const tournamentRaceResults = {
     "Open 14": { "Finals": [] },
     "Open 15": { "Finals": [] },
     "Open 16": { "Finals": [] },
-    "Open 17": { "Finals": [] },
+	
+    // Open 17
+    "Open 17": {
+        "Finals": [
+            // Race 1
+            ["MetaHayato", "Synocra", "Sumpfranze", "Teki", "Jedmumu", "Rihito", "Raccoon", "HoriYon", "Alfheix", "Pines"],
+            // Race 2
+            ["Synocra", "Frozt", "HoriYon", "MetaHayato", "Jedmumu", "Pines", "Kenesu", "Cefiro", "Teki", "Raccoon"],
+            // Race 3
+            ["Cefiro", "MetaHayato", "Kenesu", "Frozt", "Rihito", "HoriYon", "Synocra", "Pines", "Eva", "Alfheix"],
+            // Race 4
+            ["Pines", "Cefiro", "Rihito", "Sumpfranze", "Kenesu", "Teki", "Synocra", "MetaHayato", "FuHua", "Frozt"],
+            // Race 5
+            ["Jedmumu", "Pines", "Synocra", "Alfheix", "Cefiro", "Frozt", "Kenesu", "Sumpfranze", "Rihito", "HoriYon"]
+        ]
+    },
+	
+	// Open 18-19 (Data not provided yet)
     "Open 18": { "Finals": [] },
     "Open 19": { "Finals": [] },
 
@@ -4391,4 +4408,5 @@ const tournamentRaceResults = {
             ["Frozt", "Bunsen", "Roidee", "Synocra", "FuHua", "Rihito", "Jedmumu", "Kenesu", "Zixen"]
         ]
     }
+
 };
