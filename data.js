@@ -4104,16 +4104,25 @@ const tournamentRaceResults = {
     // Open 17
     "Open 17": {
         "Finals": [
-            // Race 1
-            ["MetaHayato", "Synocra", "Sumpfranze", "Teki", "Jedmumu", "Rihito", "Raccoon", "HoriYon", "Alfheix", "Pines"],
-            // Race 2
-            ["Synocra", "Frozt", "HoriYon", "MetaHayato", "Jedmumu", "Pines", "Kenesu", "Cefiro", "Teki", "Raccoon"],
-            // Race 3
-            ["Cefiro", "MetaHayato", "Kenesu", "Frozt", "Rihito", "HoriYon", "Synocra", "Pines", "Eva", "Alfheix"],
-            // Race 4
-            ["Pines", "Cefiro", "Rihito", "Sumpfranze", "Kenesu", "Teki", "Synocra", "MetaHayato", "FuHua", "Frozt"],
-            // Race 5
-            ["Jedmumu", "Pines", "Synocra", "Alfheix", "Cefiro", "Frozt", "Kenesu", "Sumpfranze", "Rihito", "HoriYon"]
+            // Race 1 (Winner: MetaHayato)
+            // Added 0-pointers: Frozt, Kenesu, Cefiro, Eva, FuHua
+            ["MetaHayato", "Synocra", "Sumpfranze", "Teki", "Jedmumu", "Rihito", "Raccoon", "HoriYon", "Alfheix", "Pines", "Frozt", "Kenesu", "Cefiro", "Eva", "FuHua"],
+            
+            // Race 2 (Winner: Synocra)
+            // Added 0-pointers: Sumpfranze, Rihito, Alfheix, Eva, FuHua
+            ["Synocra", "Frozt", "HoriYon", "MetaHayato", "Jedmumu", "Pines", "Kenesu", "Cefiro", "Teki", "Raccoon", "Sumpfranze", "Rihito", "Alfheix", "Eva", "FuHua"],
+            
+            // Race 3 (Winner: Cefiro)
+            // Added 0-pointers: Teki, Jedmumu, Raccoon, Sumpfranze, FuHua
+            ["Cefiro", "MetaHayato", "Kenesu", "Frozt", "Rihito", "HoriYon", "Synocra", "Pines", "Eva", "Alfheix", "Teki", "Jedmumu", "Raccoon", "Sumpfranze", "FuHua"],
+            
+            // Race 4 (Winner: Pines)
+            // Added 0-pointers: Jedmumu, Raccoon, HoriYon, Alfheix, Eva
+            ["Pines", "Cefiro", "Rihito", "Sumpfranze", "Kenesu", "Teki", "Synocra", "MetaHayato", "FuHua", "Frozt", "Jedmumu", "Raccoon", "HoriYon", "Alfheix", "Eva"],
+            
+            // Race 5 (Winner: Jedmumu)
+            // Added 0-pointers: MetaHayato, Teki, Raccoon, Eva, FuHua
+            ["Jedmumu", "Pines", "Synocra", "Alfheix", "Cefiro", "Frozt", "Kenesu", "Sumpfranze", "Rihito", "HoriYon", "MetaHayato", "Teki", "Raccoon", "Eva", "FuHua"]
         ]
     },
 	
@@ -4410,3 +4419,4 @@ const tournamentRaceResults = {
     }
 
 };
+
