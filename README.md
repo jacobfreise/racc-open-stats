@@ -1,13 +1,16 @@
 # 🦝 Racc Open Analysis Dashboard
 
-A lightweight, browser-based dashboard for analyzing *Uma Musume Pretty Derby* tournament statistics. This tool visualizes pick rates, win rates, ban rates, and tier lists for custom community tournaments.
+A comprehensive, browser-based dashboard for analyzing *Uma Musume Pretty Derby* tournament statistics. This tool visualizes pick rates, win rates, dominance metrics, and tier lists for custom community tournaments across multiple seasons.
 
 ## ✨ Features
 
-* **📊 Dynamic Tier Lists:** Automatically generates S-F tier lists based on **True Win Rate** (Wins / Races Run) for both Umas and Trainers.
+* **📅 Multi-Season Support:** Dynamically switch between Season 1 and Season 2 data without refreshing the page.
+* **📊 Dynamic Tier Lists:** * **Slider View:** Toggle tier lists between **Win Rate %**, **Dominance %**, and **Tournament Wins**.
+    * Automatically generates S-F tiers based on performance thresholds.
 * **📈 Comprehensive Statistics:**
-    * **Uma Stats:** Picks, Race Wins, True Win Rate %, Tournament Win %, and Ban Rate.
-    * **Trainer Stats:** Entries, Race Wins, True Win Rate %, Most Used Uma, and "Ace" (Best Performing) Uma.
+    * **Uma Stats:** Pick Rate %, Win Rate %, Dominance % (Beat Rate), Tournament Win %, and Ban Rate.
+    * **Trainer Stats:** Entries, Win Rate %, Dominance %, "Ace" Character, and Favorite Pick.
+    * **🏆 Championship Tab:** Tracks individual trainer standings based on points accumulated across all rounds.
 * **🔍 Filtering:** Filter data by **Surface** (Turf/Dirt) and **Distance** (Short/Mile/Medium/Long).
 * **🎨 Theming:** Includes 9 distinct color themes (Default Dark, Ram, Rem, Miku, etc.) with local storage persistence.
 * **📱 Responsive Design:** Optimized for both desktop and mobile viewing.
@@ -17,73 +20,89 @@ A lightweight, browser-based dashboard for analyzing *Uma Musume Pretty Derby* t
 No installation required! This is a static site.
 
 ### Method 1: GitHub Pages (Recommended)
-1.  Fork or clone this repository.
-2.  Enable **GitHub Pages** in your repository settings (Settings -> Pages -> Source: `main`).
-3.  Visit the provided URL to see your dashboard live.
+1. Fork or clone this repository.
+2. Enable **GitHub Pages** in your repository settings (Settings -> Pages -> Source: `main`).
+3. Visit the provided URL to see your dashboard live.
 
 ### Method 2: Local Usage
-1.  Download all files (`index.html`, `script.js`, `style.css`, `data.js`).
-2.  Open `index.html` in any web browser.
+1. Download all files (`index.html`, `script.js`, `style.css`, `data.js`, `data_s2.js`).
+2. Open `index.html` in any web browser.
 
 ## 📂 Project Structure
 
-* `index.html`: The main dashboard structure and layout.
-* `style.css`: All visual styling and theme definitions.
-* `script.js`: The logic engine. Calculates stats, processes filters, and renders tables.
-* `data.js`: The raw database file. **(Edit this to add new results!)**
+* `index.html`: The main dashboard structure, season selector, and layout.
+* `style.css`: All visual styling, animations, and theme definitions.
+* `script.js`: The core logic engine. Handles season switching, calculates points/dominance, processes filters, and renders tables.
+* `data.js`: Contains Season 1 data wrapped in the `S1_DATA` object.
+* `data_s2.js`: Contains Season 2 data wrapped in the `S2_DATA` object. **(Edit this for current season updates!)**
 
 ## 📝 How to Update Data
 
-All data is stored in `data.js`. To add new tournament results, you need to update three sections:
+Data is now "Namespaced" to allow multiple seasons to exist without conflict. 
 
-### 1. Add Race Results (`compactData`)
-Add rows to the `compactData` array. Each row represents **one entry** in a race.
-
-**Note:** The last number is **Races Run**, representing the actual number of races the character participated in (e.g., 5 for Group Stage exit, 10 or 15 for Finals).
+### 1. Data File Structure (`data_s2.js`)
+To add results for Season 2, edit `data_s2.js`. The file must follow this structure:
 
 ```javascript
-const compactData = [
-  // [Trainer, Uma Name, Wins, Surface, Tournament ID, Base Name, Variant, Races Run]
-  ["TrainerName", "Oguri Cap (Christmas)", 1, "2500m Turf (R)", "Open 28", "Oguri Cap", "Christmas", 5],
-  ["TrainerName", "Gold Ship (Original)", 3, "2500m Turf (R)", "Open 28", "Gold Ship", "Original", 10],
-  ...
-];
-```
+const S2_DATA = {
+    // 1. Race Entry Data (Used for Win Rates, Pick Rates, Filters)
+    compactData: [
+        // [Trainer, Uma Name (Variant), Wins, Surface, Tourney ID, Base Name, Variant, Total Races Run]
+        ["TrainerName", "Oguri Cap (Christmas)", 1, "2500m Turf (R)", "S2-1", "Oguri Cap", "Christmas", 5],
+        ["TrainerName", "Gold Ship (Original)", 3, "2500m Turf (R)", "S2-1", "Gold Ship", "Original", 10],
+    ],
 
-### 2. Add Team Winners (`tournamentWinners`)
-To calculate "Tournament Win %", define the winning team (list of trainer names) for specific tournament IDs.
+    // 2. Tournament Winners (Used for Tournament Win %)
+    tournamentWinners: {
+        "S2-1": ["TrainerA", "TrainerB", "TrainerC"],
+    },
 
-```javascript
-const tournamentWinners = {
-    "Open 1": ["Cookie", "Jess", "Potato"],
-    "Open 28": ["Marie", "Mika", "Aria"]
+    // 3. Bans (Used for Ban Rate)
+    tournamentBans: {
+        "S2-1": ["Oguri Cap (Original)", "Silence Suzuka (Original)"],
+    },
+
+    // 4. Detailed Results (Used for Dominance % and Championship Points)
+    tournamentRaceResults: {
+        "S2-1": {
+            "Group A": [ /* Array of Arrays of names */ ],
+            "Group B": [ /* Array of Arrays of names */ ],
+            "Finals":  [ /* Array of Arrays of names */ ]
+        }
+    }
 };
+
+// Export for Node.js compatibility (optional)
+if (typeof module !== 'undefined') { module.exports = { S2_DATA }; }
+
 ```
 
-### 3. Add Bans (`tournamentBans`)
-To calculate "Ban Rate", list the Umas banned in specific tournaments. **Note:** Names must match the names in `compactData` exactly (including variants).
+### 2. Updating Point Systems
+
+The points awarded for the Championship tab are defined at the top of `script.js`:
 
 ```javascript
-const tournamentBans = {
-    "Open 28": ["Vodka (Original)", "Maruzensky (Summer)"],
-    "Open 7": ["Seiun Sky (Original)"]
-};
+const POINTS_SYSTEM = [25, 18, 15, 12, 10, 8, 6, 4, 2, 1];
+
 ```
+
+Adjust these numbers to change how many points are awarded for 1st place, 2nd place, etc.
 
 ## 🛠 Customization
 
 ### Changing Tier Thresholds
-The tier list logic is located in `script.js` inside the `renderTierList` function. You can adjust the percentages required for each tier. Current defaults are based on **Win Rate** (Wins / Races Run):
 
-* **S Tier:** ≥ 20.0% Win Rate
-* **A Tier:** ≥ 12.0% Win Rate
-* **B Tier:** ≥ 8.0% Win Rate
-* **C Tier:** ≥ 4.0% Win Rate
+The tier list logic is located in `script.js` inside the `renderTierList` function. You can adjust the logic for `winRate`, `tourneyWinPct`, or `dom` (Dominance).
 
-### Adding Themes
-Themes are defined in `style.css`. You can add new color schemes by creating a new `[data-theme="name"]` block and defining the primary, secondary, and background colors.
+### Adding New Seasons
+
+1. Create a new file (e.g., `data_s3.js`) with `const S3_DATA = { ... }`.
+2. Link it in `index.html`: `<script src="data_s3.js"></script>`.
+3. Add the option to the dropdown in `index.html`: `<option value="s3">Season 3</option>`.
+4. Update `switchSeason()` in `script.js` to handle the 's3' case.
 
 ## 📜 License
+
 MIT License. Free to use and modify for your own tournament communities.
 
 ## ⚖️ Disclaimer & Copyrights
