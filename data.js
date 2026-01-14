@@ -1,4 +1,5 @@
-const compactData = [
+const S1_DATA = {
+compactData: [
   ["MetaHayato", "Maruzensky (Summer)", 2, "2000m Dirt (R)", "Open 1", "Maruzensky", "Summer", 5],
   ["Eva", "Oguri Cap (Original)", 0, "2000m Dirt (R)", "Open 1", "Oguri Cap", "Original", 5],
   ["Kenesu", "El Condor Pasa (Fantasy)", 0, "2000m Dirt (R)", "Open 1", "El Condor Pasa", "Fantasy", 5],
@@ -475,1055 +476,1045 @@ const compactData = [
   ["Frozt", "Daiwa Scarlet (Original)", 0, "1800m Turf (R)", "Open 32", "Daiwa Scarlet", "Original", 5],
   ["Boop", "Mihono Bourbon (Original)", 0, "1800m Turf (R)", "Open 32", "Mihono Bourbon", "Original", 5],
   ["MetaHayato", "Mejiro Ryan (Original)", 0, "1800m Turf (R)", "Open 32", "Mejiro Ryan", "Original", 5]
-];
+],
 
-const tournamentWinners = {
-    "Open 1": ["MetaHayato", "Eva", "Kenesu"],
-	"Open 2": ["MetaHayato", "Frozt", "Pines"],
-	"Open 3": ["Raccoon", "Jans", "Leficious"],
-	"Open 4": ["Leficious", "Honsler", "Sumpfranze"],
-	"Open 5": ["Synocra", "HoriYon", "Kenesu"],
-	"Open 6": ["MetaHayato", "BossNerd", "Sayo"],
-	"Open 7": ["Teki", "Synocra", "Kenesu"],
-	"Open 8": ["MetaHayato", "Pines", "Bresto"],
-	"Open 9": ["HoriYon", "FuHua", "Kenesu"],
-	"Open 10": ["HoriYon", "Roidee", "Spyder"],
-	"Open 11": ["MetaHayato", "Roidee", "FuHua"],
-	"Open 12": ["HoriYon", "Roidee", "KN"],
-	"Open 13": ["FuHua", "Dedratermi", "Teki"],
-	"Open 14": ["MetaHayato", "Kenesu", "Jedmumu"],
-	"Open 15": ["MetaHayato", "Pines", "Rihito"],
-	"Open 16": ["Draguin", "FuHua", "Rihito"],
-	"Open 17": ["MetaHayato", "Teki", "Synocra"],
-	"Open 19": ["Jedmumu", "Rihito", "Merlin"],
-	"Open 20": ["Roidee", "Cefiro", "Minty"],
-	"Open 21": ["HoriYon", "Pines", "Kenesu"],
-	"Open 22": ["Boop", "Sumpfranze", "Eva"],
-	"Open 23": ["Frozt", "Spyder", "Dedratermi"],
-	"Open 24": ["CarmineView", "Cefiro", "Synocra"],
-	"Open 25": ["Jedmumu", "Pines", "Alfheix"],
-	"Open 26": ["Synocra", "Dedratermi", "Eva"],
-	"Open 27": ["Jedmumu", "Alfheix", "Divine"],
-    "Open 28": ["Frozt", "FuHua", "Bunsen"],
-	"Open 29": ["Boop", "FuHua", "MetaHayato"],
-	"Open 30": ["MetaHayato", "Spyder", "FuHua"],
-	"Unofficial 1": ["Sumpfranze", "Kenesu", "Boop"],
-	"Open 31": ["FuHua", "Roidee", "Pines"],
-	"Open 32": ["Pines", "Cefiro", "Keejo"],
-};
-const tournamentBans = {
-    "Open 7": [
-        "Seiun Sky (Original)", 
-        "Oguri Cap (Original)", 
-        "Maruzensky (Summer)", 
-        "Taiki Shuttle (Original)"
-    ],
-    "Open 8": [
-        "Narita Taishin (Original)",
-        "Mayano Top Gun (Original)",
-        "Grass Wonder (Fantasy)"
-    ],
-    "Open 9": [
-        "Oguri Cap (Original)",
-        "Sakura Bakushin O (Original)",
-        "Taiki Shuttle (Original)"
-    ],
-    "Open 10": [
-        "Maruzensky (Summer)",
-        "Narita Taishin (Original)",
-        "Oguri Cap (Original)",
-        "Gold Ship (Original)"
-    ],
-    "Open 11": [
-        "Maruzensky (Summer)",
-        "Gold Ship (Original)",
-        "Seiun Sky (Original)"
-    ],
-    "Open 12": [
-        "Mayano Top Gun (Original)",
-        "Narita Taishin (Original)",
-        "Grass Wonder (Fantasy)"
-    ],
-    "Open 13": [
-        "Maruzensky (Summer)",
-        "Smart Falcon (Original)",
-        "El Condor Pasa (Original)",
-        "Silence Suzuka (Original)"
-    ],
-    "Open 14": [
-        "Maruzensky (Summer)",
-        "Narita Taishin (Original)",
-        "Gold Ship (Original)"
-    ],
-    "Open 15": [
-        "El Condor Pasa (Fantasy)",
-        "Maruzensky (Original)",
-        "Oguri Cap (Original)",
-        "Smart Falcon (Original)",
-        "Agnes Digital (Original)"
-    ],
-    "Open 16": [
-        "Mejiro McQueen (Anime)",
-        "Meisho Doto (Original)",
-        "Gold Ship (Original)",
-        "Narita Taishin (Original)",
-        "Seiun Sky (Original)",
-        "Mayano Top Gun (Original)",
-        "Maruzensky (Summer)"
-    ],
-    "Open 17": [
-        "Narita Taishin (Original)",
-        "Super Creek (Original)",
-        "Maruzensky (Summer)"
-    ],
-    "Open 19": [
-        "Gold Ship (Original)",
-        "Smart Falcon (Original)",
-        "Seiun Sky (Original)"
-    ],
-    "Open 20": [
-        "Silence Suzuka (Original)",
-        "Seiun Sky (Original)",
-        "Taiki Shuttle (Original)"
-    ],
-    "Open 21": [
-        "Maruzensky (Summer)",
-        "Seiun Sky (Original)",
-        "Special Week (Original)"
-    ],
-    "Open 22": [
-        "Gold Ship (Original)",
-        "Narita Taishin (Original)",
-        "Seiun Sky (Original)"
-    ],
-    "Open 23": [
-        "Mayano Top Gun (Wedding)",
-        "Gold Ship (Original)",
-        "Narita Taishin (Original)",
-        "Manhattan Cafe (Original)"
-    ],
-    "Open 24": [
-        "Seiun Sky (Original)",
-        "Gold Ship (Original)",
-        "Maruzensky (Summer)",
-        "Daiwa Scarlet (Original)",
-        "Narita Taishin (Original)"
-    ],
-    "Open 25": [
-        "Meisho Doto (Original)",
-        "Maruzensky (Original)",
-        "Oguri Cap (Original)",
-        "Maruzensky (Summer)",
-        "Silence Suzuka (Original)",
-        "Mejiro Ryan (Original)",
-        "Seiun Sky (Original)"
-    ],
-    "Open 26": [
-        "Taiki Shuttle (Original)",
-        "Vodka (Original)",
-        "Silence Suzuka (Original)",
-        "Daiwa Scarlet (Original)",
-        "Maruzensky (Summer)",
-        "Oguri Cap (Original)",
-        "Seiun Sky (Original)"
-    ],
-    "Open 27": [
-        "Maruzensky (Summer)",
-        "Mayano Top Gun (Original)",
-        "Seiun Sky (Original)",
-        "Silence Suzuka (Original)" 
-    ],
-    "Open 28": [
-        "Vodka (Original)",
-        "Silence Suzuka (Original)",
-        "Oguri Cap (Original)"
-    ],
-	"Open 29": [
-		"Rice Shower (Halloween)",
-		"Maruzensky (Summer)",
-		"Symboli Rudolf (Festival)",
-		"Seiun Sky (Original)",
-		"Silence Suzuka (Original)"
-	],
-	"Open 30": [
-        "Super Creek (Original)",
-        "Seiun Sky (Original)",
-        "Maruzensky (Original)"
-    ],
-	"Unofficial 1": [
-        "Maruzensky (Summer)",
-        "Silence Suzuka (Original)",
-        "Seiun Sky (Original)",
-        "Oguri Cap (Original)"
-    ],
-	"Open 31": [
-        "Gold Ship (Original)",
-        "Seiun Sky (Original)",
-        "Silence Suzuka (Original)",
-        "Narita Taishin (Original)",
-        "El Condor Pasa (Original)"
-    ],
-	"Open 32": [
-        "Mejiro Dober (Original)",
-        "Seiun Sky (Original)",
-        "Maruzensky (Summer)",
-        "Silence Suzuka (Original)"
-    ],
-	
+	tournamentWinners: {
+		"Open 1": ["MetaHayato", "Eva", "Kenesu"],
+		"Open 2": ["MetaHayato", "Frozt", "Pines"],
+		"Open 3": ["Raccoon", "Jans", "Leficious"],
+		"Open 4": ["Leficious", "Honsler", "Sumpfranze"],
+		"Open 5": ["Synocra", "HoriYon", "Kenesu"],
+		"Open 6": ["MetaHayato", "BossNerd", "Sayo"],
+		"Open 7": ["Teki", "Synocra", "Kenesu"],
+		"Open 8": ["MetaHayato", "Pines", "Bresto"],
+		"Open 9": ["HoriYon", "FuHua", "Kenesu"],
+		"Open 10": ["HoriYon", "Roidee", "Spyder"],
+		"Open 11": ["MetaHayato", "Roidee", "FuHua"],
+		"Open 12": ["HoriYon", "Roidee", "KN"],
+		"Open 13": ["FuHua", "Dedratermi", "Teki"],
+		"Open 14": ["MetaHayato", "Kenesu", "Jedmumu"],
+		"Open 15": ["MetaHayato", "Pines", "Rihito"],
+		"Open 16": ["Draguin", "FuHua", "Rihito"],
+		"Open 17": ["MetaHayato", "Teki", "Synocra"],
+		"Open 19": ["Jedmumu", "Rihito", "Merlin"],
+		"Open 20": ["Roidee", "Cefiro", "Minty"],
+		"Open 21": ["HoriYon", "Pines", "Kenesu"],
+		"Open 22": ["Boop", "Sumpfranze", "Eva"],
+		"Open 23": ["Frozt", "Spyder", "Dedratermi"],
+		"Open 24": ["CarmineView", "Cefiro", "Synocra"],
+		"Open 25": ["Jedmumu", "Pines", "Alfheix"],
+		"Open 26": ["Synocra", "Dedratermi", "Eva"],
+		"Open 27": ["Jedmumu", "Alfheix", "Divine"],
+		"Open 28": ["Frozt", "FuHua", "Bunsen"],
+		"Open 29": ["Boop", "FuHua", "MetaHayato"],
+		"Open 30": ["MetaHayato", "Spyder", "FuHua"],
+		"Unofficial 1": ["Sumpfranze", "Kenesu", "Boop"],
+		"Open 31": ["FuHua", "Roidee", "Pines"],
+		"Open 32": ["Pines", "Cefiro", "Keejo"],
+	},
+	tournamentBans: {
+		"Open 7": [
+			"Seiun Sky (Original)", 
+			"Oguri Cap (Original)", 
+			"Maruzensky (Summer)", 
+			"Taiki Shuttle (Original)"
+		],
+		"Open 8": [
+			"Narita Taishin (Original)",
+			"Mayano Top Gun (Original)",
+			"Grass Wonder (Fantasy)"
+		],
+		"Open 9": [
+			"Oguri Cap (Original)",
+			"Sakura Bakushin O (Original)",
+			"Taiki Shuttle (Original)"
+		],
+		"Open 10": [
+			"Maruzensky (Summer)",
+			"Narita Taishin (Original)",
+			"Oguri Cap (Original)",
+			"Gold Ship (Original)"
+		],
+		"Open 11": [
+			"Maruzensky (Summer)",
+			"Gold Ship (Original)",
+			"Seiun Sky (Original)"
+		],
+		"Open 12": [
+			"Mayano Top Gun (Original)",
+			"Narita Taishin (Original)",
+			"Grass Wonder (Fantasy)"
+		],
+		"Open 13": [
+			"Maruzensky (Summer)",
+			"Smart Falcon (Original)",
+			"El Condor Pasa (Original)",
+			"Silence Suzuka (Original)"
+		],
+		"Open 14": [
+			"Maruzensky (Summer)",
+			"Narita Taishin (Original)",
+			"Gold Ship (Original)"
+		],
+		"Open 15": [
+			"El Condor Pasa (Fantasy)",
+			"Maruzensky (Original)",
+			"Oguri Cap (Original)",
+			"Smart Falcon (Original)",
+			"Agnes Digital (Original)"
+		],
+		"Open 16": [
+			"Mejiro McQueen (Anime)",
+			"Meisho Doto (Original)",
+			"Gold Ship (Original)",
+			"Narita Taishin (Original)",
+			"Seiun Sky (Original)",
+			"Mayano Top Gun (Original)",
+			"Maruzensky (Summer)"
+		],
+		"Open 17": [
+			"Narita Taishin (Original)",
+			"Super Creek (Original)",
+			"Maruzensky (Summer)"
+		],
+		"Open 19": [
+			"Gold Ship (Original)",
+			"Smart Falcon (Original)",
+			"Seiun Sky (Original)"
+		],
+		"Open 20": [
+			"Silence Suzuka (Original)",
+			"Seiun Sky (Original)",
+			"Taiki Shuttle (Original)"
+		],
+		"Open 21": [
+			"Maruzensky (Summer)",
+			"Seiun Sky (Original)",
+			"Special Week (Original)"
+		],
+		"Open 22": [
+			"Gold Ship (Original)",
+			"Narita Taishin (Original)",
+			"Seiun Sky (Original)"
+		],
+		"Open 23": [
+			"Mayano Top Gun (Wedding)",
+			"Gold Ship (Original)",
+			"Narita Taishin (Original)",
+			"Manhattan Cafe (Original)"
+		],
+		"Open 24": [
+			"Seiun Sky (Original)",
+			"Gold Ship (Original)",
+			"Maruzensky (Summer)",
+			"Daiwa Scarlet (Original)",
+			"Narita Taishin (Original)"
+		],
+		"Open 25": [
+			"Meisho Doto (Original)",
+			"Maruzensky (Original)",
+			"Oguri Cap (Original)",
+			"Maruzensky (Summer)",
+			"Silence Suzuka (Original)",
+			"Mejiro Ryan (Original)",
+			"Seiun Sky (Original)"
+		],
+		"Open 26": [
+			"Taiki Shuttle (Original)",
+			"Vodka (Original)",
+			"Silence Suzuka (Original)",
+			"Daiwa Scarlet (Original)",
+			"Maruzensky (Summer)",
+			"Oguri Cap (Original)",
+			"Seiun Sky (Original)"
+		],
+		"Open 27": [
+			"Maruzensky (Summer)",
+			"Mayano Top Gun (Original)",
+			"Seiun Sky (Original)",
+			"Silence Suzuka (Original)" 
+		],
+		"Open 28": [
+			"Vodka (Original)",
+			"Silence Suzuka (Original)",
+			"Oguri Cap (Original)"
+		],
+		"Open 29": [
+			"Rice Shower (Halloween)",
+			"Maruzensky (Summer)",
+			"Symboli Rudolf (Festival)",
+			"Seiun Sky (Original)",
+			"Silence Suzuka (Original)"
+		],
+		"Open 30": [
+			"Super Creek (Original)",
+			"Seiun Sky (Original)",
+			"Maruzensky (Original)"
+		],
+		"Unofficial 1": [
+			"Maruzensky (Summer)",
+			"Silence Suzuka (Original)",
+			"Seiun Sky (Original)",
+			"Oguri Cap (Original)"
+		],
+		"Open 31": [
+			"Gold Ship (Original)",
+			"Seiun Sky (Original)",
+			"Silence Suzuka (Original)",
+			"Narita Taishin (Original)",
+			"El Condor Pasa (Original)"
+		],
+		"Open 32": [
+			"Mejiro Dober (Original)",
+			"Seiun Sky (Original)",
+			"Maruzensky (Summer)",
+			"Silence Suzuka (Original)"
+		],
+		
+	},
+
+	tournamentRaceResults: {
+		// Open 1
+		"Open 1": {
+			"Finals": [
+				// Race 1
+				["Cefiro", "MetaHayato", "Spyder", "Leficious", "Eva", "Kenesu", "Pines", "Frozt", "Raccoon"],
+				// Race 2
+				["MetaHayato", "Leficious", "Pines", "Frozt", "Spyder", "Cefiro", "Eva", "Raccoon", "Kenesu"],
+				// Race 3
+				["Leficious", "Eva", "MetaHayato", "Cefiro", "Kenesu", "Pines", "Spyder", "Frozt", "Raccoon"],
+				// Race 4
+				["MetaHayato", "Leficious", "Kenesu", "Spyder", "Cefiro", "Pines", "Eva", "Raccoon", "Frozt"],
+				// Race 5
+				["Leficious", "MetaHayato", "Cefiro", "Eva", "Spyder", "Kenesu", "Frozt", "Raccoon", "Pines"]
+			]
+		},
+		// Open 2
+		"Open 2": {
+			"Finals": [
+				// Race 1
+				["Leficious", "MetaHayato", "Pines", "Raccoon", "Spyder", "Giga", "Eva", "Kenesu", "Frozt"],
+				// Race 2
+				["MetaHayato", "Spyder", "Raccoon", "Frozt", "Pines", "Kenesu", "Leficious", "Eva", "Giga"],
+				// Race 3
+				["Pines", "Frozt", "Raccoon", "Leficious", "Giga", "MetaHayato", "Eva", "Spyder", "Kenesu"],
+				// Race 4
+				["Raccoon", "Giga", "Pines", "MetaHayato", "Spyder", "Kenesu", "Leficious", "Eva", "Frozt"],
+				// Race 5
+				["Raccoon", "Pines", "Giga", "Eva", "MetaHayato", "Spyder", "Leficious", "Kenesu", "Frozt"]
+			]
+		},
+	   // Open 3
+		"Open 3": {
+			"Finals": [
+				// Race 1
+				["Raccoon", "Pines", "Jans", "Koto", "Frozt", "Synocra", "Leficious", "MetaHayato", "Teki"],
+				// Race 2
+				["Raccoon", "Teki", "Synocra", "Leficious", "Jans", "MetaHayato", "Koto", "Pines", "Frozt"],
+				// Race 3
+				["Teki", "Pines", "Jans", "Synocra", "Raccoon", "Leficious", "MetaHayato", "Frozt", "Koto"],
+				// Race 4
+				["Teki", "Pines", "Jans", "Synocra", "Leficious", "MetaHayato", "Frozt", "Koto", "Raccoon"],
+				// Race 5
+				["Leficious", "Jans", "Teki", "Synocra", "Raccoon", "MetaHayato", "Pines", "Frozt", "Koto"]
+			]
+		},
+		// Open 4
+		"Open 4": {
+			"Finals": [
+				// Race 1
+				["Raccoon", "Sumpfranze", "Divine", "Synocra", "MetaHayato", "Leficious", "Spyder", "Sayo", "Eva", "Buster", "Honsler", "Kenesu"],
+				// Race 2
+				["Raccoon", "Sumpfranze", "Leficious", "Divine", "Buster", "Spyder", "Honsler", "Sayo", "MetaHayato", "Eva", "Synocra", "Kenesu"],
+				// Race 3
+				["Honsler", "Sumpfranze", "MetaHayato", "Raccoon", "Sayo", "Divine", "Buster", "Synocra", "Leficious", "Eva", "Spyder", "Kenesu"],
+				// Race 4
+				["Raccoon", "Buster", "MetaHayato", "Sumpfranze", "Eva", "Synocra", "Honsler", "Sayo", "Leficious", "Spyder", "Divine", "Kenesu"],
+				// Race 5
+				["Leficious", "Honsler", "Sayo", "Synocra", "Sumpfranze", "Buster", "Raccoon", "MetaHayato", "Spyder", "Divine", "Eva", "Kenesu"]
+			]
+		},
+		// Open 5
+		"Open 5": {
+			"Finals": [
+				// Race 1
+				["Cefiro", "HoriYon", "Leficious", "Pines", "Kenesu", "Eva", "Raccoon", "Frozt", "Spyder", "FuHua", "MetaHayato", "Synocra"],
+				// Race 2
+				["HoriYon", "Kenesu", "Cefiro", "Leficious", "Frozt", "Eva", "MetaHayato", "Pines", "Spyder", "FuHua", "Raccoon", "Synocra"],
+				// Race 3
+				["HoriYon", "Leficious", "Pines", "Kenesu", "Frozt", "Spyder", "FuHua", "Eva", "Cefiro", "Raccoon", "MetaHayato", "Synocra"],
+				// Race 4
+				["Kenesu", "MetaHayato", "HoriYon", "Frozt", "Leficious", "Eva", "Spyder", "Pines", "Cefiro", "Raccoon", "FuHua", "Synocra"],
+				// Race 5
+				["Kenesu", "Cefiro", "Pines", "MetaHayato", "Frozt", "Eva", "Spyder", "Raccoon", "HoriYon", "Leficious", "FuHua", "Synocra"]
+			]
+		},
+		// Open 6
+		"Open 6": {
+			"Finals": [
+				// Race 1
+				["MetaHayato", "Raccoon", "Kenesu", "Teki", "BossNerd", "Leficious", "Cefiro", "HoriYon", "Buster", "Eva", "Sayo", "Synocra", "Frozt", "Rihito", "FuHua"],
+				// Race 2
+				["MetaHayato", "Teki", "Raccoon", "Eva", "Cefiro", "HoriYon", "Kenesu", "Sayo", "Leficious", "Synocra", "FuHua", "Frozt", "Rihito", "Buster", "BossNerd"],
+				// Race 3
+				["HoriYon", "Leficious", "Teki", "Kenesu", "MetaHayato", "BossNerd", "FuHua", "Raccoon", "Rihito", "Cefiro", "Buster", "Eva", "Sayo", "Synocra", "Frozt"],
+				// Race 4
+				["MetaHayato", "Raccoon", "BossNerd", "Teki", "HoriYon", "Cefiro", "Synocra", "Buster", "Rihito", "Leficious", "Eva", "FuHua", "Sayo", "Frozt", "Kenesu"],
+				// Race 5
+				["MetaHayato", "Raccoon", "Teki", "BossNerd", "FuHua", "HoriYon", "Leficious", "Synocra", "Buster", "Eva", "Frozt", "Sayo", "Rihito", "Kenesu", "Cefiro"]
+			]
+		},
+		// Open 7
+		"Open 7": {
+			"Finals": [
+				// Race 1
+				["MetaHayato", "Synocra", "Kenesu", "Teki", "Giga", "Divine", "Raccoon", "Cefiro", "HoriYon", "Eva", "Spyder", "Pines"],
+				// Race 2
+				["Cefiro", "Giga", "HoriYon", "Synocra", "MetaHayato", "Kenesu", "Teki", "Spyder", "Raccoon", "Pines", "Divine", "Eva"],
+				// Race 3
+				["Spyder", "Cefiro", "HoriYon", "Giga", "Teki", "Kenesu", "Synocra", "Eva", "Pines", "Divine", "Raccoon", "MetaHayato"],
+				// Race 4
+				["Raccoon", "Giga", "Teki", "MetaHayato", "Kenesu", "Cefiro", "HoriYon", "Synocra", "Spyder", "Divine", "Pines", "Eva"],
+				// Race 5
+				["Raccoon", "Giga", "Eva", "MetaHayato", "Kenesu", "Cefiro", "Synocra", "Spyder", "Teki", "Pines", "HoriYon", "Divine"]
+			]
+		},
+		// Open 8
+		"Open 8": {
+			"Finals": [
+				// Race 1
+				["MetaHayato", "FuHua", "HoriYon", "Raccoon", "Pines", "Frozt", "Cefiro", "Kenesu", "Eva", "Bresto", "Teki", "Divine"],
+				// Race 2
+				["Pines", "MetaHayato", "Raccoon", "Teki", "HoriYon", "FuHua", "Kenesu", "Cefiro", "Bresto", "Eva", "Frozt", "Divine"],
+				// Race 3
+				["MetaHayato", "HoriYon", "Kenesu", "Raccoon", "Eva", "Cefiro", "Pines", "Teki", "Bresto", "Frozt", "FuHua", "Divine"],
+				// Race 4
+				["HoriYon", "FuHua", "Raccoon", "MetaHayato", "Kenesu", "Cefiro", "Pines", "Eva", "Bresto", "Teki", "Frozt", "Divine"],
+				// Race 5
+				["Cefiro", "HoriYon", "Raccoon", "Pines", "FuHua", "Eva", "MetaHayato", "Teki", "Frozt", "Kenesu", "Bresto", "Divine"]
+			]
+		},
+		// Open 9
+		"Open 9": {
+			"Finals": [
+				// Race 1
+				["Pines", "MetaHayato", "Teki", "Giga", "Divine", "FuHua", "Kenesu", "Raccoon", "HoriYon"],
+				// Race 2
+				["Divine", "Teki", "HoriYon", "MetaHayato", "FuHua", "Kenesu", "Pines", "Giga", "Raccoon"],
+				// Race 3
+				["HoriYon", "Kenesu", "Teki", "Divine", "MetaHayato", "FuHua", "Raccoon", "Giga", "Pines"],
+				// Race 4
+				["Kenesu", "Giga", "Divine", "Teki", "MetaHayato", "Pines", "HoriYon", "Raccoon", "FuHua"],
+				// Race 5
+				["HoriYon", "FuHua", "MetaHayato", "Teki", "Kenesu", "Pines", "Divine", "Giga", "Raccoon"]
+			]
+		},
+		// Open 10
+		"Open 10": {
+			"Finals": [
+				// Race 1
+				["Pines", "Roidee", "Rihito", "Sumpfranze", "HoriYon", "Divine", "Cefiro", "MetaHayato", "KN", "Raccoon", "Kenesu", "FuHua", "Giga", "Spyder", "Teki"],
+				// Race 2
+				["Cefiro", "HoriYon", "Sumpfranze", "Pines", "Rihito", "Spyder", "Roidee", "Teki", "FuHua", "MetaHayato", "KN", "Kenesu", "Giga", "Raccoon", "Divine"],
+				// Race 3
+				["Pines", "Rihito", "Divine", "Roidee", "HoriYon", "MetaHayato", "Cefiro", "Giga", "Raccoon", "Sumpfranze", "Kenesu", "Spyder", "Teki", "FuHua", "KN"],
+				// Race 4
+				["Giga", "Divine", "Sumpfranze", "Cefiro", "HoriYon", "Roidee", "FuHua", "MetaHayato", "Pines", "Kenesu", "KN", "Raccoon", "Rihito", "Spyder", "Teki"],
+				// Race 5
+				["HoriYon", "Cefiro", "Roidee", "Raccoon", "Giga", "MetaHayato", "Spyder", "Pines", "Rihito", "FuHua", "Sumpfranze", "Kenesu", "KN", "Divine", "Teki"]
+			]
+		},
+		// Open 11
+		"Open 11": {
+			"Finals": [
+				// Race 1
+				["Cefiro", "HoriYon", "MetaHayato", "Mudflap", "Rihito", "Roidee", "Raccoon", "Sumpfranze", "Kenesu", "KN", "Pines", "Teki", "Eva", "FuHua", "Divine"],
+				// Race 2
+				["Cefiro", "MetaHayato", "Sumpfranze", "Pines", "Eva", "Roidee", "Teki", "KN", "Kenesu", "HoriYon", "Raccoon", "Mudflap", "Rihito", "Divine", "FuHua"],
+				// Race 3
+				["Roidee", "Cefiro", "Mudflap", "Raccoon", "HoriYon", "Teki", "Divine", "MetaHayato", "KN", "Eva", "Sumpfranze", "Pines", "Rihito", "Kenesu", "FuHua"],
+				// Race 4
+				["MetaHayato", "Cefiro", "Pines", "Roidee", "Mudflap", "HoriYon", "Raccoon", "Rihito", "Divine", "Teki", "Sumpfranze", "KN", "Eva", "Kenesu", "FuHua"],
+				// Race 5
+				["MetaHayato", "Cefiro", "Mudflap", "Eva", "KN", "HoriYon", "Rihito", "Raccoon", "Roidee", "Sumpfranze", "Pines", "Teki", "Kenesu", "Divine", "FuHua"]
+			]
+		},
+		// Open 12
+		"Open 12": {
+			"Group A": [
+				// Race 1
+				["Cefiro", "Synocra", "Frozt", "Dedratermi", "Spyder", "Eva", "Rihito", "Vocaloid", "MetaHayato"],
+				// Race 2
+				["Cefiro", "Dedratermi", "Synocra", "Frozt", "MetaHayato", "Rihito", "Vocaloid", "Spyder", "Eva"],
+				// Race 3
+				["Spyder", "Synocra", "Dedratermi", "Cefiro", "Frozt", "Rihito", "MetaHayato", "Eva", "Vocaloid"],
+				// Race 4
+				["Dedratermi", "Spyder", "Synocra", "MetaHayato", "Cefiro", "Rihito", "Eva", "Vocaloid", "Frozt"],
+				// Race 5
+				["Dedratermi", "Synocra", "Cefiro", "MetaHayato", "Eva", "Rihito", "Spyder", "Vocaloid", "Frozt"]
+			],
+			"Group B": [
+				// Race 1
+				["Roidee", "Pines", "Jedmumu", "HoriYon", "KN", "Raccoon", "Bresto", "Kenesu", "FuHua"],
+				// Race 2
+				["FuHua", "Roidee", "HoriYon", "Pines", "Raccoon", "Jedmumu", "KN", "Kenesu", "Bresto"],
+				// Race 3
+				["KN", "Pines", "FuHua", "HoriYon", "Roidee", "Kenesu", "Bresto", "Raccoon", "Jedmumu"],
+				// Race 4
+				["Roidee", "Pines", "HoriYon", "Bresto", "Raccoon", "Jedmumu", "Kenesu", "KN", "FuHua"],
+				// Race 5
+				["Roidee", "FuHua", "KN", "Pines", "Jedmumu", "HoriYon", "Bresto", "Kenesu", "Raccoon"]
+			],
+			"Finals": [
+				// Race 1
+				["Spyder", "HoriYon", "Dedratermi", "Cefiro", "Roidee", "Synocra", "KN", "Vocaloid", "Frozt"],
+				// Race 2
+				["KN", "Cefiro", "Spyder", "Dedratermi", "Frozt", "Synocra", "HoriYon", "Roidee", "Vocaloid"],
+				// Race 3
+				["Cefiro", "KN", "Roidee", "HoriYon", "Dedratermi", "Spyder", "Synocra", "Frozt", "Vocaloid"],
+				// Race 4
+				["Spyder", "Dedratermi", "Roidee", "Synocra", "Cefiro", "KN", "Frozt", "Vocaloid", "HoriYon"],
+				// Race 5
+				["Cefiro", "Roidee", "Dedratermi", "HoriYon", "KN", "Synocra", "Frozt", "Spyder", "Vocaloid"]
+			]
+		},
+		// Open 13
+		"Open 13": {
+			"Finals": [
+				// Race 1
+				["Teki", "FuHua", "Dedratermi", "Raccoon", "Jedmumu", "Frozt", "Sumpfranze", "HoriYon", "MetaHayato", "Draguin", "Cefiro", "Mudflap", "Spyder", "Kenesu", "Rihito"],
+				// Race 2
+				["Jedmumu", "Teki", "Sumpfranze", "Dedratermi", "Rihito", "Draguin", "FuHua", "MetaHayato", "Raccoon", "Kenesu", "Frozt", "Cefiro", "Mudflap", "HoriYon", "Spyder"],
+				// Race 3
+				["Sumpfranze", "Teki", "Jedmumu", "Kenesu", "MetaHayato", "Raccoon", "HoriYon", "Rihito", "Cefiro", "Mudflap", "Frozt", "Dedratermi", "FuHua", "Draguin", "Spyder"],
+				// Race 4
+				["FuHua", "Dedratermi", "Kenesu", "Raccoon", "Teki", "Draguin", "Jedmumu", "HoriYon", "Mudflap", "Sumpfranze", "MetaHayato", "Spyder", "Frozt", "Cefiro", "Rihito"],
+				// Race 5
+				["Dedratermi", "Kenesu", "Sumpfranze", "Mudflap", "Teki", "Rihito", "Frozt", "HoriYon", "Raccoon", "Draguin", "Spyder", "MetaHayato", "FuHua", "Cefiro", "Jedmumu"]
+			]
+		},
+		// Open 14
+		"Open 14": {
+			"Finals": [
+				// Race 1
+				["Jedmumu", "Dedratermi", "FuHua", "Pines", "Synocra", "HoriYon", "Raccoon", "MetaHayato", "Eva", "Kenesu", "Spyder", "NarrativeCrocodiles"],
+				// Race 2
+				["Dedratermi", "Pines", "Jedmumu", "Raccoon", "NarrativeCrocodiles", "FuHua", "MetaHayato", "Synocra", "HoriYon", "Kenesu", "Spyder", "Eva"],
+				// Race 3
+				["MetaHayato", "Spyder", "HoriYon", "FuHua", "Raccoon", "Pines", "Eva", "NarrativeCrocodiles", "Kenesu", "Dedratermi", "Jedmumu", "Synocra"],
+				// Race 4
+				["Jedmumu", "Dedratermi", "Raccoon", "Kenesu", "Spyder", "Eva", "Pines", "Synocra", "MetaHayato", "HoriYon", "FuHua", "NarrativeCrocodiles"],
+				// Race 5
+				["MetaHayato", "Raccoon", "Dedratermi", "Synocra", "Pines", "Jedmumu", "FuHua", "Spyder", "HoriYon", "NarrativeCrocodiles", "Kenesu", "Eva"]
+			]
+		},
+		// Open 15
+		"Open 15": {
+			"Group A": [
+				// Race 1
+				["Pines", "HoriYon", "Eva", "Jedmumu", "MetaHayato", "Synocra", "Spyder", "Rihito", "Alfheix"],
+				// Race 2
+				["Eva", "MetaHayato", "Synocra", "Jedmumu", "Rihito", "HoriYon", "Spyder", "Alfheix", "Pines"],
+				// Race 3
+				["MetaHayato", "Pines", "Rihito", "HoriYon", "Jedmumu", "Alfheix", "Spyder", "Eva", "Synocra"],
+				// Race 4
+				["Jedmumu", "MetaHayato", "Pines", "Eva", "Rihito", "Alfheix", "Spyder", "Synocra", "HoriYon"],
+				// Race 5
+				["Pines", "MetaHayato", "HoriYon", "Jedmumu", "Synocra", "Alfheix", "Eva", "Spyder", "Rihito"]
+			],
+			"Group B": [
+				// Race 1
+				["Dedratermi", "Raccoon", "FuHua", "NarrativeCrocodiles", "MrTurtlez", "Merlin", "Teki", "Kenesu", "Frozt"],
+				// Race 2
+				["Dedratermi", "Raccoon", "FuHua", "Teki", "Kenesu", "NarrativeCrocodiles", "MrTurtlez", "Merlin", "Frozt"],
+				// Race 3
+				["Dedratermi", "Raccoon", "NarrativeCrocodiles", "Kenesu", "Merlin", "Teki", "MrTurtlez", "FuHua", "Frozt"],
+				// Race 4
+				["Dedratermi", "Kenesu", "FuHua", "Raccoon", "Merlin", "Teki", "NarrativeCrocodiles", "MrTurtlez", "Frozt"],
+				// Race 5
+				["Dedratermi", "Raccoon", "Kenesu", "FuHua", "NarrativeCrocodiles", "Teki", "MrTurtlez", "Merlin", "Frozt"]
+			],
+			"Finals": [
+				// Race 1
+				["Dedratermi", "Pines", "MetaHayato", "Raccoon", "Rihito", "NarrativeCrocodiles", "Teki", "Kenesu", "Frozt"],
+				// Race 2
+				["Pines", "MetaHayato", "Dedratermi", "Rihito", "NarrativeCrocodiles", "Kenesu", "Raccoon", "Teki", "Frozt"],
+				// Race 3
+				["Dedratermi", "Pines", "Rihito", "Kenesu", "MetaHayato", "Raccoon", "NarrativeCrocodiles", "Teki", "Frozt"],
+				// Race 4
+				["Dedratermi", "Rihito", "Raccoon", "Pines", "NarrativeCrocodiles", "Kenesu", "Teki", "MetaHayato", "Frozt"],
+				// Race 5
+				["MetaHayato", "Raccoon", "Rihito", "Kenesu", "Pines", "Dedratermi", "NarrativeCrocodiles", "Teki", "Frozt"]
+			]
+		},
+		// Open 16
+		"Open 16": {
+			"Group A": [
+				// Race 1
+				["Merlin", "Alfheix", "MetaHayato", "Cefiro", "Dedratermi", "Minty", "Sumpfranze", "Frozt", "Pines"],
+				// Race 2
+				["Dedratermi", "Merlin", "Frozt", "MetaHayato", "Minty", "Sumpfranze", "Alfheix", "Pines", "Cefiro"],
+				// Race 3
+				["Sumpfranze", "Merlin", "Dedratermi", "MetaHayato", "Cefiro", "Minty", "Alfheix", "Pines", "Frozt"],
+				// Race 4
+				["Alfheix", "Frozt", "Cefiro", "Dedratermi", "Merlin", "MetaHayato", "Minty", "Pines", "Sumpfranze"],
+				// Race 5
+				["Dedratermi", "Merlin", "Cefiro", "Alfheix", "Sumpfranze", "Minty", "Frozt", "MetaHayato", "Pines"]
+			],
+			"Group B": [
+				// Race 1
+				["HoriYon", "Draguin", "Rihito", "FuHua", "Kenesu", "Eva", "Synocra", "Jedmumu", "Raccoon"],
+				// Race 2
+				["Draguin", "HoriYon", "Rihito", "FuHua", "Jedmumu", "Kenesu", "Raccoon", "Synocra", "Eva"],
+				// Race 3
+				["Draguin", "HoriYon", "FuHua", "Rihito", "Raccoon", "Synocra", "Eva", "Jedmumu", "Kenesu"],
+				// Race 4
+				["Draguin", "Rihito", "FuHua", "Raccoon", "HoriYon", "Kenesu", "Eva", "Synocra", "Jedmumu"],
+				// Race 5
+				["Jedmumu", "Draguin", "Eva", "Raccoon", "Synocra", "HoriYon", "Kenesu", "Rihito", "FuHua"]
+			],
+			"Finals": [
+				// Race 1
+				["HoriYon", "FuHua", "Merlin", "Dedratermi", "Rihito", "Frozt", "Kenesu", "Eva", "Draguin"],
+				// Race 2
+				["Dedratermi", "HoriYon", "Rihito", "FuHua", "Frozt", "Draguin", "Merlin", "Kenesu", "Eva"],
+				// Race 3
+				["Draguin", "Rihito", "Merlin", "Dedratermi", "Frozt", "Eva", "Kenesu", "FuHua", "HoriYon"],
+				// Race 4
+				["HoriYon", "Dedratermi", "Rihito", "Draguin", "Merlin", "Kenesu", "Frozt", "Eva", "FuHua"],
+				// Race 5
+				["HoriYon", "Merlin", "Rihito", "Dedratermi", "Frozt", "FuHua", "Eva", "Draguin", "Kenesu"]
+			]
+		},
+		// Open 17
+		"Open 17": {
+			"Finals": [
+				// Race 1 (Winner: MetaHayato)
+				["MetaHayato", "Synocra", "Sumpfranze", "Teki", "Jedmumu", "Rihito", "Raccoon", "HoriYon", "Alfheix", "Pines"],
+				
+				// Race 2 (Winner: Synocra)
+				["Synocra", "Frozt", "HoriYon", "MetaHayato", "Jedmumu", "Pines", "Kenesu", "Cefiro", "Teki", "Raccoon"],
+				
+				// Race 3 (Winner: Cefiro)
+				["Cefiro", "MetaHayato", "Kenesu", "Frozt", "Rihito", "HoriYon", "Synocra", "Pines", "Eva", "Alfheix"],
+				
+				// Race 4 (Winner: Pines)
+				["Pines", "Cefiro", "Rihito", "Sumpfranze", "Kenesu", "Teki", "Synocra", "MetaHayato", "FuHua", "Frozt"],
+				
+				// Race 5 (Winner: Jedmumu)
+				["Jedmumu", "Pines", "Synocra", "Alfheix", "Cefiro", "Frozt", "Kenesu", "Sumpfranze", "Rihito", "HoriYon"]
+			]
+		},
+		
+		// Open 18 (Data not provided yet)
+		"Open 18": { "Finals": [] },
+		
+		// Open 19
+		"Open 19": {
+			"Group A": [
+				// Race 1
+				["Sumpfranze", "Alfheix", "Viistar", "HoriYon", "NarrativeCrocodiles", "Spyder", "FuHua", "Raccoon", "Divine"],
+				// Race 2
+				["HoriYon", "Sumpfranze", "Alfheix", "FuHua", "Spyder", "Viistar", "Raccoon", "Divine", "NarrativeCrocodiles"],
+				// Race 3
+				["HoriYon", "Alfheix", "Divine", "Viistar", "Spyder", "NarrativeCrocodiles", "Sumpfranze", "FuHua", "Raccoon"],
+				// Race 4
+				["Alfheix", "Sumpfranze", "Divine", "Spyder", "HoriYon", "Raccoon", "FuHua", "Viistar", "NarrativeCrocodiles"],
+				// Race 5
+				["HoriYon", "Alfheix", "Divine", "Sumpfranze", "Raccoon", "FuHua", "Spyder", "NarrativeCrocodiles", "Viistar"]
+			],
+			"Group B": [
+				// Race 1
+				["Jedmumu", "Pines", "Merlin", "Boop", "Minty", "Dedratermi", "Rihito", "Kenesu", "Cefiro"],
+				// Race 2
+				["Boop", "Rihito", "Minty", "Kenesu", "Pines", "Jedmumu", "Dedratermi", "Merlin", "Cefiro"],
+				// Race 3
+				["Jedmumu", "Pines", "Boop", "Rihito", "Cefiro", "Merlin", "Dedratermi", "Minty", "Kenesu"],
+				// Race 4
+				["Jedmumu", "Rihito", "Boop", "Pines", "Kenesu", "Cefiro", "Minty", "Merlin", "Dedratermi"],
+				// Race 5
+				["Jedmumu", "Pines", "Rihito", "Cefiro", "Boop", "Kenesu", "Merlin", "Minty", "Dedratermi"]
+			],
+			"Finals": [
+				// Race 1
+				["HoriYon", "Merlin", "Jedmumu", "Alfheix", "Rihito", "Divine", "FuHua", "Sumpfranze", "NarrativeCrocodiles"],
+				// Race 2
+				["HoriYon", "Rihito", "Sumpfranze", "Alfheix", "Merlin", "FuHua", "Jedmumu", "Divine", "NarrativeCrocodiles"],
+				// Race 3
+				["HoriYon", "Rihito", "Alfheix", "Jedmumu", "Merlin", "Sumpfranze", "Divine", "FuHua", "NarrativeCrocodiles"],
+				// Race 4
+				["Sumpfranze", "Jedmumu", "Rihito", "Alfheix", "Merlin", "FuHua", "Divine", "HoriYon", "NarrativeCrocodiles"],
+				// Race 5
+				["Jedmumu", "HoriYon", "Rihito", "Sumpfranze", "Alfheix", "FuHua", "Merlin", "NarrativeCrocodiles", "Divine"]
+			]
+		},
+
+		// Open 20
+		"Open 20": {
+			"Finals": [
+				// Race 1
+				["Cefiro", "Spyder", "Lain", "FuHua", "Roidee", "Raccoon", "Pines", "Sumpfranze", "Dedratermi", "Minty", "Jedmumu", "Synocra"],
+				// Race 2
+				["Raccoon", "Roidee", "Dedratermi", "Spyder", "Sumpfranze", "FuHua", "Lain", "Cefiro", "Pines", "Minty", "Jedmumu", "Synocra"],
+				// Race 3
+				["Dedratermi", "Sumpfranze", "Roidee", "Raccoon", "Cefiro", "FuHua", "Spyder", "Pines", "Lain", "Minty", "Jedmumu", "Synocra"],
+				// Race 4
+				["Raccoon", "Roidee", "Dedratermi", "Lain", "Cefiro", "FuHua", "Pines", "Sumpfranze", "Spyder", "Minty", "Jedmumu", "Synocra"],
+				// Race 5
+				["Spyder", "Roidee", "Cefiro", "Sumpfranze", "Raccoon", "FuHua", "Lain", "Dedratermi", "Pines", "Minty", "Jedmumu", "Synocra"]
+			]
+		},
+
+		// Open 21
+		"Open 21": {
+			"Finals": [
+				// Race 1
+				["Synocra", "HoriYon", "Pines", "Lain", "Raccoon", "Boop", "Frozt", "Dedratermi", "Jedmumu", "FuHua", "Eva", "Roidee", "Mysteri", "Kenesu", "Spyder"],
+				// Race 2
+				["Lain", "FuHua", "Synocra", "HoriYon", "Kenesu", "Frozt", "Pines", "Boop", "Eva", "Raccoon", "Mysteri", "Jedmumu", "Dedratermi", "Roidee", "Spyder"],
+				// Race 3
+				["HoriYon", "Synocra", "Lain", "Roidee", "FuHua", "Boop", "Jedmumu", "Pines", "Dedratermi", "Mysteri", "Frozt", "Raccoon", "Eva", "Kenesu", "Spyder"],
+				// Race 4
+				["HoriYon", "Jedmumu", "FuHua", "Lain", "Boop", "Raccoon", "Dedratermi", "Eva", "Kenesu", "Pines", "Frozt", "Synocra", "Mysteri", "Roidee", "Spyder"],
+				// Race 5
+				["Frozt", "Lain", "Boop", "Roidee", "HoriYon", "Raccoon", "Jedmumu", "Synocra", "Pines", "Dedratermi", "Mysteri", "Eva", "FuHua", "Kenesu", "Spyder"]
+			]
+		},
+
+		// Open 22
+		"Open 22": {
+			"Finals": [
+				// Race 1
+				["Alfheix", "FuHua", "Raccoon", "Boop", "Sumpfranze", "Dedratermi", "MrTurtlez", "HoriYon", "Kenesu", "Synocra", "Spyder", "Eva"],
+				// Race 2
+				["Sumpfranze", "Dedratermi", "Raccoon", "Eva", "Boop", "HoriYon", "Synocra", "Kenesu", "FuHua", "Spyder", "Alfheix", "MrTurtlez"],
+				// Race 3
+				["Boop", "Raccoon", "FuHua", "Sumpfranze", "HoriYon", "Kenesu", "Dedratermi", "Alfheix", "MrTurtlez", "Synocra", "Spyder", "Eva"],
+				// Race 4
+				["Raccoon", "Boop", "Kenesu", "Sumpfranze", "FuHua", "Dedratermi", "Spyder", "Eva", "MrTurtlez", "Alfheix", "HoriYon", "Synocra"],
+				// Race 5
+				["Alfheix", "Boop", "Kenesu", "Sumpfranze", "FuHua", "Dedratermi", "Spyder", "Eva", "Synocra", "Raccoon", "MrTurtlez", "HoriYon"]
+			]
+		},
+
+		// Open 23
+		"Open 23": {
+			"Group A": [
+				// Race 1
+				["Roidee", "Bresto", "Eva", "Kenesu", "Boop", "Sumpfranze", "KN", "Pines", "MrTurtlez"],
+				// Race 2
+				["Roidee", "Boop", "Sumpfranze", "Eva", "KN", "Pines", "Kenesu", "Bresto", "MrTurtlez"],
+				// Race 3
+				["Eva", "Roidee", "Boop", "Sumpfranze", "KN", "MrTurtlez", "Kenesu", "Bresto", "Pines"],
+				// Race 4
+				["Roidee", "Pines", "Sumpfranze", "Eva", "Kenesu", "Boop", "KN", "Bresto", "MrTurtlez"],
+				// Race 5
+				["Sumpfranze", "Roidee", "Boop", "KN", "Eva", "Pines", "MrTurtlez", "Bresto", "Kenesu"]
+			],
+			"Group B": [
+				// Race 1
+				["Synocra", "Dedratermi", "Jedmumu", "Frozt", "Raccoon", "Alfheix", "Spyder", "FuHua", "HoriYon"],
+				// Race 2
+				["Raccoon", "Jedmumu", "Dedratermi", "Spyder", "Frozt", "FuHua", "HoriYon", "Alfheix", "Synocra"],
+				// Race 3
+				["Frozt", "Raccoon", "Synocra", "Spyder", "Dedratermi", "Jedmumu", "Alfheix", "HoriYon", "FuHua"],
+				// Race 4
+				["Synocra", "Frozt", "Dedratermi", "Spyder", "FuHua", "Jedmumu", "Raccoon", "HoriYon", "Alfheix"],
+				// Race 5
+				["Dedratermi", "Spyder", "Frozt", "Raccoon", "FuHua", "Alfheix", "Jedmumu", "Synocra", "HoriYon"]
+			],
+			"Finals": [
+				// Race 1
+				["Eva", "Frozt", "Roidee", "Dedratermi", "Spyder", "Pines", "Boop", "KN", "MrTurtlez"],
+				// Race 2
+				["Spyder", "Boop", "Frozt", "KN", "Roidee", "Dedratermi", "MrTurtlez", "Eva", "Pines"],
+				// Race 3
+				["Frozt", "Dedratermi", "KN", "Eva", "Roidee", "MrTurtlez", "Spyder", "Pines", "Boop"],
+				// Race 4
+				["Frozt", "Roidee", "Dedratermi", "Boop", "Spyder", "KN", "Eva", "Pines", "MrTurtlez"],
+				// Race 5
+				["Frozt", "Roidee", "Spyder", "Dedratermi", "Boop", "Eva", "KN", "Pines", "MrTurtlez"]
+			]
+		},
+
+		// Open 24
+		"Open 24": {
+			"Group A": [
+				// Race 1
+				["HoriYon", "Raccoon", "Boop", "Cefiro", "CarmineView", "FuHua", "Zixen", "Minty", "Synocra"],
+				// Race 2
+				["CarmineView", "HoriYon", "Boop", "Zixen", "Synocra", "FuHua", "Cefiro", "Minty", "Raccoon"],
+				// Race 3
+				["CarmineView", "Cefiro", "Raccoon", "Zixen", "HoriYon", "Minty", "Boop", "Synocra", "FuHua"],
+				// Race 4
+				["CarmineView", "Boop", "HoriYon", "Zixen", "Raccoon", "Cefiro", "Synocra", "FuHua", "Minty"],
+				// Race 5
+				["Boop", "CarmineView", "HoriYon", "Cefiro", "Synocra", "FuHua", "Zixen", "Minty", "Raccoon"]
+			],
+			"Group B": [
+				// Race 1
+				["Dedratermi", "Alfheix", "Frozt", "Jedmumu", "Sumpfranze", "Kenesu", "Teki", "Pines", "Spyder"],
+				// Race 2
+				["Dedratermi", "Sumpfranze", "Jedmumu", "Alfheix", "Kenesu", "Frozt", "Teki", "Pines", "Spyder"],
+				// Race 3
+				["Frozt", "Dedratermi", "Jedmumu", "Alfheix", "Sumpfranze", "Teki", "Kenesu", "Pines", "Spyder"],
+				// Race 4
+				["Dedratermi", "Frozt", "Teki", "Sumpfranze", "Jedmumu", "Kenesu", "Alfheix", "Pines", "Spyder"],
+				// Race 5
+				["Dedratermi", "Sumpfranze", "Jedmumu", "Frozt", "Alfheix", "Teki", "Pines", "Kenesu", "Spyder"]
+			],
+			"Finals": [
+				// Race 1
+				["Boop", "HoriYon", "Cefiro", "Dedratermi", "Teki", "CarmineView", "Synocra", "Minty", "Kenesu"],
+				// Race 2
+				["CarmineView", "Dedratermi", "Cefiro", "Boop", "Teki", "Synocra", "Kenesu", "HoriYon", "Minty"],
+				// Race 3
+				["Boop", "CarmineView", "HoriYon", "Dedratermi", "Synocra", "Cefiro", "Teki", "Kenesu", "Minty"],
+				// Race 4
+				["Cefiro", "HoriYon", "Synocra", "Dedratermi", "CarmineView", "Boop", "Teki", "Kenesu", "Minty"],
+				// Race 5
+				["HoriYon", "Dedratermi", "CarmineView", "Synocra", "Boop", "Kenesu", "Cefiro", "Teki", "Minty"]
+			]
+		},
+
+		// Open 25
+		"Open 25": {
+			"Group A": [
+				// Race 1
+				["Eva", "Roidee", "Lain", "Kenesu", "Sumpfranze", "KN", "Rihito", "Dedratermi", "Synocra"],
+				// Race 2
+				["Lain", "Rihito", "Roidee", "Eva", "Sumpfranze", "KN", "Kenesu", "Dedratermi", "Synocra"],
+				// Race 3
+				["Eva", "Rihito", "Roidee", "Dedratermi", "Kenesu", "Sumpfranze", "Lain", "KN", "Synocra"],
+				// Race 4
+				["Eva", "Roidee", "Sumpfranze", "Lain", "Dedratermi", "KN", "Kenesu", "Rihito", "Synocra"],
+				// Race 5
+				["KN", "Roidee", "Rihito", "Kenesu", "Eva", "Dedratermi", "Sumpfranze", "Synocra", "Lain"]
+			],
+			"Group B": [
+				// Race 1
+				["Zixen", "Jedmumu", "Pines", "Alfheix", "Raccoon", "Boop", "HoriYon", "FuHua", "Frozt"],
+				// Race 2
+				["Zixen", "Raccoon", "Alfheix", "Jedmumu", "Frozt", "HoriYon", "Boop", "Pines", "FuHua"],
+				// Race 3
+				["HoriYon", "Boop", "Raccoon", "Zixen", "Alfheix", "Frozt", "Pines", "Jedmumu", "FuHua"],
+				// Race 4
+				["Jedmumu", "Boop", "Pines", "Zixen", "Alfheix", "HoriYon", "FuHua", "Raccoon", "Frozt"],
+				// Race 5
+				["Jedmumu", "Raccoon", "HoriYon", "Boop", "Zixen", "FuHua", "Frozt", "Alfheix", "Pines"]
+			],
+			"Finals": [
+				// Race 1
+				["KN", "Jedmumu", "Frozt", "Kenesu", "Alfheix", "Pines", "Zixen", "Roidee", "Raccoon"],
+				// Race 2
+				["Zixen", "Raccoon", "Jedmumu", "Pines", "Kenesu", "Alfheix", "Roidee", "Frozt", "KN"],
+				// Race 3
+				["Zixen", "KN", "Raccoon", "Kenesu", "Roidee", "Jedmumu", "Pines", "Alfheix", "Frozt"],
+				// Race 4
+				["Jedmumu", "Alfheix", "Pines", "Roidee", "Kenesu", "Zixen", "Frozt", "Raccoon", "KN"],
+				// Race 5
+				["Jedmumu", "Frozt", "Roidee", "Zixen", "Raccoon", "KN", "Pines", "Alfheix", "Kenesu"]
+			]
+		},
+
+		// Open 26
+		"Open 26": {
+			"Group A": [
+				// Race 1
+				["Cefiro", "Frozt", "Zixen", "HoriYon", "Alfheix", "Jedmumu", "Kenesu", "Rihito", "NarrativeCrocodiles"],
+				// Race 2
+				["Cefiro", "Rihito", "Zixen", "Alfheix", "Kenesu", "HoriYon", "Frozt", "Jedmumu", "NarrativeCrocodiles"],
+				// Race 3
+				["HoriYon", "Rihito", "Kenesu", "NarrativeCrocodiles", "Jedmumu", "Frozt", "Alfheix", "Cefiro", "Zixen"],
+				// Race 4
+				["Cefiro", "Rihito", "Zixen", "Kenesu", "Jedmumu", "Alfheix", "HoriYon", "NarrativeCrocodiles", "Frozt"],
+				// Race 5
+				["Cefiro", "Zixen", "Frozt", "Rihito", "Alfheix", "HoriYon", "NarrativeCrocodiles", "Kenesu", "Jedmumu"]
+			],
+			"Group B": [
+				// Race 1
+				["Synocra", "Roidee", "Eva", "Boop", "Divine", "Dedratermi", "Raccoon", "Mixsy", "Minty"],
+				// Race 2
+				["Dedratermi", "Eva", "Roidee", "Mixsy", "Boop", "Divine", "Synocra", "Raccoon", "Minty"],
+				// Race 3
+				["Dedratermi", "Eva", "Mixsy", "Synocra", "Boop", "Roidee", "Divine", "Raccoon", "Minty"],
+				// Race 4
+				["Synocra", "Mixsy", "Raccoon", "Dedratermi", "Roidee", "Boop", "Divine", "Eva", "Minty"],
+				// Race 5
+				["Dedratermi", "Synocra", "Roidee", "Boop", "Mixsy", "Divine", "Raccoon", "Eva", "Minty"]
+			],
+			"Finals": [
+				// Race 1
+				["Synocra", "Cefiro", "Dedratermi", "Eva", "Roidee", "Divine", "Zixen", "Boop", "NarrativeCrocodiles"],
+				// Race 2
+				["Synocra", "Divine", "Cefiro", "Roidee", "Boop", "Dedratermi", "Zixen", "Eva", "NarrativeCrocodiles"],
+				// Race 3
+				["Zixen", "Dedratermi", "Boop", "Roidee", "Cefiro", "NarrativeCrocodiles", "Synocra", "Eva", "Divine"],
+				// Race 4
+				["Zixen", "Roidee", "Synocra", "Dedratermi", "Cefiro", "Divine", "NarrativeCrocodiles", "Eva", "Boop"],
+				// Race 5
+				["Boop", "Synocra", "Zixen", "Dedratermi", "Roidee", "Cefiro", "NarrativeCrocodiles", "Eva", "Divine"]
+			]
+		},
+
+		// Open 27
+		"Open 27": {
+			"Group A": [
+				// Race 1
+				["Jedmumu", "Teki", "Cefiro", "Alfheix", "Zixen", "Divine", "Boop", "Kenesu"],
+				// Race 2
+				["Teki", "Divine", "Jedmumu", "Cefiro", "Boop", "Alfheix", "Zixen", "Kenesu"],
+				// Race 3
+				["Teki", "Jedmumu", "Boop", "Cefiro", "Zixen", "Kenesu", "Divine", "Alfheix"],
+				// Race 4
+				["Divine", "Cefiro", "Zixen", "Jedmumu", "Teki", "Kenesu", "Boop", "Alfheix"],
+				// Race 5
+				["Teki", "Jedmumu", "Zixen", "Cefiro", "Divine", "Alfheix", "Kenesu", "Boop"]
+			],
+			"Group B": [
+				// Race 1
+				["HoriYon", "KN", "Roidee", "Rihito", "Bunsen", "Minty", "Synocra", "Raccoon", "Mixsy"],
+				// Race 2
+				["Rihito", "HoriYon", "Roidee", "Minty", "Bunsen", "Synocra", "Mixsy", "Raccoon", "KN"],
+				// Race 3
+				["Bunsen", "HoriYon", "Raccoon", "Roidee", "Synocra", "KN", "Rihito", "Minty", "Mixsy"],
+				// Race 4
+				["Roidee", "KN", "Bunsen", "Raccoon", "HoriYon", "Mixsy", "Rihito", "Minty", "Synocra"],
+				// Race 5
+				["Raccoon", "Synocra", "Bunsen", "Roidee", "Rihito", "HoriYon", "KN", "Minty", "Mixsy"]
+			],
+			"Finals": [
+				// Race 1
+				["Cefiro", "Jedmumu", "Bunsen", "Roidee", "Divine", "Teki", "Alfheix", "Minty"],
+				// Race 2
+				["Teki", "Jedmumu", "Cefiro", "Divine", "Roidee", "Alfheix", "Bunsen", "Minty"],
+				// Race 3
+				["Roidee", "Cefiro", "Teki", "Alfheix", "Jedmumu", "Bunsen", "Minty", "Divine"],
+				// Race 4
+				["Jedmumu", "Teki", "Alfheix", "Cefiro", "Bunsen", "Roidee", "Divine", "Minty"],
+				// Race 5
+				["Roidee", "Jedmumu", "Teki", "Divine", "Alfheix", "Cefiro", "Bunsen", "Minty"]
+			]
+		},
+
+		// Open 28
+		"Open 28": {
+			"Group A": [
+				// Race 1
+				["Frozt", "Bunsen", "Roidee", "FuHua", "Raccoon", "Synocra", "Pines", "Zixen", "Cefiro"],
+				// Race 2
+				["Roidee", "Frozt", "Bunsen", "Raccoon", "Pines", "FuHua", "Synocra", "Zixen", "Cefiro"],
+				// Race 3
+				["Frozt", "Zixen", "Roidee", "Synocra", "Pines", "FuHua", "Raccoon", "Bunsen", "Cefiro"],
+				// Race 4
+				["Synocra", "Raccoon", "Zixen", "Frozt", "Roidee", "FuHua", "Pines", "Bunsen", "Cefiro"],
+				// Race 5
+				["Frozt", "Roidee", "Zixen", "Synocra", "Raccoon", "Bunsen", "FuHua", "Pines", "Cefiro"]
+			],
+			"Group B": [
+				// Race 1
+				["Kenesu", "Mixsy", "Draguin", "Jedmumu", "Rihito", "HoriYon", "Dedratermi", "Boop", "KN"],
+				// Race 2
+				["Draguin", "Mixsy", "Kenesu", "Dedratermi", "Rihito", "Jedmumu", "KN", "HoriYon", "Boop"],
+				// Race 3
+				["Kenesu", "Rihito", "Draguin", "HoriYon", "Mixsy", "Dedratermi", "Boop", "Jedmumu", "KN"],
+				// Race 4
+				["Draguin", "HoriYon", "Kenesu", "Dedratermi", "Mixsy", "KN", "Jedmumu", "Boop", "Rihito"],
+				// Race 5
+				["Draguin", "Rihito", "Mixsy", "HoriYon", "Kenesu", "Jedmumu", "KN", "Dedratermi", "Boop"]
+			],
+			"Finals": [
+				// Race 1
+				["Frozt", "FuHua", "Jedmumu", "Kenesu", "Synocra", "Roidee", "Bunsen", "Rihito", "Zixen"],
+				// Race 2
+				["Frozt", "Zixen", "Rihito", "Bunsen", "Kenesu", "Synocra", "Jedmumu", "FuHua", "Roidee"],
+				// Race 3
+				["Synocra", "Rihito", "Frozt", "Zixen", "Jedmumu", "Bunsen", "FuHua", "Roidee", "Kenesu"],
+				// Race 4
+				["Frozt", "Roidee", "FuHua", "Zixen", "Jedmumu", "Synocra", "Kenesu", "Rihito", "Bunsen"],
+				// Race 5
+				["Frozt", "Bunsen", "Roidee", "Synocra", "FuHua", "Rihito", "Jedmumu", "Kenesu", "Zixen"]
+			]
+		},
+
+		// Open 29
+		"Open 29": {
+			"Group A": [
+				// Race 1
+				["Boop", "FuHua", "Cefiro", "MetaHayato", "KN", "JoeWheeler", "Roidee", "Bresto", "Raccoon"],
+				// Race 2
+				["Boop", "Raccoon", "MetaHayato", "JoeWheeler", "Cefiro", "FuHua", "Bresto", "KN", "Roidee"],
+				// Race 3
+				["Boop", "KN", "Roidee", "MetaHayato", "JoeWheeler", "Bresto", "Raccoon", "Cefiro", "FuHua"],
+				// Race 4
+				["Boop", "Roidee", "FuHua", "Bresto", "KN", "Raccoon", "JoeWheeler", "Cefiro", "MetaHayato"],
+				// Race 5
+				["Raccoon", "FuHua", "Boop", "Bresto", "Roidee", "Cefiro", "MetaHayato", "JoeWheeler", "KN"]
+			],
+			"Group B": [
+				// Race 1
+				["Mixsy", "Frozt", "Jedmumu", "Synocra", "Dedratermi", "Alfheix", "Draguin", "Divine", "Kenesu"],
+				// Race 2
+				["Frozt", "Synocra", "Alfheix", "Jedmumu", "Dedratermi", "Kenesu", "Mixsy", "Draguin", "Divine"],
+				// Race 3
+				["Mixsy", "Frozt", "Alfheix", "Draguin", "Synocra", "Dedratermi", "Divine", "Kenesu", "Jedmumu"],
+				// Race 4
+				["Jedmumu", "Alfheix", "Synocra", "Kenesu", "Mixsy", "Frozt", "Divine", "Dedratermi", "Draguin"],
+				// Race 5
+				["Mixsy", "Alfheix", "Frozt", "Draguin", "Kenesu", "Dedratermi", "Synocra", "Jedmumu", "Divine"]
+			],
+			"Finals": [
+				// Race 1
+				["Boop", "MetaHayato", "Dedratermi", "FuHua", "Kenesu", "Mixsy", "Frozt", "Jedmumu", "Alfheix"],
+				// Race 2
+				["Mixsy", "Boop", "FuHua", "Jedmumu", "MetaHayato", "Frozt", "Dedratermi", "Alfheix", "Kenesu"],
+				// Race 3
+				["Boop", "Mixsy", "Frozt", "Jedmumu", "Dedratermi", "Alfheix", "FuHua", "Kenesu", "MetaHayato"],
+				// Race 4
+				["Mixsy", "Boop", "FuHua", "Frozt", "Dedratermi", "Jedmumu", "MetaHayato", "Alfheix", "Kenesu"],
+				// Race 5
+				["Mixsy", "MetaHayato", "Frozt", "FuHua", "Dedratermi", "Alfheix", "Jedmumu", "Boop", "Kenesu"]
+			]
+		},
+
+		// Open 30
+		"Open 30": {
+			"Group A": [
+				// Race 1
+				["Raccoon", "Keejo", "Eva", "Dedratermi", "Frozt", "Synocra", "Sumpfranze", "Zixen", "Mixsy", "Jedmumu"],
+				// Race 2
+				["Raccoon", "Dedratermi", "Keejo", "Sumpfranze", "Frozt", "Zixen", "Jedmumu", "Eva", "Mixsy", "Synocra"],
+				// Race 3
+				["Frozt", "Keejo", "Raccoon", "Mixsy", "Eva", "Sumpfranze", "Dedratermi", "Jedmumu", "Zixen", "Synocra"],
+				// Race 4
+				["Frozt", "Mixsy", "Raccoon", "Jedmumu", "Dedratermi", "Sumpfranze", "Keejo", "Synocra", "Zixen", "Eva"],
+				// Race 5
+				["Dedratermi", "Keejo", "Mixsy", "Raccoon", "Frozt", "Eva", "Synocra", "Zixen", "Jedmumu", "Sumpfranze"]
+			],
+			"Group B": [
+				// Race 1
+				["MetaHayato", "HoriYon", "Spyder", "Teki", "Boop", "Draguin", "Pines", "FuHua", "Sumpfranze", "Bunsen"],
+				// Race 2
+				["HoriYon", "Boop", "Spyder", "Draguin", "MetaHayato", "FuHua", "Pines", "Teki", "Sumpfranze", "Bunsen"],
+				// Race 3
+				["HoriYon", "MetaHayato", "FuHua", "Boop", "Teki", "Sumpfranze", "Draguin", "Spyder", "Bunsen", "Pines"],
+				// Race 4
+				["Spyder", "HoriYon", "Draguin", "Boop", "Teki", "Sumpfranze", "Bunsen", "MetaHayato", "FuHua", "Pines"],
+				// Race 5
+				["HoriYon", "Draguin", "Pines", "FuHua", "Teki", "Spyder", "Boop", "MetaHayato", "Sumpfranze", "Bunsen"]
+			],
+			"Finals": [
+				// Race 1
+				["Raccoon", "Frozt", "MetaHayato", "FuHua", "Teki", "Spyder", "Boop", "Keejo", "Draguin"],
+				// Race 2
+				["MetaHayato", "Boop", "Teki", "FuHua", "Frozt", "Spyder", "Draguin", "Keejo", "Raccoon"],
+				// Race 3
+				["Keejo", "MetaHayato", "Raccoon", "Frozt", "Boop", "Spyder", "Draguin", "Teki", "FuHua"],
+				// Race 4
+				["Boop", "MetaHayato", "Spyder", "Raccoon", "Teki", "FuHua", "Draguin", "Frozt", "Keejo"],
+				// Race 5
+				["Boop", "Spyder", "Raccoon", "Teki", "Frozt", "Draguin", "FuHua", "Keejo", "MetaHayato"]
+			]
+		},
+
+		// Unofficial 1
+		"Unofficial 1": {
+			"Group A": [
+				// Race 1
+				["Mixsy", "Zixen", "Synocra", "Teki", "Draguin", "Roidee", "Pines", "Raccoon", "MetaHayato"],
+				// Race 2
+				["Roidee", "Mixsy", "MetaHayato", "Synocra", "Pines", "Draguin", "Teki", "Zixen", "Raccoon"],
+				// Race 3
+				["Mixsy", "Zixen", "MetaHayato", "Draguin", "Teki", "Synocra", "Roidee", "Pines", "Raccoon"],
+				// Race 4
+				["Roidee", "Mixsy", "Draguin", "Zixen", "Teki", "MetaHayato", "Synocra", "Pines", "Raccoon"],
+				// Race 5
+				["Mixsy", "Zixen", "MetaHayato", "Draguin", "Synocra", "Pines", "Teki", "Roidee", "Raccoon"]
+			],
+			"Group B": [
+				// Race 1
+				["Cefiro", "Sumpfranze", "HoriYon", "JoeWheeler", "Jedmumu", "Boop", "FuHua", "Kenesu", "Spyder"],
+				// Race 2
+				["Boop", "FuHua", "HoriYon", "Jedmumu", "Sumpfranze", "JoeWheeler", "Cefiro", "Spyder", "Kenesu"],
+				// Race 3
+				["Boop", "JoeWheeler", "HoriYon", "Spyder", "Sumpfranze", "FuHua", "Cefiro", "Kenesu", "Jedmumu"],
+				// Race 4
+				["Kenesu", "Boop", "Jedmumu", "Spyder", "Cefiro", "HoriYon", "Sumpfranze", "FuHua", "JoeWheeler"],
+				// Race 5
+				["Sumpfranze", "Cefiro", "JoeWheeler", "FuHua", "Jedmumu", "HoriYon", "Boop", "Spyder", "Kenesu"]
+			],
+			"Finals": [
+				// Race 1
+				["Sumpfranze", "Kenesu", "Teki", "DQ", "Mixsy", "Draguin", "Boop", "Roidee", "Pines"],
+				// Race 2
+				["Roidee", "Sumpfranze", "Draguin", "DQ", "Mixsy", "Kenesu", "Pines", "Boop", "Teki"],
+				// Race 3
+				["Draguin", "Boop", "Roidee", "DQ", "Sumpfranze", "Kenesu", "Mixsy", "Teki", "Pines"],
+				// Race 4
+				["Mixsy", "Roidee", "DQ", "Draguin", "Sumpfranze", "Kenesu", "Boop", "Teki", "Pines"],
+				// Race 5
+				["Mixsy", "Boop", "Kenesu", "DQ", "Roidee", "Pines", "Sumpfranze", "Draguin", "Teki"]
+			]
+		},
+
+		// Open 31
+		"Open 31": {
+			"Finals": [
+				// Race 1
+				["FuHua", "Mixsy", "Bunsen", "Sumpfranze", "Roidee", "Pines", "Kenesu", "KN", "Raccoon", "Boop", "HoriYon", "Minty"],
+				// Race 2
+				["Roidee", "FuHua", "Pines", "Raccoon", "Bunsen", "Sumpfranze", "HoriYon", "Mixsy", "Boop", "KN", "Kenesu", "Minty"],
+				// Race 3
+				["FuHua", "Kenesu", "HoriYon", "Bunsen", "Roidee", "Mixsy", "Boop", "Sumpfranze", "Pines", "KN", "Raccoon", "Minty"],
+				// Race 4
+				["Raccoon", "Sumpfranze", "Bunsen", "FuHua", "Pines", "Boop", "Mixsy", "Kenesu", "KN", "Roidee", "HoriYon", "Minty"],
+				// Race 5
+				["Boop", "Sumpfranze", "Bunsen", "HoriYon", "FuHua", "Kenesu", "Pines", "Raccoon", "Roidee", "Mixsy", "KN", "Minty"]
+			]
+		},
+
+		// Open 32
+		"Open 32": {
+			"Group A": [
+				// Race 1
+				["Keejo", "Cefiro", "Dedratermi", "Synocra", "Raccoon", "Draguin", "Pines", "HoriYon", "Mixsy"],
+				// Race 2
+				["Draguin", "HoriYon", "Pines", "Cefiro", "Keejo", "Dedratermi", "Mixsy", "Synocra", "Raccoon"],
+				// Race 3
+				["Keejo", "Cefiro", "Mixsy", "Raccoon", "Pines", "Draguin", "HoriYon", "Dedratermi", "Synocra"],
+				// Race 4
+				["Cefiro", "Pines", "Synocra", "HoriYon", "Mixsy", "Draguin", "Keejo", "Dedratermi", "Raccoon"],
+				// Race 5
+				["Keejo", "Synocra", "Raccoon", "Dedratermi", "Cefiro", "Mixsy", "Draguin", "Pines", "HoriYon"]
+			],
+			"Group B": [
+				// Race 1
+				["Sumpfranze", "FuHua", "Roidee", "Frozt", "Bunsen", "Kenesu", "Boop", "Jedmumu", "MetaHayato"],
+				// Race 2
+				["Roidee", "Kenesu", "Bunsen", "FuHua", "Jedmumu", "MetaHayato", "Sumpfranze", "Boop", "Frozt"],
+				// Race 3
+				["Roidee", "Jedmumu", "Kenesu", "Boop", "Bunsen", "FuHua", "MetaHayato", "Sumpfranze", "Frozt"],
+				// Race 4
+				["Roidee", "Jedmumu", "Boop", "FuHua", "Bunsen", "Kenesu", "Sumpfranze", "Frozt", "MetaHayato"],
+				// Race 5
+				["FuHua", "Sumpfranze", "Jedmumu", "Boop", "Roidee", "Frozt", "Bunsen", "MetaHayato", "Kenesu"]
+			],
+			"Finals": [
+				// Race 1
+				["Roidee", "Pines", "Cefiro", "FuHua", "Bunsen", "Keejo", "Jedmumu", "Kenesu", "Sumpfranze"],
+				// Race 2
+				["Roidee", "Jedmumu", "Cefiro", "Pines", "FuHua", "Kenesu", "Keejo", "Bunsen", "Sumpfranze"],
+				// Race 3
+				["Cefiro", "FuHua", "Pines", "Kenesu", "Roidee", "Sumpfranze", "Jedmumu", "Bunsen", "Keejo"],
+				// Race 4
+				["Jedmumu", "Keejo", "FuHua", "Pines", "Roidee", "Sumpfranze", "Bunsen", "Kenesu", "Cefiro"],
+				// Race 5
+				["Sumpfranze", "Pines", "Cefiro", "Bunsen", "Roidee", "Kenesu", "FuHua", "Jedmumu", "Keejo"]
+			]
+		}
+	}
 };
 
 if (typeof module !== 'undefined') {
-  module.exports = { compactData, tournamentWinners, tournamentBans };
+  module.exports = { S1_DATA };
 }
-
-const POINTS_SYSTEM = [25, 18, 15, 12, 10, 8, 6, 4, 2, 1];
-
-const tournamentRaceResults = {
-    // Open 1
-    "Open 1": {
-        "Finals": [
-            // Race 1
-            ["Cefiro", "MetaHayato", "Spyder", "Leficious", "Eva", "Kenesu", "Pines", "Frozt", "Raccoon"],
-            // Race 2
-            ["MetaHayato", "Leficious", "Pines", "Frozt", "Spyder", "Cefiro", "Eva", "Raccoon", "Kenesu"],
-            // Race 3
-            ["Leficious", "Eva", "MetaHayato", "Cefiro", "Kenesu", "Pines", "Spyder", "Frozt", "Raccoon"],
-            // Race 4
-            ["MetaHayato", "Leficious", "Kenesu", "Spyder", "Cefiro", "Pines", "Eva", "Raccoon", "Frozt"],
-            // Race 5
-            ["Leficious", "MetaHayato", "Cefiro", "Eva", "Spyder", "Kenesu", "Frozt", "Raccoon", "Pines"]
-        ]
-    },
-    // Open 2
-    "Open 2": {
-        "Finals": [
-            // Race 1
-            ["Leficious", "MetaHayato", "Pines", "Raccoon", "Spyder", "Giga", "Eva", "Kenesu", "Frozt"],
-            // Race 2
-            ["MetaHayato", "Spyder", "Raccoon", "Frozt", "Pines", "Kenesu", "Leficious", "Eva", "Giga"],
-            // Race 3
-            ["Pines", "Frozt", "Raccoon", "Leficious", "Giga", "MetaHayato", "Eva", "Spyder", "Kenesu"],
-            // Race 4
-            ["Raccoon", "Giga", "Pines", "MetaHayato", "Spyder", "Kenesu", "Leficious", "Eva", "Frozt"],
-            // Race 5
-            ["Raccoon", "Pines", "Giga", "Eva", "MetaHayato", "Spyder", "Leficious", "Kenesu", "Frozt"]
-        ]
-    },
-   // Open 3
-    "Open 3": {
-        "Finals": [
-            // Race 1
-            ["Raccoon", "Pines", "Jans", "Koto", "Frozt", "Synocra", "Leficious", "MetaHayato", "Teki"],
-            // Race 2
-            ["Raccoon", "Teki", "Synocra", "Leficious", "Jans", "MetaHayato", "Koto", "Pines", "Frozt"],
-            // Race 3
-            ["Teki", "Pines", "Jans", "Synocra", "Raccoon", "Leficious", "MetaHayato", "Frozt", "Koto"],
-            // Race 4
-            ["Teki", "Pines", "Jans", "Synocra", "Leficious", "MetaHayato", "Frozt", "Koto", "Raccoon"],
-            // Race 5
-            ["Leficious", "Jans", "Teki", "Synocra", "Raccoon", "MetaHayato", "Pines", "Frozt", "Koto"]
-        ]
-    },
-    // Open 4
-    "Open 4": {
-        "Finals": [
-            // Race 1
-            ["Raccoon", "Sumpfranze", "Divine", "Synocra", "MetaHayato", "Leficious", "Spyder", "Sayo", "Eva", "Buster", "Honsler", "Kenesu"],
-            // Race 2
-            ["Raccoon", "Sumpfranze", "Leficious", "Divine", "Buster", "Spyder", "Honsler", "Sayo", "MetaHayato", "Eva", "Synocra", "Kenesu"],
-            // Race 3
-            ["Honsler", "Sumpfranze", "MetaHayato", "Raccoon", "Sayo", "Divine", "Buster", "Synocra", "Leficious", "Eva", "Spyder", "Kenesu"],
-            // Race 4
-            ["Raccoon", "Buster", "MetaHayato", "Sumpfranze", "Eva", "Synocra", "Honsler", "Sayo", "Leficious", "Spyder", "Divine", "Kenesu"],
-            // Race 5
-            ["Leficious", "Honsler", "Sayo", "Synocra", "Sumpfranze", "Buster", "Raccoon", "MetaHayato", "Spyder", "Divine", "Eva", "Kenesu"]
-        ]
-    },
-	// Open 5
-    "Open 5": {
-        "Finals": [
-            // Race 1
-            ["Cefiro", "HoriYon", "Leficious", "Pines", "Kenesu", "Eva", "Raccoon", "Frozt", "Spyder", "FuHua", "MetaHayato", "Synocra"],
-            // Race 2
-            ["HoriYon", "Kenesu", "Cefiro", "Leficious", "Frozt", "Eva", "MetaHayato", "Pines", "Spyder", "FuHua", "Raccoon", "Synocra"],
-            // Race 3
-            ["HoriYon", "Leficious", "Pines", "Kenesu", "Frozt", "Spyder", "FuHua", "Eva", "Cefiro", "Raccoon", "MetaHayato", "Synocra"],
-            // Race 4
-            ["Kenesu", "MetaHayato", "HoriYon", "Frozt", "Leficious", "Eva", "Spyder", "Pines", "Cefiro", "Raccoon", "FuHua", "Synocra"],
-            // Race 5
-            ["Kenesu", "Cefiro", "Pines", "MetaHayato", "Frozt", "Eva", "Spyder", "Raccoon", "HoriYon", "Leficious", "FuHua", "Synocra"]
-        ]
-    },
-	// Open 6
-    "Open 6": {
-        "Finals": [
-            // Race 1
-            ["MetaHayato", "Raccoon", "Kenesu", "Teki", "BossNerd", "Leficious", "Cefiro", "HoriYon", "Buster", "Eva", "Sayo", "Synocra", "Frozt", "Rihito", "FuHua"],
-            // Race 2
-            ["MetaHayato", "Teki", "Raccoon", "Eva", "Cefiro", "HoriYon", "Kenesu", "Sayo", "Leficious", "Synocra", "FuHua", "Frozt", "Rihito", "Buster", "BossNerd"],
-            // Race 3
-            ["HoriYon", "Leficious", "Teki", "Kenesu", "MetaHayato", "BossNerd", "FuHua", "Raccoon", "Rihito", "Cefiro", "Buster", "Eva", "Sayo", "Synocra", "Frozt"],
-            // Race 4
-            ["MetaHayato", "Raccoon", "BossNerd", "Teki", "HoriYon", "Cefiro", "Synocra", "Buster", "Rihito", "Leficious", "Eva", "FuHua", "Sayo", "Frozt", "Kenesu"],
-            // Race 5
-            ["MetaHayato", "Raccoon", "Teki", "BossNerd", "FuHua", "HoriYon", "Leficious", "Synocra", "Buster", "Eva", "Frozt", "Sayo", "Rihito", "Kenesu", "Cefiro"]
-        ]
-    },
-    // Open 7
-    "Open 7": {
-        "Finals": [
-            // Race 1
-            ["MetaHayato", "Synocra", "Kenesu", "Teki", "Giga", "Divine", "Raccoon", "Cefiro", "HoriYon", "Eva", "Spyder", "Pines"],
-            // Race 2
-            ["Cefiro", "Giga", "HoriYon", "Synocra", "MetaHayato", "Kenesu", "Teki", "Spyder", "Raccoon", "Pines", "Divine", "Eva"],
-            // Race 3
-            ["Spyder", "Cefiro", "HoriYon", "Giga", "Teki", "Kenesu", "Synocra", "Eva", "Pines", "Divine", "Raccoon", "MetaHayato"],
-            // Race 4
-            ["Raccoon", "Giga", "Teki", "MetaHayato", "Kenesu", "Cefiro", "HoriYon", "Synocra", "Spyder", "Divine", "Pines", "Eva"],
-            // Race 5
-            ["Raccoon", "Giga", "Eva", "MetaHayato", "Kenesu", "Cefiro", "Synocra", "Spyder", "Teki", "Pines", "HoriYon", "Divine"]
-        ]
-    },
-    // Open 8
-    "Open 8": {
-        "Finals": [
-            // Race 1
-            ["MetaHayato", "FuHua", "HoriYon", "Raccoon", "Pines", "Frozt", "Cefiro", "Kenesu", "Eva", "Bresto", "Teki", "Divine"],
-            // Race 2
-            ["Pines", "MetaHayato", "Raccoon", "Teki", "HoriYon", "FuHua", "Kenesu", "Cefiro", "Bresto", "Eva", "Frozt", "Divine"],
-            // Race 3
-            ["MetaHayato", "HoriYon", "Kenesu", "Raccoon", "Eva", "Cefiro", "Pines", "Teki", "Bresto", "Frozt", "FuHua", "Divine"],
-            // Race 4
-            ["HoriYon", "FuHua", "Raccoon", "MetaHayato", "Kenesu", "Cefiro", "Pines", "Eva", "Bresto", "Teki", "Frozt", "Divine"],
-            // Race 5
-            ["Cefiro", "HoriYon", "Raccoon", "Pines", "FuHua", "Eva", "MetaHayato", "Teki", "Frozt", "Kenesu", "Bresto", "Divine"]
-        ]
-    },
-    // Open 9
-    "Open 9": {
-        "Finals": [
-            // Race 1
-            ["Pines", "MetaHayato", "Teki", "Giga", "Divine", "FuHua", "Kenesu", "Raccoon", "HoriYon"],
-            // Race 2
-            ["Divine", "Teki", "HoriYon", "MetaHayato", "FuHua", "Kenesu", "Pines", "Giga", "Raccoon"],
-            // Race 3
-            ["HoriYon", "Kenesu", "Teki", "Divine", "MetaHayato", "FuHua", "Raccoon", "Giga", "Pines"],
-            // Race 4
-            ["Kenesu", "Giga", "Divine", "Teki", "MetaHayato", "Pines", "HoriYon", "Raccoon", "FuHua"],
-            // Race 5
-            ["HoriYon", "FuHua", "MetaHayato", "Teki", "Kenesu", "Pines", "Divine", "Giga", "Raccoon"]
-        ]
-    },
-	// Open 10
-    "Open 10": {
-        "Finals": [
-            // Race 1
-            ["Pines", "Roidee", "Rihito", "Sumpfranze", "HoriYon", "Divine", "Cefiro", "MetaHayato", "KN", "Raccoon", "Kenesu", "FuHua", "Giga", "Spyder", "Teki"],
-            // Race 2
-            ["Cefiro", "HoriYon", "Sumpfranze", "Pines", "Rihito", "Spyder", "Roidee", "Teki", "FuHua", "MetaHayato", "KN", "Kenesu", "Giga", "Raccoon", "Divine"],
-            // Race 3
-            ["Pines", "Rihito", "Divine", "Roidee", "HoriYon", "MetaHayato", "Cefiro", "Giga", "Raccoon", "Sumpfranze", "Kenesu", "Spyder", "Teki", "FuHua", "KN"],
-            // Race 4
-            ["Giga", "Divine", "Sumpfranze", "Cefiro", "HoriYon", "Roidee", "FuHua", "MetaHayato", "Pines", "Kenesu", "KN", "Raccoon", "Rihito", "Spyder", "Teki"],
-            // Race 5
-            ["HoriYon", "Cefiro", "Roidee", "Raccoon", "Giga", "MetaHayato", "Spyder", "Pines", "Rihito", "FuHua", "Sumpfranze", "Kenesu", "KN", "Divine", "Teki"]
-        ]
-    },
-    // Open 11
-    "Open 11": {
-        "Finals": [
-            // Race 1
-            ["Cefiro", "HoriYon", "MetaHayato", "Mudflap", "Rihito", "Roidee", "Raccoon", "Sumpfranze", "Kenesu", "KN", "Pines", "Teki", "Eva", "FuHua", "Divine"],
-            // Race 2
-            ["Cefiro", "MetaHayato", "Sumpfranze", "Pines", "Eva", "Roidee", "Teki", "KN", "Kenesu", "HoriYon", "Raccoon", "Mudflap", "Rihito", "Divine", "FuHua"],
-            // Race 3
-            ["Roidee", "Cefiro", "Mudflap", "Raccoon", "HoriYon", "Teki", "Divine", "MetaHayato", "KN", "Eva", "Sumpfranze", "Pines", "Rihito", "Kenesu", "FuHua"],
-            // Race 4
-            ["MetaHayato", "Cefiro", "Pines", "Roidee", "Mudflap", "HoriYon", "Raccoon", "Rihito", "Divine", "Teki", "Sumpfranze", "KN", "Eva", "Kenesu", "FuHua"],
-            // Race 5
-            ["MetaHayato", "Cefiro", "Mudflap", "Eva", "KN", "HoriYon", "Rihito", "Raccoon", "Roidee", "Sumpfranze", "Pines", "Teki", "Kenesu", "Divine", "FuHua"]
-        ]
-    },
-    // Open 12
-    "Open 12": {
-        "Group A": [
-            // Race 1
-            ["Cefiro", "Synocra", "Frozt", "Dedratermi", "Spyder", "Eva", "Rihito", "Vocaloid", "MetaHayato"],
-            // Race 2
-            ["Cefiro", "Dedratermi", "Synocra", "Frozt", "MetaHayato", "Rihito", "Vocaloid", "Spyder", "Eva"],
-            // Race 3
-            ["Spyder", "Synocra", "Dedratermi", "Cefiro", "Frozt", "Rihito", "MetaHayato", "Eva", "Vocaloid"],
-            // Race 4
-            ["Dedratermi", "Spyder", "Synocra", "MetaHayato", "Cefiro", "Rihito", "Eva", "Vocaloid", "Frozt"],
-            // Race 5
-            ["Dedratermi", "Synocra", "Cefiro", "MetaHayato", "Eva", "Rihito", "Spyder", "Vocaloid", "Frozt"]
-        ],
-        "Group B": [
-            // Race 1
-            ["Roidee", "Pines", "Jedmumu", "HoriYon", "KN", "Raccoon", "Bresto", "Kenesu", "FuHua"],
-            // Race 2
-            ["FuHua", "Roidee", "HoriYon", "Pines", "Raccoon", "Jedmumu", "KN", "Kenesu", "Bresto"],
-            // Race 3
-            ["KN", "Pines", "FuHua", "HoriYon", "Roidee", "Kenesu", "Bresto", "Raccoon", "Jedmumu"],
-            // Race 4
-            ["Roidee", "Pines", "HoriYon", "Bresto", "Raccoon", "Jedmumu", "Kenesu", "KN", "FuHua"],
-            // Race 5
-            ["Roidee", "FuHua", "KN", "Pines", "Jedmumu", "HoriYon", "Bresto", "Kenesu", "Raccoon"]
-        ],
-        "Finals": [
-            // Race 1
-            ["Spyder", "HoriYon", "Dedratermi", "Cefiro", "Roidee", "Synocra", "KN", "Vocaloid", "Frozt"],
-            // Race 2
-            ["KN", "Cefiro", "Spyder", "Dedratermi", "Frozt", "Synocra", "HoriYon", "Roidee", "Vocaloid"],
-            // Race 3
-            ["Cefiro", "KN", "Roidee", "HoriYon", "Dedratermi", "Spyder", "Synocra", "Frozt", "Vocaloid"],
-            // Race 4
-            ["Spyder", "Dedratermi", "Roidee", "Synocra", "Cefiro", "KN", "Frozt", "Vocaloid", "HoriYon"],
-            // Race 5
-            ["Cefiro", "Roidee", "Dedratermi", "HoriYon", "KN", "Synocra", "Frozt", "Spyder", "Vocaloid"]
-        ]
-    },
-    // Open 13
-    "Open 13": {
-        "Finals": [
-            // Race 1
-            ["Teki", "FuHua", "Dedratermi", "Raccoon", "Jedmumu", "Frozt", "Sumpfranze", "HoriYon", "MetaHayato", "Draguin", "Cefiro", "Mudflap", "Spyder", "Kenesu", "Rihito"],
-            // Race 2
-            ["Jedmumu", "Teki", "Sumpfranze", "Dedratermi", "Rihito", "Draguin", "FuHua", "MetaHayato", "Raccoon", "Kenesu", "Frozt", "Cefiro", "Mudflap", "HoriYon", "Spyder"],
-            // Race 3
-            ["Sumpfranze", "Teki", "Jedmumu", "Kenesu", "MetaHayato", "Raccoon", "HoriYon", "Rihito", "Cefiro", "Mudflap", "Frozt", "Dedratermi", "FuHua", "Draguin", "Spyder"],
-            // Race 4
-            ["FuHua", "Dedratermi", "Kenesu", "Raccoon", "Teki", "Draguin", "Jedmumu", "HoriYon", "Mudflap", "Sumpfranze", "MetaHayato", "Spyder", "Frozt", "Cefiro", "Rihito"],
-            // Race 5
-            ["Dedratermi", "Kenesu", "Sumpfranze", "Mudflap", "Teki", "Rihito", "Frozt", "HoriYon", "Raccoon", "Draguin", "Spyder", "MetaHayato", "FuHua", "Cefiro", "Jedmumu"]
-        ]
-    },
-    // Open 14
-    "Open 14": {
-        "Finals": [
-            // Race 1
-            ["Jedmumu", "Dedratermi", "FuHua", "Pines", "Synocra", "HoriYon", "Raccoon", "MetaHayato", "Eva", "Kenesu", "Spyder", "NarrativeCrocodiles"],
-            // Race 2
-            ["Dedratermi", "Pines", "Jedmumu", "Raccoon", "NarrativeCrocodiles", "FuHua", "MetaHayato", "Synocra", "HoriYon", "Kenesu", "Spyder", "Eva"],
-            // Race 3
-            ["MetaHayato", "Spyder", "HoriYon", "FuHua", "Raccoon", "Pines", "Eva", "NarrativeCrocodiles", "Kenesu", "Dedratermi", "Jedmumu", "Synocra"],
-            // Race 4
-            ["Jedmumu", "Dedratermi", "Raccoon", "Kenesu", "Spyder", "Eva", "Pines", "Synocra", "MetaHayato", "HoriYon", "FuHua", "NarrativeCrocodiles"],
-            // Race 5
-            ["MetaHayato", "Raccoon", "Dedratermi", "Synocra", "Pines", "Jedmumu", "FuHua", "Spyder", "HoriYon", "NarrativeCrocodiles", "Kenesu", "Eva"]
-        ]
-    },
-    // Open 15
-    "Open 15": {
-        "Group A": [
-            // Race 1
-            ["Pines", "HoriYon", "Eva", "Jedmumu", "MetaHayato", "Synocra", "Spyder", "Rihito", "Alfheix"],
-            // Race 2
-            ["Eva", "MetaHayato", "Synocra", "Jedmumu", "Rihito", "HoriYon", "Spyder", "Alfheix", "Pines"],
-            // Race 3
-            ["MetaHayato", "Pines", "Rihito", "HoriYon", "Jedmumu", "Alfheix", "Spyder", "Eva", "Synocra"],
-            // Race 4
-            ["Jedmumu", "MetaHayato", "Pines", "Eva", "Rihito", "Alfheix", "Spyder", "Synocra", "HoriYon"],
-            // Race 5
-            ["Pines", "MetaHayato", "HoriYon", "Jedmumu", "Synocra", "Alfheix", "Eva", "Spyder", "Rihito"]
-        ],
-        "Group B": [
-            // Race 1
-            ["Dedratermi", "Raccoon", "FuHua", "NarrativeCrocodiles", "MrTurtlez", "Merlin", "Teki", "Kenesu", "Frozt"],
-            // Race 2
-            ["Dedratermi", "Raccoon", "FuHua", "Teki", "Kenesu", "NarrativeCrocodiles", "MrTurtlez", "Merlin", "Frozt"],
-            // Race 3
-            ["Dedratermi", "Raccoon", "NarrativeCrocodiles", "Kenesu", "Merlin", "Teki", "MrTurtlez", "FuHua", "Frozt"],
-            // Race 4
-            ["Dedratermi", "Kenesu", "FuHua", "Raccoon", "Merlin", "Teki", "NarrativeCrocodiles", "MrTurtlez", "Frozt"],
-            // Race 5
-            ["Dedratermi", "Raccoon", "Kenesu", "FuHua", "NarrativeCrocodiles", "Teki", "MrTurtlez", "Merlin", "Frozt"]
-        ],
-        "Finals": [
-            // Race 1
-            ["Dedratermi", "Pines", "MetaHayato", "Raccoon", "Rihito", "NarrativeCrocodiles", "Teki", "Kenesu", "Frozt"],
-            // Race 2
-            ["Pines", "MetaHayato", "Dedratermi", "Rihito", "NarrativeCrocodiles", "Kenesu", "Raccoon", "Teki", "Frozt"],
-            // Race 3
-            ["Dedratermi", "Pines", "Rihito", "Kenesu", "MetaHayato", "Raccoon", "NarrativeCrocodiles", "Teki", "Frozt"],
-            // Race 4
-            ["Dedratermi", "Rihito", "Raccoon", "Pines", "NarrativeCrocodiles", "Kenesu", "Teki", "MetaHayato", "Frozt"],
-            // Race 5
-            ["MetaHayato", "Raccoon", "Rihito", "Kenesu", "Pines", "Dedratermi", "NarrativeCrocodiles", "Teki", "Frozt"]
-        ]
-    },
-    // Open 16
-    "Open 16": {
-        "Group A": [
-            // Race 1
-            ["Merlin", "Alfheix", "MetaHayato", "Cefiro", "Dedratermi", "Minty", "Sumpfranze", "Frozt", "Pines"],
-            // Race 2
-            ["Dedratermi", "Merlin", "Frozt", "MetaHayato", "Minty", "Sumpfranze", "Alfheix", "Pines", "Cefiro"],
-            // Race 3
-            ["Sumpfranze", "Merlin", "Dedratermi", "MetaHayato", "Cefiro", "Minty", "Alfheix", "Pines", "Frozt"],
-            // Race 4
-            ["Alfheix", "Frozt", "Cefiro", "Dedratermi", "Merlin", "MetaHayato", "Minty", "Pines", "Sumpfranze"],
-            // Race 5
-            ["Dedratermi", "Merlin", "Cefiro", "Alfheix", "Sumpfranze", "Minty", "Frozt", "MetaHayato", "Pines"]
-        ],
-        "Group B": [
-            // Race 1
-            ["HoriYon", "Draguin", "Rihito", "FuHua", "Kenesu", "Eva", "Synocra", "Jedmumu", "Raccoon"],
-            // Race 2
-            ["Draguin", "HoriYon", "Rihito", "FuHua", "Jedmumu", "Kenesu", "Raccoon", "Synocra", "Eva"],
-            // Race 3
-            ["Draguin", "HoriYon", "FuHua", "Rihito", "Raccoon", "Synocra", "Eva", "Jedmumu", "Kenesu"],
-            // Race 4
-            ["Draguin", "Rihito", "FuHua", "Raccoon", "HoriYon", "Kenesu", "Eva", "Synocra", "Jedmumu"],
-            // Race 5
-            ["Jedmumu", "Draguin", "Eva", "Raccoon", "Synocra", "HoriYon", "Kenesu", "Rihito", "FuHua"]
-        ],
-        "Finals": [
-            // Race 1
-            ["HoriYon", "FuHua", "Merlin", "Dedratermi", "Rihito", "Frozt", "Kenesu", "Eva", "Draguin"],
-            // Race 2
-            ["Dedratermi", "HoriYon", "Rihito", "FuHua", "Frozt", "Draguin", "Merlin", "Kenesu", "Eva"],
-            // Race 3
-            ["Draguin", "Rihito", "Merlin", "Dedratermi", "Frozt", "Eva", "Kenesu", "FuHua", "HoriYon"],
-            // Race 4
-            ["HoriYon", "Dedratermi", "Rihito", "Draguin", "Merlin", "Kenesu", "Frozt", "Eva", "FuHua"],
-            // Race 5
-            ["HoriYon", "Merlin", "Rihito", "Dedratermi", "Frozt", "FuHua", "Eva", "Draguin", "Kenesu"]
-        ]
-    },
-    // Open 17
-	"Open 17": {
-	    "Finals": [
-	        // Race 1 (Winner: MetaHayato)
-	        ["MetaHayato", "Synocra", "Sumpfranze", "Teki", "Jedmumu", "Rihito", "Raccoon", "HoriYon", "Alfheix", "Pines"],
-	        
-	        // Race 2 (Winner: Synocra)
-	        ["Synocra", "Frozt", "HoriYon", "MetaHayato", "Jedmumu", "Pines", "Kenesu", "Cefiro", "Teki", "Raccoon"],
-	        
-	        // Race 3 (Winner: Cefiro)
-	        ["Cefiro", "MetaHayato", "Kenesu", "Frozt", "Rihito", "HoriYon", "Synocra", "Pines", "Eva", "Alfheix"],
-	        
-	        // Race 4 (Winner: Pines)
-	        ["Pines", "Cefiro", "Rihito", "Sumpfranze", "Kenesu", "Teki", "Synocra", "MetaHayato", "FuHua", "Frozt"],
-	        
-	        // Race 5 (Winner: Jedmumu)
-	        ["Jedmumu", "Pines", "Synocra", "Alfheix", "Cefiro", "Frozt", "Kenesu", "Sumpfranze", "Rihito", "HoriYon"]
-	    ]
-	},
-	
-	// Open 18 (Data not provided yet)
-    "Open 18": { "Finals": [] },
-	
-    // Open 19
-    "Open 19": {
-        "Group A": [
-            // Race 1
-            ["Sumpfranze", "Alfheix", "Viistar", "HoriYon", "NarrativeCrocodiles", "Spyder", "FuHua", "Raccoon", "Divine"],
-            // Race 2
-            ["HoriYon", "Sumpfranze", "Alfheix", "FuHua", "Spyder", "Viistar", "Raccoon", "Divine", "NarrativeCrocodiles"],
-            // Race 3
-            ["HoriYon", "Alfheix", "Divine", "Viistar", "Spyder", "NarrativeCrocodiles", "Sumpfranze", "FuHua", "Raccoon"],
-            // Race 4
-            ["Alfheix", "Sumpfranze", "Divine", "Spyder", "HoriYon", "Raccoon", "FuHua", "Viistar", "NarrativeCrocodiles"],
-            // Race 5
-            ["HoriYon", "Alfheix", "Divine", "Sumpfranze", "Raccoon", "FuHua", "Spyder", "NarrativeCrocodiles", "Viistar"]
-        ],
-        "Group B": [
-            // Race 1
-            ["Jedmumu", "Pines", "Merlin", "Boop", "Minty", "Dedratermi", "Rihito", "Kenesu", "Cefiro"],
-            // Race 2
-            ["Boop", "Rihito", "Minty", "Kenesu", "Pines", "Jedmumu", "Dedratermi", "Merlin", "Cefiro"],
-            // Race 3
-            ["Jedmumu", "Pines", "Boop", "Rihito", "Cefiro", "Merlin", "Dedratermi", "Minty", "Kenesu"],
-            // Race 4
-            ["Jedmumu", "Rihito", "Boop", "Pines", "Kenesu", "Cefiro", "Minty", "Merlin", "Dedratermi"],
-            // Race 5
-            ["Jedmumu", "Pines", "Rihito", "Cefiro", "Boop", "Kenesu", "Merlin", "Minty", "Dedratermi"]
-        ],
-        "Finals": [
-            // Race 1
-            ["HoriYon", "Merlin", "Jedmumu", "Alfheix", "Rihito", "Divine", "FuHua", "Sumpfranze", "NarrativeCrocodiles"],
-            // Race 2
-            ["HoriYon", "Rihito", "Sumpfranze", "Alfheix", "Merlin", "FuHua", "Jedmumu", "Divine", "NarrativeCrocodiles"],
-            // Race 3
-            ["HoriYon", "Rihito", "Alfheix", "Jedmumu", "Merlin", "Sumpfranze", "Divine", "FuHua", "NarrativeCrocodiles"],
-            // Race 4
-            ["Sumpfranze", "Jedmumu", "Rihito", "Alfheix", "Merlin", "FuHua", "Divine", "HoriYon", "NarrativeCrocodiles"],
-            // Race 5
-            ["Jedmumu", "HoriYon", "Rihito", "Sumpfranze", "Alfheix", "FuHua", "Merlin", "NarrativeCrocodiles", "Divine"]
-        ]
-    },
-
-    // Open 20
-    "Open 20": {
-        "Finals": [
-            // Race 1
-            ["Cefiro", "Spyder", "Lain", "FuHua", "Roidee", "Raccoon", "Pines", "Sumpfranze", "Dedratermi", "Minty", "Jedmumu", "Synocra"],
-            // Race 2
-            ["Raccoon", "Roidee", "Dedratermi", "Spyder", "Sumpfranze", "FuHua", "Lain", "Cefiro", "Pines", "Minty", "Jedmumu", "Synocra"],
-            // Race 3
-            ["Dedratermi", "Sumpfranze", "Roidee", "Raccoon", "Cefiro", "FuHua", "Spyder", "Pines", "Lain", "Minty", "Jedmumu", "Synocra"],
-            // Race 4
-            ["Raccoon", "Roidee", "Dedratermi", "Lain", "Cefiro", "FuHua", "Pines", "Sumpfranze", "Spyder", "Minty", "Jedmumu", "Synocra"],
-            // Race 5
-            ["Spyder", "Roidee", "Cefiro", "Sumpfranze", "Raccoon", "FuHua", "Lain", "Dedratermi", "Pines", "Minty", "Jedmumu", "Synocra"]
-        ]
-    },
-
-    // Open 21
-    "Open 21": {
-        "Finals": [
-            // Race 1
-            ["Synocra", "HoriYon", "Pines", "Lain", "Raccoon", "Boop", "Frozt", "Dedratermi", "Jedmumu", "FuHua", "Eva", "Roidee", "Mysteri", "Kenesu", "Spyder"],
-            // Race 2
-            ["Lain", "FuHua", "Synocra", "HoriYon", "Kenesu", "Frozt", "Pines", "Boop", "Eva", "Raccoon", "Mysteri", "Jedmumu", "Dedratermi", "Roidee", "Spyder"],
-            // Race 3
-            ["HoriYon", "Synocra", "Lain", "Roidee", "FuHua", "Boop", "Jedmumu", "Pines", "Dedratermi", "Mysteri", "Frozt", "Raccoon", "Eva", "Kenesu", "Spyder"],
-            // Race 4
-            ["HoriYon", "Jedmumu", "FuHua", "Lain", "Boop", "Raccoon", "Dedratermi", "Eva", "Kenesu", "Pines", "Frozt", "Synocra", "Mysteri", "Roidee", "Spyder"],
-            // Race 5
-            ["Frozt", "Lain", "Boop", "Roidee", "HoriYon", "Raccoon", "Jedmumu", "Synocra", "Pines", "Dedratermi", "Mysteri", "Eva", "FuHua", "Kenesu", "Spyder"]
-        ]
-    },
-
-    // Open 22
-    "Open 22": {
-        "Finals": [
-            // Race 1
-            ["Alfheix", "FuHua", "Raccoon", "Boop", "Sumpfranze", "Dedratermi", "MrTurtlez", "HoriYon", "Kenesu", "Synocra", "Spyder", "Eva"],
-            // Race 2
-            ["Sumpfranze", "Dedratermi", "Raccoon", "Eva", "Boop", "HoriYon", "Synocra", "Kenesu", "FuHua", "Spyder", "Alfheix", "MrTurtlez"],
-            // Race 3
-            ["Boop", "Raccoon", "FuHua", "Sumpfranze", "HoriYon", "Kenesu", "Dedratermi", "Alfheix", "MrTurtlez", "Synocra", "Spyder", "Eva"],
-            // Race 4
-            ["Raccoon", "Boop", "Kenesu", "Sumpfranze", "FuHua", "Dedratermi", "Spyder", "Eva", "MrTurtlez", "Alfheix", "HoriYon", "Synocra"],
-            // Race 5
-            ["Alfheix", "Boop", "Kenesu", "Sumpfranze", "FuHua", "Dedratermi", "Spyder", "Eva", "Synocra", "Raccoon", "MrTurtlez", "HoriYon"]
-        ]
-    },
-
-    // Open 23
-    "Open 23": {
-        "Group A": [
-            // Race 1
-            ["Roidee", "Bresto", "Eva", "Kenesu", "Boop", "Sumpfranze", "KN", "Pines", "MrTurtlez"],
-            // Race 2
-            ["Roidee", "Boop", "Sumpfranze", "Eva", "KN", "Pines", "Kenesu", "Bresto", "MrTurtlez"],
-            // Race 3
-            ["Eva", "Roidee", "Boop", "Sumpfranze", "KN", "MrTurtlez", "Kenesu", "Bresto", "Pines"],
-            // Race 4
-            ["Roidee", "Pines", "Sumpfranze", "Eva", "Kenesu", "Boop", "KN", "Bresto", "MrTurtlez"],
-            // Race 5
-            ["Sumpfranze", "Roidee", "Boop", "KN", "Eva", "Pines", "MrTurtlez", "Bresto", "Kenesu"]
-        ],
-        "Group B": [
-            // Race 1
-            ["Synocra", "Dedratermi", "Jedmumu", "Frozt", "Raccoon", "Alfheix", "Spyder", "FuHua", "HoriYon"],
-            // Race 2
-            ["Raccoon", "Jedmumu", "Dedratermi", "Spyder", "Frozt", "FuHua", "HoriYon", "Alfheix", "Synocra"],
-            // Race 3
-            ["Frozt", "Raccoon", "Synocra", "Spyder", "Dedratermi", "Jedmumu", "Alfheix", "HoriYon", "FuHua"],
-            // Race 4
-            ["Synocra", "Frozt", "Dedratermi", "Spyder", "FuHua", "Jedmumu", "Raccoon", "HoriYon", "Alfheix"],
-            // Race 5
-            ["Dedratermi", "Spyder", "Frozt", "Raccoon", "FuHua", "Alfheix", "Jedmumu", "Synocra", "HoriYon"]
-        ],
-        "Finals": [
-            // Race 1
-            ["Eva", "Frozt", "Roidee", "Dedratermi", "Spyder", "Pines", "Boop", "KN", "MrTurtlez"],
-            // Race 2
-            ["Spyder", "Boop", "Frozt", "KN", "Roidee", "Dedratermi", "MrTurtlez", "Eva", "Pines"],
-            // Race 3
-            ["Frozt", "Dedratermi", "KN", "Eva", "Roidee", "MrTurtlez", "Spyder", "Pines", "Boop"],
-            // Race 4
-            ["Frozt", "Roidee", "Dedratermi", "Boop", "Spyder", "KN", "Eva", "Pines", "MrTurtlez"],
-            // Race 5
-            ["Frozt", "Roidee", "Spyder", "Dedratermi", "Boop", "Eva", "KN", "Pines", "MrTurtlez"]
-        ]
-    },
-
-    // Open 24
-    "Open 24": {
-        "Group A": [
-            // Race 1
-            ["HoriYon", "Raccoon", "Boop", "Cefiro", "CarmineView", "FuHua", "Zixen", "Minty", "Synocra"],
-            // Race 2
-            ["CarmineView", "HoriYon", "Boop", "Zixen", "Synocra", "FuHua", "Cefiro", "Minty", "Raccoon"],
-            // Race 3
-            ["CarmineView", "Cefiro", "Raccoon", "Zixen", "HoriYon", "Minty", "Boop", "Synocra", "FuHua"],
-            // Race 4
-            ["CarmineView", "Boop", "HoriYon", "Zixen", "Raccoon", "Cefiro", "Synocra", "FuHua", "Minty"],
-            // Race 5
-            ["Boop", "CarmineView", "HoriYon", "Cefiro", "Synocra", "FuHua", "Zixen", "Minty", "Raccoon"]
-        ],
-        "Group B": [
-            // Race 1
-            ["Dedratermi", "Alfheix", "Frozt", "Jedmumu", "Sumpfranze", "Kenesu", "Teki", "Pines", "Spyder"],
-            // Race 2
-            ["Dedratermi", "Sumpfranze", "Jedmumu", "Alfheix", "Kenesu", "Frozt", "Teki", "Pines", "Spyder"],
-            // Race 3
-            ["Frozt", "Dedratermi", "Jedmumu", "Alfheix", "Sumpfranze", "Teki", "Kenesu", "Pines", "Spyder"],
-            // Race 4
-            ["Dedratermi", "Frozt", "Teki", "Sumpfranze", "Jedmumu", "Kenesu", "Alfheix", "Pines", "Spyder"],
-            // Race 5
-            ["Dedratermi", "Sumpfranze", "Jedmumu", "Frozt", "Alfheix", "Teki", "Pines", "Kenesu", "Spyder"]
-        ],
-        "Finals": [
-            // Race 1
-            ["Boop", "HoriYon", "Cefiro", "Dedratermi", "Teki", "CarmineView", "Synocra", "Minty", "Kenesu"],
-            // Race 2
-            ["CarmineView", "Dedratermi", "Cefiro", "Boop", "Teki", "Synocra", "Kenesu", "HoriYon", "Minty"],
-            // Race 3
-            ["Boop", "CarmineView", "HoriYon", "Dedratermi", "Synocra", "Cefiro", "Teki", "Kenesu", "Minty"],
-            // Race 4
-            ["Cefiro", "HoriYon", "Synocra", "Dedratermi", "CarmineView", "Boop", "Teki", "Kenesu", "Minty"],
-            // Race 5
-            ["HoriYon", "Dedratermi", "CarmineView", "Synocra", "Boop", "Kenesu", "Cefiro", "Teki", "Minty"]
-        ]
-    },
-
-    // Open 25
-    "Open 25": {
-        "Group A": [
-            // Race 1
-            ["Eva", "Roidee", "Lain", "Kenesu", "Sumpfranze", "KN", "Rihito", "Dedratermi", "Synocra"],
-            // Race 2
-            ["Lain", "Rihito", "Roidee", "Eva", "Sumpfranze", "KN", "Kenesu", "Dedratermi", "Synocra"],
-            // Race 3
-            ["Eva", "Rihito", "Roidee", "Dedratermi", "Kenesu", "Sumpfranze", "Lain", "KN", "Synocra"],
-            // Race 4
-            ["Eva", "Roidee", "Sumpfranze", "Lain", "Dedratermi", "KN", "Kenesu", "Rihito", "Synocra"],
-            // Race 5
-            ["KN", "Roidee", "Rihito", "Kenesu", "Eva", "Dedratermi", "Sumpfranze", "Synocra", "Lain"]
-        ],
-        "Group B": [
-            // Race 1
-            ["Zixen", "Jedmumu", "Pines", "Alfheix", "Raccoon", "Boop", "HoriYon", "FuHua", "Frozt"],
-            // Race 2
-            ["Zixen", "Raccoon", "Alfheix", "Jedmumu", "Frozt", "HoriYon", "Boop", "Pines", "FuHua"],
-            // Race 3
-            ["HoriYon", "Boop", "Raccoon", "Zixen", "Alfheix", "Frozt", "Pines", "Jedmumu", "FuHua"],
-            // Race 4
-            ["Jedmumu", "Boop", "Pines", "Zixen", "Alfheix", "HoriYon", "FuHua", "Raccoon", "Frozt"],
-            // Race 5
-            ["Jedmumu", "Raccoon", "HoriYon", "Boop", "Zixen", "FuHua", "Frozt", "Alfheix", "Pines"]
-        ],
-        "Finals": [
-            // Race 1
-            ["KN", "Jedmumu", "Frozt", "Kenesu", "Alfheix", "Pines", "Zixen", "Roidee", "Raccoon"],
-            // Race 2
-            ["Zixen", "Raccoon", "Jedmumu", "Pines", "Kenesu", "Alfheix", "Roidee", "Frozt", "KN"],
-            // Race 3
-            ["Zixen", "KN", "Raccoon", "Kenesu", "Roidee", "Jedmumu", "Pines", "Alfheix", "Frozt"],
-            // Race 4
-            ["Jedmumu", "Alfheix", "Pines", "Roidee", "Kenesu", "Zixen", "Frozt", "Raccoon", "KN"],
-            // Race 5
-            ["Jedmumu", "Frozt", "Roidee", "Zixen", "Raccoon", "KN", "Pines", "Alfheix", "Kenesu"]
-        ]
-    },
-
-    // Open 26
-    "Open 26": {
-        "Group A": [
-            // Race 1
-            ["Cefiro", "Frozt", "Zixen", "HoriYon", "Alfheix", "Jedmumu", "Kenesu", "Rihito", "NarrativeCrocodiles"],
-            // Race 2
-            ["Cefiro", "Rihito", "Zixen", "Alfheix", "Kenesu", "HoriYon", "Frozt", "Jedmumu", "NarrativeCrocodiles"],
-            // Race 3
-            ["HoriYon", "Rihito", "Kenesu", "NarrativeCrocodiles", "Jedmumu", "Frozt", "Alfheix", "Cefiro", "Zixen"],
-            // Race 4
-            ["Cefiro", "Rihito", "Zixen", "Kenesu", "Jedmumu", "Alfheix", "HoriYon", "NarrativeCrocodiles", "Frozt"],
-            // Race 5
-            ["Cefiro", "Zixen", "Frozt", "Rihito", "Alfheix", "HoriYon", "NarrativeCrocodiles", "Kenesu", "Jedmumu"]
-        ],
-        "Group B": [
-            // Race 1
-            ["Synocra", "Roidee", "Eva", "Boop", "Divine", "Dedratermi", "Raccoon", "Mixsy", "Minty"],
-            // Race 2
-            ["Dedratermi", "Eva", "Roidee", "Mixsy", "Boop", "Divine", "Synocra", "Raccoon", "Minty"],
-            // Race 3
-            ["Dedratermi", "Eva", "Mixsy", "Synocra", "Boop", "Roidee", "Divine", "Raccoon", "Minty"],
-            // Race 4
-            ["Synocra", "Mixsy", "Raccoon", "Dedratermi", "Roidee", "Boop", "Divine", "Eva", "Minty"],
-            // Race 5
-            ["Dedratermi", "Synocra", "Roidee", "Boop", "Mixsy", "Divine", "Raccoon", "Eva", "Minty"]
-        ],
-        "Finals": [
-            // Race 1
-            ["Synocra", "Cefiro", "Dedratermi", "Eva", "Roidee", "Divine", "Zixen", "Boop", "NarrativeCrocodiles"],
-            // Race 2
-            ["Synocra", "Divine", "Cefiro", "Roidee", "Boop", "Dedratermi", "Zixen", "Eva", "NarrativeCrocodiles"],
-            // Race 3
-            ["Zixen", "Dedratermi", "Boop", "Roidee", "Cefiro", "NarrativeCrocodiles", "Synocra", "Eva", "Divine"],
-            // Race 4
-            ["Zixen", "Roidee", "Synocra", "Dedratermi", "Cefiro", "Divine", "NarrativeCrocodiles", "Eva", "Boop"],
-            // Race 5
-            ["Boop", "Synocra", "Zixen", "Dedratermi", "Roidee", "Cefiro", "NarrativeCrocodiles", "Eva", "Divine"]
-        ]
-    },
-
-    // Open 27
-    "Open 27": {
-        "Group A": [
-            // Race 1
-            ["Jedmumu", "Teki", "Cefiro", "Alfheix", "Zixen", "Divine", "Boop", "Kenesu"],
-            // Race 2
-            ["Teki", "Divine", "Jedmumu", "Cefiro", "Boop", "Alfheix", "Zixen", "Kenesu"],
-            // Race 3
-            ["Teki", "Jedmumu", "Boop", "Cefiro", "Zixen", "Kenesu", "Divine", "Alfheix"],
-            // Race 4
-            ["Divine", "Cefiro", "Zixen", "Jedmumu", "Teki", "Kenesu", "Boop", "Alfheix"],
-            // Race 5
-            ["Teki", "Jedmumu", "Zixen", "Cefiro", "Divine", "Alfheix", "Kenesu", "Boop"]
-        ],
-        "Group B": [
-            // Race 1
-            ["HoriYon", "KN", "Roidee", "Rihito", "Bunsen", "Minty", "Synocra", "Raccoon", "Mixsy"],
-            // Race 2
-            ["Rihito", "HoriYon", "Roidee", "Minty", "Bunsen", "Synocra", "Mixsy", "Raccoon", "KN"],
-            // Race 3
-            ["Bunsen", "HoriYon", "Raccoon", "Roidee", "Synocra", "KN", "Rihito", "Minty", "Mixsy"],
-            // Race 4
-            ["Roidee", "KN", "Bunsen", "Raccoon", "HoriYon", "Mixsy", "Rihito", "Minty", "Synocra"],
-            // Race 5
-            ["Raccoon", "Synocra", "Bunsen", "Roidee", "Rihito", "HoriYon", "KN", "Minty", "Mixsy"]
-        ],
-        "Finals": [
-            // Race 1
-            ["Cefiro", "Jedmumu", "Bunsen", "Roidee", "Divine", "Teki", "Alfheix", "Minty"],
-            // Race 2
-            ["Teki", "Jedmumu", "Cefiro", "Divine", "Roidee", "Alfheix", "Bunsen", "Minty"],
-            // Race 3
-            ["Roidee", "Cefiro", "Teki", "Alfheix", "Jedmumu", "Bunsen", "Minty", "Divine"],
-            // Race 4
-            ["Jedmumu", "Teki", "Alfheix", "Cefiro", "Bunsen", "Roidee", "Divine", "Minty"],
-            // Race 5
-            ["Roidee", "Jedmumu", "Teki", "Divine", "Alfheix", "Cefiro", "Bunsen", "Minty"]
-        ]
-    },
-
-    // Open 28
-    "Open 28": {
-        "Group A": [
-            // Race 1
-            ["Frozt", "Bunsen", "Roidee", "FuHua", "Raccoon", "Synocra", "Pines", "Zixen", "Cefiro"],
-            // Race 2
-            ["Roidee", "Frozt", "Bunsen", "Raccoon", "Pines", "FuHua", "Synocra", "Zixen", "Cefiro"],
-            // Race 3
-            ["Frozt", "Zixen", "Roidee", "Synocra", "Pines", "FuHua", "Raccoon", "Bunsen", "Cefiro"],
-            // Race 4
-            ["Synocra", "Raccoon", "Zixen", "Frozt", "Roidee", "FuHua", "Pines", "Bunsen", "Cefiro"],
-            // Race 5
-            ["Frozt", "Roidee", "Zixen", "Synocra", "Raccoon", "Bunsen", "FuHua", "Pines", "Cefiro"]
-        ],
-        "Group B": [
-            // Race 1
-            ["Kenesu", "Mixsy", "Draguin", "Jedmumu", "Rihito", "HoriYon", "Dedratermi", "Boop", "KN"],
-            // Race 2
-            ["Draguin", "Mixsy", "Kenesu", "Dedratermi", "Rihito", "Jedmumu", "KN", "HoriYon", "Boop"],
-            // Race 3
-            ["Kenesu", "Rihito", "Draguin", "HoriYon", "Mixsy", "Dedratermi", "Boop", "Jedmumu", "KN"],
-            // Race 4
-            ["Draguin", "HoriYon", "Kenesu", "Dedratermi", "Mixsy", "KN", "Jedmumu", "Boop", "Rihito"],
-            // Race 5
-            ["Draguin", "Rihito", "Mixsy", "HoriYon", "Kenesu", "Jedmumu", "KN", "Dedratermi", "Boop"]
-        ],
-        "Finals": [
-            // Race 1
-            ["Frozt", "FuHua", "Jedmumu", "Kenesu", "Synocra", "Roidee", "Bunsen", "Rihito", "Zixen"],
-            // Race 2
-            ["Frozt", "Zixen", "Rihito", "Bunsen", "Kenesu", "Synocra", "Jedmumu", "FuHua", "Roidee"],
-            // Race 3
-            ["Synocra", "Rihito", "Frozt", "Zixen", "Jedmumu", "Bunsen", "FuHua", "Roidee", "Kenesu"],
-            // Race 4
-            ["Frozt", "Roidee", "FuHua", "Zixen", "Jedmumu", "Synocra", "Kenesu", "Rihito", "Bunsen"],
-            // Race 5
-            ["Frozt", "Bunsen", "Roidee", "Synocra", "FuHua", "Rihito", "Jedmumu", "Kenesu", "Zixen"]
-        ]
-    },
-
-	// Open 29
-    "Open 29": {
-        "Group A": [
-            // Race 1
-            ["Boop", "FuHua", "Cefiro", "MetaHayato", "KN", "JoeWheeler", "Roidee", "Bresto", "Raccoon"],
-            // Race 2
-            ["Boop", "Raccoon", "MetaHayato", "JoeWheeler", "Cefiro", "FuHua", "Bresto", "KN", "Roidee"],
-            // Race 3
-            ["Boop", "KN", "Roidee", "MetaHayato", "JoeWheeler", "Bresto", "Raccoon", "Cefiro", "FuHua"],
-            // Race 4
-            ["Boop", "Roidee", "FuHua", "Bresto", "KN", "Raccoon", "JoeWheeler", "Cefiro", "MetaHayato"],
-            // Race 5
-            ["Raccoon", "FuHua", "Boop", "Bresto", "Roidee", "Cefiro", "MetaHayato", "JoeWheeler", "KN"]
-        ],
-        "Group B": [
-            // Race 1
-            ["Mixsy", "Frozt", "Jedmumu", "Synocra", "Dedratermi", "Alfheix", "Draguin", "Divine", "Kenesu"],
-            // Race 2
-            ["Frozt", "Synocra", "Alfheix", "Jedmumu", "Dedratermi", "Kenesu", "Mixsy", "Draguin", "Divine"],
-            // Race 3
-            ["Mixsy", "Frozt", "Alfheix", "Draguin", "Synocra", "Dedratermi", "Divine", "Kenesu", "Jedmumu"],
-            // Race 4
-            ["Jedmumu", "Alfheix", "Synocra", "Kenesu", "Mixsy", "Frozt", "Divine", "Dedratermi", "Draguin"],
-            // Race 5
-            ["Mixsy", "Alfheix", "Frozt", "Draguin", "Kenesu", "Dedratermi", "Synocra", "Jedmumu", "Divine"]
-        ],
-        "Finals": [
-            // Race 1
-            ["Boop", "MetaHayato", "Dedratermi", "FuHua", "Kenesu", "Mixsy", "Frozt", "Jedmumu", "Alfheix"],
-            // Race 2
-            ["Mixsy", "Boop", "FuHua", "Jedmumu", "MetaHayato", "Frozt", "Dedratermi", "Alfheix", "Kenesu"],
-            // Race 3
-            ["Boop", "Mixsy", "Frozt", "Jedmumu", "Dedratermi", "Alfheix", "FuHua", "Kenesu", "MetaHayato"],
-            // Race 4
-            ["Mixsy", "Boop", "FuHua", "Frozt", "Dedratermi", "Jedmumu", "MetaHayato", "Alfheix", "Kenesu"],
-            // Race 5
-            ["Mixsy", "MetaHayato", "Frozt", "FuHua", "Dedratermi", "Alfheix", "Jedmumu", "Boop", "Kenesu"]
-        ]
-    },
-
-	// Open 30
-    "Open 30": {
-        "Group A": [
-            // Race 1
-            ["Raccoon", "Keejo", "Eva", "Dedratermi", "Frozt", "Synocra", "Sumpfranze", "Zixen", "Mixsy", "Jedmumu"],
-            // Race 2
-            ["Raccoon", "Dedratermi", "Keejo", "Sumpfranze", "Frozt", "Zixen", "Jedmumu", "Eva", "Mixsy", "Synocra"],
-            // Race 3
-            ["Frozt", "Keejo", "Raccoon", "Mixsy", "Eva", "Sumpfranze", "Dedratermi", "Jedmumu", "Zixen", "Synocra"],
-            // Race 4
-            ["Frozt", "Mixsy", "Raccoon", "Jedmumu", "Dedratermi", "Sumpfranze", "Keejo", "Synocra", "Zixen", "Eva"],
-            // Race 5
-            ["Dedratermi", "Keejo", "Mixsy", "Raccoon", "Frozt", "Eva", "Synocra", "Zixen", "Jedmumu", "Sumpfranze"]
-        ],
-        "Group B": [
-            // Race 1
-            ["MetaHayato", "HoriYon", "Spyder", "Teki", "Boop", "Draguin", "Pines", "FuHua", "Sumpfranze", "Bunsen"],
-            // Race 2
-            ["HoriYon", "Boop", "Spyder", "Draguin", "MetaHayato", "FuHua", "Pines", "Teki", "Sumpfranze", "Bunsen"],
-            // Race 3
-            ["HoriYon", "MetaHayato", "FuHua", "Boop", "Teki", "Sumpfranze", "Draguin", "Spyder", "Bunsen", "Pines"],
-            // Race 4
-            ["Spyder", "HoriYon", "Draguin", "Boop", "Teki", "Sumpfranze", "Bunsen", "MetaHayato", "FuHua", "Pines"],
-            // Race 5
-            ["HoriYon", "Draguin", "Pines", "FuHua", "Teki", "Spyder", "Boop", "MetaHayato", "Sumpfranze", "Bunsen"]
-        ],
-        "Finals": [
-            // Race 1
-            ["Raccoon", "Frozt", "MetaHayato", "FuHua", "Teki", "Spyder", "Boop", "Keejo", "Draguin"],
-            // Race 2
-            ["MetaHayato", "Boop", "Teki", "FuHua", "Frozt", "Spyder", "Draguin", "Keejo", "Raccoon"],
-            // Race 3
-            ["Keejo", "MetaHayato", "Raccoon", "Frozt", "Boop", "Spyder", "Draguin", "Teki", "FuHua"],
-            // Race 4
-            ["Boop", "MetaHayato", "Spyder", "Raccoon", "Teki", "FuHua", "Draguin", "Frozt", "Keejo"],
-            // Race 5
-            ["Boop", "Spyder", "Raccoon", "Teki", "Frozt", "Draguin", "FuHua", "Keejo", "MetaHayato"]
-        ]
-    },
-
-	// Unofficial 1
-    "Unofficial 1": {
-        "Group A": [
-            // Race 1
-            ["Mixsy", "Zixen", "Synocra", "Teki", "Draguin", "Roidee", "Pines", "Raccoon", "MetaHayato"],
-            // Race 2
-            ["Roidee", "Mixsy", "MetaHayato", "Synocra", "Pines", "Draguin", "Teki", "Zixen", "Raccoon"],
-            // Race 3
-            ["Mixsy", "Zixen", "MetaHayato", "Draguin", "Teki", "Synocra", "Roidee", "Pines", "Raccoon"],
-            // Race 4
-            ["Roidee", "Mixsy", "Draguin", "Zixen", "Teki", "MetaHayato", "Synocra", "Pines", "Raccoon"],
-            // Race 5
-            ["Mixsy", "Zixen", "MetaHayato", "Draguin", "Synocra", "Pines", "Teki", "Roidee", "Raccoon"]
-        ],
-        "Group B": [
-            // Race 1
-            ["Cefiro", "Sumpfranze", "HoriYon", "JoeWheeler", "Jedmumu", "Boop", "FuHua", "Kenesu", "Spyder"],
-            // Race 2
-            ["Boop", "FuHua", "HoriYon", "Jedmumu", "Sumpfranze", "JoeWheeler", "Cefiro", "Spyder", "Kenesu"],
-            // Race 3
-            ["Boop", "JoeWheeler", "HoriYon", "Spyder", "Sumpfranze", "FuHua", "Cefiro", "Kenesu", "Jedmumu"],
-            // Race 4
-            ["Kenesu", "Boop", "Jedmumu", "Spyder", "Cefiro", "HoriYon", "Sumpfranze", "FuHua", "JoeWheeler"],
-            // Race 5
-            ["Sumpfranze", "Cefiro", "JoeWheeler", "FuHua", "Jedmumu", "HoriYon", "Boop", "Spyder", "Kenesu"]
-        ],
-        "Finals": [
-            // Race 1
-            ["Sumpfranze", "Kenesu", "Teki", "DQ", "Mixsy", "Draguin", "Boop", "Roidee", "Pines"],
-            // Race 2
-            ["Roidee", "Sumpfranze", "Draguin", "DQ", "Mixsy", "Kenesu", "Pines", "Boop", "Teki"],
-            // Race 3
-            ["Draguin", "Boop", "Roidee", "DQ", "Sumpfranze", "Kenesu", "Mixsy", "Teki", "Pines"],
-            // Race 4
-            ["Mixsy", "Roidee", "DQ", "Draguin", "Sumpfranze", "Kenesu", "Boop", "Teki", "Pines"],
-            // Race 5
-            ["Mixsy", "Boop", "Kenesu", "DQ", "Roidee", "Pines", "Sumpfranze", "Draguin", "Teki"]
-        ]
-    },
-
-	// Open 31
-    "Open 31": {
-        "Finals": [
-            // Race 1
-            ["FuHua", "Mixsy", "Bunsen", "Sumpfranze", "Roidee", "Pines", "Kenesu", "KN", "Raccoon", "Boop", "HoriYon", "Minty"],
-            // Race 2
-            ["Roidee", "FuHua", "Pines", "Raccoon", "Bunsen", "Sumpfranze", "HoriYon", "Mixsy", "Boop", "KN", "Kenesu", "Minty"],
-            // Race 3
-            ["FuHua", "Kenesu", "HoriYon", "Bunsen", "Roidee", "Mixsy", "Boop", "Sumpfranze", "Pines", "KN", "Raccoon", "Minty"],
-            // Race 4
-            ["Raccoon", "Sumpfranze", "Bunsen", "FuHua", "Pines", "Boop", "Mixsy", "Kenesu", "KN", "Roidee", "HoriYon", "Minty"],
-            // Race 5
-            ["Boop", "Sumpfranze", "Bunsen", "HoriYon", "FuHua", "Kenesu", "Pines", "Raccoon", "Roidee", "Mixsy", "KN", "Minty"]
-        ]
-    },
-
-	// Open 32
-    "Open 32": {
-        "Group A": [
-            // Race 1
-            ["Keejo", "Cefiro", "Dedratermi", "Synocra", "Raccoon", "Draguin", "Pines", "HoriYon", "Mixsy"],
-            // Race 2
-            ["Draguin", "HoriYon", "Pines", "Cefiro", "Keejo", "Dedratermi", "Mixsy", "Synocra", "Raccoon"],
-            // Race 3
-            ["Keejo", "Cefiro", "Mixsy", "Raccoon", "Pines", "Draguin", "HoriYon", "Dedratermi", "Synocra"],
-            // Race 4
-            ["Cefiro", "Pines", "Synocra", "HoriYon", "Mixsy", "Draguin", "Keejo", "Dedratermi", "Raccoon"],
-            // Race 5
-            ["Keejo", "Synocra", "Raccoon", "Dedratermi", "Cefiro", "Mixsy", "Draguin", "Pines", "HoriYon"]
-        ],
-        "Group B": [
-            // Race 1
-            ["Sumpfranze", "FuHua", "Roidee", "Frozt", "Bunsen", "Kenesu", "Boop", "Jedmumu", "MetaHayato"],
-            // Race 2
-            ["Roidee", "Kenesu", "Bunsen", "FuHua", "Jedmumu", "MetaHayato", "Sumpfranze", "Boop", "Frozt"],
-            // Race 3
-            ["Roidee", "Jedmumu", "Kenesu", "Boop", "Bunsen", "FuHua", "MetaHayato", "Sumpfranze", "Frozt"],
-            // Race 4
-            ["Roidee", "Jedmumu", "Boop", "FuHua", "Bunsen", "Kenesu", "Sumpfranze", "Frozt", "MetaHayato"],
-            // Race 5
-            ["FuHua", "Sumpfranze", "Jedmumu", "Boop", "Roidee", "Frozt", "Bunsen", "MetaHayato", "Kenesu"]
-        ],
-        "Finals": [
-            // Race 1
-            ["Roidee", "Pines", "Cefiro", "FuHua", "Bunsen", "Keejo", "Jedmumu", "Kenesu", "Sumpfranze"],
-            // Race 2
-            ["Roidee", "Jedmumu", "Cefiro", "Pines", "FuHua", "Kenesu", "Keejo", "Bunsen", "Sumpfranze"],
-            // Race 3
-            ["Cefiro", "FuHua", "Pines", "Kenesu", "Roidee", "Sumpfranze", "Jedmumu", "Bunsen", "Keejo"],
-            // Race 4
-            ["Jedmumu", "Keejo", "FuHua", "Pines", "Roidee", "Sumpfranze", "Bunsen", "Kenesu", "Cefiro"],
-            // Race 5
-            ["Sumpfranze", "Pines", "Cefiro", "Bunsen", "Roidee", "Kenesu", "FuHua", "Jedmumu", "Keejo"]
-        ]
-    }
-};
-
-
-
-
-
-
-
-
-

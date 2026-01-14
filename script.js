@@ -1,3 +1,9 @@
+// --- GLOBAL VARIABLES ---
+const POINTS_SYSTEM = [25, 18, 15, 12, 10, 8, 6, 4, 2, 1]; 
+
+let currentRawData = []; // The raw processed rows for the active season
+let activeDataset = null; // The full data object (winners, bans, etc) for active season
+
 // --- Helper: Distance Category ---
 function getDistanceCategory(surfaceString) {
     const match = surfaceString.match(/(\d+)m/);
@@ -10,21 +16,52 @@ function getDistanceCategory(surfaceString) {
     return "Long";
 }
 
-// --- Process Raw Data ---
-const rawData = compactData.map(r => {
-    const distCat = getDistanceCategory(r[3]);
-    return {
-        Trainer: r[0],
-        UniqueName: r[1],
-        Wins: r[2],
-        Surface: r[3],
-        RawLength: r[4], 
-        DistanceCategory: distCat,
-        UmaPick: r[5],
-        Variant: r[6],
-        RacesRun: r[7] 
-    };
-});
+// --- Formatting Helper ---
+function formatName(fullName) {
+    if (!fullName.includes('(')) return fullName;
+    const parts = fullName.split('(');
+    const mainName = parts[0].trim();
+    const variant = parts[1].replace(')', '').trim();
+    return `${mainName} <span class="variant-tag">(${variant})</span>`;
+}
+
+// --- SEASON SWITCHER LOGIC ---
+function switchSeason() {
+    const season = document.getElementById('seasonSelector').value;
+    
+    // 1. Select the Data Source
+    if (season === 's1') {
+        activeDataset = S1_DATA;
+    } else {
+        // Fallback to S2 if selected or default
+        // Ensure S2_DATA exists in data_s2.js, otherwise fallback to empty object to prevent crash
+        activeDataset = (typeof S2_DATA !== 'undefined') ? S2_DATA : { compactData: [], tournamentRaceResults: {} };
+    }
+
+    // 2. Process the Raw Data for this season
+    if (activeDataset.compactData) {
+        currentRawData = activeDataset.compactData.map(r => {
+            const distCat = getDistanceCategory(r[3]);
+            return {
+                Trainer: r[0],
+                UniqueName: r[1],
+                Wins: r[2],
+                Surface: r[3],
+                RawLength: r[4], 
+                DistanceCategory: distCat,
+                UmaPick: r[5],
+                Variant: r[6],
+                RacesRun: r[7] 
+            };
+        });
+    } else {
+        currentRawData = [];
+    }
+
+    // 3. Refresh the UI
+    updateData();
+    renderStatsTable();
+}
 
 // --- UI Logic: Tabs ---
 function switchTab(tabId) {
@@ -39,7 +76,7 @@ function switchTab(tabId) {
     if (tabId === 'championship') tabs[3].classList.add('active');
 }
 
-// --- Tier List View Switcher (Slider Logic) ---
+// --- Tier List View Switcher ---
 function setTierView(index) {
     const buttons = document.querySelectorAll('.switch-option');
     buttons.forEach((btn, i) => {
@@ -60,19 +97,13 @@ function setTierView(index) {
     });
 }
 
-// --- Formatting Helper ---
-function formatName(fullName) {
-    if (!fullName.includes('(')) return fullName;
-    const parts = fullName.split('(');
-    const mainName = parts[0].trim();
-    const variant = parts[1].replace(')', '').trim();
-    return `${mainName} <span class="variant-tag">(${variant})</span>`;
-}
-
-// --- NEW: Calculate Points & Beat Rate (Respects Filters) ---
+// --- Calculate Points & Beat Rate ---
 function getChampionshipPoints(activeTournaments, filteredData) {
     let stats = { trainer: {}, uma: {} };
     
+    // Safety check if results exist
+    if (!activeDataset.tournamentRaceResults) return stats;
+
     // 1. Create a Map to link Trainer+Tourney -> UmaName
     const lookupMap = {};
     filteredData.forEach(row => {
@@ -81,26 +112,24 @@ function getChampionshipPoints(activeTournaments, filteredData) {
     });
 
     // 2. Iterate detailed race results
-    for (const [tournamentName, stages] of Object.entries(tournamentRaceResults)) {
+    for (const [tournamentName, stages] of Object.entries(activeDataset.tournamentRaceResults)) {
         if (!activeTournaments.has(tournamentName)) continue;
 
         for (const [stageName, races] of Object.entries(stages)) {
             races.forEach((raceResult) => {
-                // AUTOMAGIC: Count participants to determine lobby difficulty
                 const lobbySize = raceResult.length; 
                 const possibleOpponents = lobbySize - 1;
 
                 raceResult.forEach((player, rankIndex) => {
-                    // Filter out placeholders and DQ
                     if (player.includes("Player") || player === "DQ") return; 
 
-                    // Beat Rate Math: If you are 1st (Index 0) in 5-man race, you beat 4 people.
                     const opponentsBeaten = (lobbySize - 1) - rankIndex;
 
                     // --- A. Process Trainer ---
                     if (!stats.trainer[player]) {
                         stats.trainer[player] = { points: 0, races: 0, beaten: 0, totalOpp: 0 };
                     }
+                    
                     if (rankIndex < POINTS_SYSTEM.length) {
                         stats.trainer[player].points += POINTS_SYSTEM[rankIndex];
                     }
@@ -108,7 +137,7 @@ function getChampionshipPoints(activeTournaments, filteredData) {
                     stats.trainer[player].beaten += opponentsBeaten;
                     stats.trainer[player].totalOpp += possibleOpponents;
 
-                    // --- B. Process Uma (via Lookup) ---
+                    // --- B. Process Uma ---
                     const key = `${tournamentName}_${player}`;
                     const umaName = lookupMap[key];
                     
@@ -135,13 +164,11 @@ function calculateStats(filteredData) {
     const umaMap = {};
     const trainerMap = {};
     const activeTournaments = new Set();
-    
-    // NEW: Calculate Total Entries (Filtered) for Pick Rate Calculation
     const totalEntries = filteredData.length;
 
     filteredData.forEach(row => activeTournaments.add(row.RawLength));
 
-    // 1. Get Points & Beat Rate Data
+    // 1. Get Points
     const pointsData = getChampionshipPoints(activeTournaments, filteredData);
 
     // 2. Process Basic Data
@@ -157,8 +184,8 @@ function calculateStats(filteredData) {
         umaMap[row.UniqueName].wins += row.Wins;
         umaMap[row.UniqueName].totalRacesRun += row.RacesRun;
 
-        if (typeof tournamentWinners !== 'undefined' && tournamentWinners[row.RawLength]) {
-            if (tournamentWinners[row.RawLength].includes(row.Trainer)) {
+        if (activeDataset.tournamentWinners && activeDataset.tournamentWinners[row.RawLength]) {
+            if (activeDataset.tournamentWinners[row.RawLength].includes(row.Trainer)) {
                 umaMap[row.UniqueName].tourneyWins++;
             }
         }
@@ -188,8 +215,8 @@ function calculateStats(filteredData) {
     // 3. Process Tourney Wins
     Object.values(trainerMap).forEach(t => {
         t.playedTourneys.forEach(tourneyID => {
-            if (typeof tournamentWinners !== 'undefined' && tournamentWinners[tourneyID]) {
-                if (tournamentWinners[tourneyID].includes(t.name)) {
+            if (activeDataset.tournamentWinners && activeDataset.tournamentWinners[tourneyID]) {
+                if (activeDataset.tournamentWinners[tourneyID].includes(t.name)) {
                     t.tournamentWins++;
                 }
             }
@@ -198,11 +225,11 @@ function calculateStats(filteredData) {
 
     // 4. Process Bans
     let validBanTourneyCount = 0;
-    if (typeof tournamentBans !== 'undefined') {
-        Object.keys(tournamentBans).forEach(tourneyID => {
+    if (activeDataset.tournamentBans) {
+        Object.keys(activeDataset.tournamentBans).forEach(tourneyID => {
             if (activeTournaments.has(tourneyID)) {
                 validBanTourneyCount++; 
-                const banList = tournamentBans[tourneyID];
+                const banList = activeDataset.tournamentBans[tourneyID];
                 banList.forEach(umaName => {
                     if (!umaMap[umaName]) {
                         umaMap[umaName] = { 
@@ -217,21 +244,17 @@ function calculateStats(filteredData) {
 
     // 5. Formatting Helper
     const formatItem = (item, type) => {
-        // A. Win Rate %
         const winRateVal = item.totalRacesRun > 0 
             ? (item.wins / item.totalRacesRun * 100).toFixed(1) 
             : "0.0";
 
-        // B. Dominance % (NOW: Beat Rate Calculation)
         let dominanceVal = "0.0";
         const pStats = type === 'trainer' ? pointsData.trainer[item.name] : pointsData.uma[item.name];
         
         if (pStats && pStats.totalOpp > 0) {
-            // Formula: (Opponents Beaten / Total Opponents Faced) * 100
             dominanceVal = ((pStats.beaten / pStats.totalOpp) * 100).toFixed(1);
         }
 
-        // C. Tourney Win %
         let tWinPct = "0.0";
         if (type === 'uma') {
             tWinPct = item.picks > 0 ? (item.tourneyWins / item.picks * 100).toFixed(1) : "0.0";
@@ -240,10 +263,8 @@ function calculateStats(filteredData) {
             tWinPct = tourneyCount > 0 ? (item.tournamentWins / tourneyCount * 100).toFixed(1) : "0.0";
         }
 
-        // D. Pick Rate % (NEW)
         let pickPctVal = "0.0";
         if (totalEntries > 0) {
-            // If Type is Uma, we look at 'picks'. If Type is Trainer, we look at 'entries'.
             const count = type === 'uma' ? item.picks : item.entries;
             pickPctVal = (count / totalEntries * 100).toFixed(1);
         }
@@ -254,7 +275,7 @@ function calculateStats(filteredData) {
             winRate: winRateVal,
             dom: dominanceVal,
             tourneyWinPct: tWinPct,
-            pickPct: pickPctVal // Add to object
+            pickPct: pickPctVal 
         };
 
         if (type === 'uma') {
@@ -307,7 +328,6 @@ function renderTierList(containerId, data, countKey, minReq, sortKey) {
         const val = parseFloat(item[sortKey]); 
         let tier = 'D';
         
-        // Thresholds based on metrics
         if (sortKey === 'winRate') {
              if (val <= 1.0) tier = 'F';
              else if (val >= 25.0) tier = 'S'; 
@@ -321,8 +341,6 @@ function renderTierList(containerId, data, countKey, minReq, sortKey) {
              else if (val >= 10.0) tier = 'B';
              else if (val >= 5.0) tier = 'C';
         } else {
-            // New Dominance (Beat Rate) Thresholds
-            // Beat Rate is usually higher than points %, so we adjust up slightly
             if (val <= 15.0) tier = 'F';
             else if (val >= 65.0) tier = 'S'; 
             else if (val >= 50.0) tier = 'A';
@@ -359,12 +377,12 @@ function updateData() {
     const length = document.getElementById('lengthFilter').value;
     const minEntries = document.getElementById('minEntries').value;
 
-    document.getElementById('minEntriesVal').textContent = minEntries;
+    if(document.getElementById('minEntriesVal')) 
+        document.getElementById('minEntriesVal').textContent = minEntries;
 
-    const filtered = rawData.filter(d => {
-        // Exclude DQ from stats tables
+    // Use currentRawData (populated by switchSeason) instead of rawData
+    const filtered = currentRawData.filter(d => {
         if (d.Trainer === "DQ") return false;
-
         const surfaceMatch = (surface === 'All' || d.Surface.includes(surface));
         const lengthMatch = (length === 'All' || d.DistanceCategory === length);
         return surfaceMatch && lengthMatch;
@@ -374,7 +392,6 @@ function updateData() {
 
     // Sort Tables
     stats.umaStats.sort((a, b) => b.dom - a.dom);
-    // MODIFIED: Added 'pickPct' to the column list below
     renderTable('umaTable', stats.umaStats, 
         ['name', 'picks', 'pickPct', 'wins', 'winRate', 'dom', 'tourneyStatsDisplay', 'banStatsDisplay']
     );
@@ -384,13 +401,10 @@ function updateData() {
         ['name', 'entries', 'wins', 'winRate', 'dom', 'tourneyStatsDisplay', 'favorite', 'ace']
     );
 
-    // --- Render the 3 Separate Tier Lists ---
     renderTierList('umaTierListWR', stats.umaStats, 'picks', minEntries, 'winRate');
     renderTierList('trainerTierListWR', stats.trainerStats, 'entries', minEntries, 'winRate');
-
     renderTierList('umaTierListDom', stats.umaStats, 'picks', minEntries, 'dom');
     renderTierList('trainerTierListDom', stats.trainerStats, 'entries', minEntries, 'dom');
-
     renderTierList('umaTierListChamp', stats.umaStats, 'picks', minEntries, 'tourneyWinPct');
     renderTierList('trainerTierListChamp', stats.trainerStats, 'entries', minEntries, 'tourneyWinPct');
 }
@@ -431,18 +445,20 @@ function switchTheme() {
 // Calculate total unfiltered stats for the Championship Tab
 function calculateIndividualStats() {
     let stats = {};
-    for (const [tournamentName, stages] of Object.entries(tournamentRaceResults)) {
-        for (const [stageName, races] of Object.entries(stages)) {
-            races.forEach((raceResult) => {
-                raceResult.forEach((player, rankIndex) => {
-                    // Filter out "Player" placeholder AND "DQ"
-                    if (player.includes("Player") || player === "DQ") return;
+    
+    if (activeDataset.tournamentRaceResults) {
+        for (const [tournamentName, stages] of Object.entries(activeDataset.tournamentRaceResults)) {
+            for (const [stageName, races] of Object.entries(stages)) {
+                races.forEach((raceResult) => {
+                    raceResult.forEach((player, rankIndex) => {
+                        if (player.includes("Player") || player === "DQ") return;
 
-                    if (!stats[player]) { stats[player] = { name: player, totalPoints: 0, racesRun: 0 }; }
-                    if (rankIndex < POINTS_SYSTEM.length) { stats[player].totalPoints += POINTS_SYSTEM[rankIndex]; }
-                    stats[player].racesRun += 1;
+                        if (!stats[player]) { stats[player] = { name: player, totalPoints: 0, racesRun: 0 }; }
+                        if (rankIndex < POINTS_SYSTEM.length) { stats[player].totalPoints += POINTS_SYSTEM[rankIndex]; }
+                        stats[player].racesRun += 1;
+                    });
                 });
-            });
+            }
         }
     }
     const leaderboard = Object.values(stats).map(player => {
@@ -450,13 +466,12 @@ function calculateIndividualStats() {
             name: player.name,
             totalPoints: player.totalPoints,
             racesRun: player.racesRun,
-            avgPoints: (player.totalPoints / player.racesRun).toFixed(2)
+            avgPoints: player.racesRun > 0 ? (player.totalPoints / player.racesRun).toFixed(2) : "0.00"
         };
     });
     return leaderboard.sort((a, b) => b.totalPoints - a.totalPoints);
 }
 
-// MODIFIED: Updated to render compatible rows for sorting
 function renderStatsTable() {
     const data = calculateIndividualStats(); 
     const tbody = document.getElementById('points-table-body');
@@ -480,6 +495,6 @@ window.onload = function() {
         document.getElementById('themeSelector').value = savedTheme;
         document.body.setAttribute('data-theme', savedTheme);
     }
-    updateData();
-    renderStatsTable();
+    // Initialize with whatever is selected in the HTML dropdown (default S2)
+    switchSeason();
 };
