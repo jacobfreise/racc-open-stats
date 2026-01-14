@@ -58,7 +58,7 @@ const S2_DATA = {
     
     tournamentWinners: {
         "S2-1": ["Raccoon", "MetaHayato", "Spyder"],
-        "S2-2": ["HoriYon", "Synocra", "Kenesu"],
+        "S2-2": ["CarmineView", "Pines", "MetaHayato"],
         "S2-3": ["MetaHayato", "CarmineView", "Bresto"],
     },
     
@@ -160,4 +160,5 @@ const S2_DATA = {
 if (typeof module !== 'undefined') {
     module.exports = { S2_DATA };
 }
+
 
