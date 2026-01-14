@@ -13,6 +13,14 @@
     
     <div class="controls">
         <div class="control-group">
+            <label style="color:var(--accent-color);">Season</label>
+            <select id="seasonSelector" onchange="switchSeason()">
+                <option value="s1">Season 1</option>
+                <option value="s2" selected>Season 2</option>
+            </select>
+        </div>
+
+        <div class="control-group">
             <label>Theme</label>
             <select id="themeSelector" onchange="switchTheme()">
                 <option value="">Default (Dark)</option>
@@ -114,7 +122,7 @@
         </div>
     </div>
 
-   <div id="uma-stats" class="view-section">
+    <div id="uma-stats" class="view-section">
         <div class="card">
             <h2>Uma Statistics</h2>
             <div style="overflow-x:auto;">
@@ -123,7 +131,8 @@
                     <tr>
                         <th onclick="sortTable('umaTable', 0)">Name</th>
                         <th onclick="sortTable('umaTable', 1, true)">Picks</th>
-                        <th onclick="sortTable('umaTable', 2, true)">Pick Rate %</th> <th onclick="sortTable('umaTable', 3, true)">Wins</th>
+                        <th onclick="sortTable('umaTable', 2, true)">Pick Rate %</th> 
+                        <th onclick="sortTable('umaTable', 3, true)">Wins</th>
                         <th onclick="sortTable('umaTable', 4, true)">Win Rate %</th>
                         <th onclick="sortTable('umaTable', 5, true)">Dominance %</th>
                         <th onclick="sortTable('umaTable', 6, true)">Tourney Win %</th>
@@ -184,12 +193,12 @@
     <h1>Tournament Data</h1>
     <div id="output">Loading...</div>
 
-</div> <script src="data.js"></script>
+</div> 
+
+<script src="data.js"></script>
+<script src="data_s2.js"></script>
 <script src="script.js"></script>
 <script type="module" src="dataFetch.js"></script>
 
 </body>
 </html>
-
-
-
