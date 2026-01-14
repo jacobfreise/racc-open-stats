@@ -53,13 +53,32 @@ const S2_DATA = {
         ["Frozt", "Haru Urara (Original)", 0, "1800m Dirt (R)", "S2-3", "Haru Urara", "Original", 5],
         ["Spyder", "El Condor Pasa (Fantasy)", 3, "1800m Dirt (R)", "S2-3", "El Condor Pasa", "Fantasy", 10],
         ["Raccoon", "Taiki Shuttle (Original)", 0, "1800m Dirt (R)", "S2-3", "Taiki Shuttle", "Original", 10],
-        ["Jedmumu", "Agnes Digital (Original)", 1, "1800m Dirt (R)", "S2-3", "Agnes Digital", "Original", 10]
+        ["Jedmumu", "Agnes Digital (Original)", 1, "1800m Dirt (R)", "S2-3", "Agnes Digital", "Original", 10],
+        ["Synocra", "Seiun Sky (Original)", 3, "2200m Turf (L)", "S2-4", "Seiun Sky", "Original", 10],
+        ["Mixsy", "T.M. Opera O (Original)", 0, "2200m Turf (L)", "S2-4", "T.M. Opera O", "Original", 5],
+        ["KN", "Mejiro Dober (Original)", 2, "2200m Turf (L)", "S2-4", "Mejiro Dober", "Original", 10],
+        ["Spyder", "Seiun Sky (Original)", 3, "2200m Turf (L)", "S2-4", "Seiun Sky", "Original", 5],
+        ["FuHua", "Mejiro Dober (Original)", 0, "2200m Turf (L)", "S2-4", "Mejiro Dober", "Original", 5],
+        ["Jedmumu", "Tokai Teio (Anime)", 0, "2200m Turf (L)", "S2-4", "Tokai Teio", "Anime", 10],
+        ["CarmineView", "Agnes Tachyon (Original)", 0, "2200m Turf (L)", "S2-4", "Agnes Tachyon", "Original", 5],
+        ["MetaHayato", "Mayano Top Gun (Wedding)", 0, "2200m Turf (L)", "S2-4", "Mayano Top Gun", "Wedding", 5],
+        ["Eva", "Narita Brian (Original)", 0, "2200m Turf (L)", "S2-4", "Narita Brian", "Original", 5],
+        ["Boop", "Seiun Sky (Original)", 4, "2200m Turf (L)", "S2-4", "Seiun Sky", "Original", 10],
+        ["HoriYon", "Oguri Cap (Original)", 2, "2200m Turf (L)", "S2-4", "Oguri Cap", "Original", 10],
+        ["Roidee", "Agnes Tachyon (Original)", 0, "2200m Turf (L)", "S2-4", "Agnes Tachyon", "Original", 5],
+        ["Run982", "Oguri Cap (Original)", 1, "2200m Turf (L)", "S2-4", "Oguri Cap", "Original", 10],
+        ["Praise", "Narita Brian (Original)", 0, "2200m Turf (L)", "S2-4", "Narita Brian", "Original", 10],
+        ["Kenesu", "Oguri Cap (Original)", 0, "2200m Turf (L)", "S2-4", "Oguri Cap", "Original", 10],
+        ["Ghost", "Oguri Cap (Original)", 0, "2200m Turf (L)", "S2-4", "Oguri Cap", "Original", 5],
+        ["Raccoon", "Seiun Sky (Original)", 0, "2200m Turf (L)", "S2-4", "Seiun Sky", "Original", 10],
+        ["Bresto", "Daiwa Scarlet (Original)", 0, "2200m Turf (L)", "S2-4", "Daiwa Scarlet", "Original", 5]
     ],
     
     tournamentWinners: {
         "S2-1": ["Raccoon", "MetaHayato", "Spyder"],
         "S2-2": ["CarmineView", "Pines", "MetaHayato"],
         "S2-3": ["MetaHayato", "CarmineView", "Bresto"],
+        "S2-4": ["Synocra", "KN", "Jedmumu"],
     },
     
     tournamentBans: {
@@ -81,6 +100,14 @@ const S2_DATA = {
             "Oguri Cap (Original)",
             "El Condor Pasa (Original)",
             "Oguri Cap (Christmas)"
+        ],
+        "S2-4": [
+            "Mihono Bourbon (Original)",
+            "Maruzensky (Summer)",
+            "Maruzensky (Original)",
+            "Gold Ship (Original)",
+            "Oguri Cap (Christmas)",
+            "Silence Suzuka (Original)"
         ],
     },
     
@@ -153,6 +180,29 @@ const S2_DATA = {
                 ["CarmineView", "Spyder", "Pines", "MetaHayato", "Raccoon", "Rihito", "Bresto", "Kenesu", "Jedmumu"],
                 ["Pines", "CarmineView", "MetaHayato", "Spyder", "Raccoon", "Rihito", "Bresto", "Kenesu", "Jedmumu"]
             ]
+        },
+        "S2-4": {
+            "Group A": [
+                ["Synocra", "Mixsy", "KN", "Spyder", "FuHua", "Jedmumu", "CarmineView", "MetaHayato", "Eva"],
+                ["Spyder", "Mixsy", "Jedmumu", "MetaHayato", "CarmineView", "Synocra", "FuHua", "Eva", "KN"],
+                ["KN", "Mixsy", "Spyder", "CarmineView", "Synocra", "Jedmumu", "FuHua", "MetaHayato", "Eva"],
+                ["Spyder", "Eva", "Jedmumu", "CarmineView", "Synocra", "Mixsy", "MetaHayato", "FuHua", "KN"],
+                ["Spyder", "Jedmumu", "Mixsy", "MetaHayato", "CarmineView", "Synocra", "FuHua", "KN", "Eva"]
+            ],
+            "Group B": [
+                ["Boop", "HoriYon", "Roidee", "Run982", "Praise", "Kenesu", "Ghost", "Raccoon", "Bresto"],
+                ["Run982", "Ghost", "HoriYon", "Roidee", "Raccoon", "Praise", "Kenesu", "Boop", "Bresto"],
+                ["Boop", "Run982", "HoriYon", "Raccoon", "Roidee", "Praise", "Ghost", "Kenesu", "Bresto"],
+                ["Boop", "Run982", "Ghost", "HoriYon", "Raccoon", "Kenesu", "Roidee", "Praise", "Bresto"],
+                ["Boop", "Run982", "Roidee", "Ghost", "Raccoon", "Kenesu", "HoriYon", "Praise", "Bresto"]
+            ],
+            "Finals": [
+                ["KN", "Raccoon", "HoriYon", "Synocra", "Boop", "Run982", "Kenesu", "Jedmumu", "Praise"],
+                ["HoriYon", "Kenesu", "Run982", "Synocra", "Jedmumu", "Boop", "Raccoon", "KN", "Praise"],
+                ["Synocra", "HoriYon", "KN", "Run982", "Raccoon", "Jedmumu", "Praise", "Kenesu", "Boop"],
+                ["Synocra", "HoriYon", "KN", "Boop", "Raccoon", "Jedmumu", "Kenesu", "Run982", "Praise"],
+                ["HoriYon", "Jedmumu", "Raccoon", "Boop", "Synocra", "KN", "Kenesu", "Run982", "Praise"]
+            ]
         }
     }
 };
@@ -160,5 +210,6 @@ const S2_DATA = {
 if (typeof module !== 'undefined') {
     module.exports = { S2_DATA };
 }
+
 
 
