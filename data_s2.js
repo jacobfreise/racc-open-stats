@@ -35,12 +35,31 @@ const S2_DATA = {
         ["Bunsen", "Agnes Tachyon (Original)", 0, "2000m Turf (R)", "S2-2", "Agnes Tachyon", "Original", 5],
         ["Mixsy", "Daiwa Scarlet (Original)", 1, "2000m Turf (R)", "S2-2", "Daiwa Scarlet", "Original", 5],
         ["Boop", "Agnes Digital (Original)", 1, "2000m Turf (R)", "S2-2", "Agnes Digital", "Original", 5],
-        ["Prince of Uranus", "Mejiro McQueen (Anime)", 0, "2000m Turf (R)", "S2-2", "Mejiro McQueen", "Anime", 5]
+        ["Prince of Uranus", "Mejiro McQueen (Anime)", 0, "2000m Turf (R)", "S2-2", "Mejiro McQueen", "Anime", 5],
+        ["CarmineView", "Gold City (Festival)", 3, "1800m Dirt (R)", "S2-3", "Gold City", "Festival", 10],
+        ["HoriYon", "Agnes Digital (Original)", 2, "1800m Dirt (R)", "S2-3", "Agnes Digital", "Original", 5],
+        ["Boop", "El Condor Pasa (Fantasy)", 1, "1800m Dirt (R)", "S2-3", "El Condor Pasa", "Fantasy", 5],
+        ["MetaHayato", "El Condor Pasa (Fantasy)", 1, "1800m Dirt (R)", "S2-3", "El Condor Pasa", "Fantasy", 10],
+        ["Bresto", "Gold City (Original)", 1, "1800m Dirt (R)", "S2-3", "Gold City", "Original", 10],
+        ["Prince of Uranus", "Agnes Digital (Original)", 0, "1800m Dirt (R)", "S2-3", "Agnes Digital", "Original", 5],
+        ["Run982", "Haru Urara (Original)", 0, "1800m Dirt (R)", "S2-3", "Haru Urara", "Original", 5],
+        ["Mixsy", "Rice Shower (Original)", 1, "1800m Dirt (R)", "S2-3", "Rice Shower", "Original", 5],
+        ["Divine", "Agnes Digital (Original)", 0, "1800m Dirt (R)", "S2-3", "Agnes Digital", "Original", 5],
+        ["Pines", "Taiki Shuttle (Original)", 3, "1800m Dirt (R)", "S2-3", "Taiki Shuttle", "Original", 10],
+        ["FuHua", "Haru Urara (Original)", 0, "1800m Dirt (R)", "S2-3", "Haru Urara", "Original", 5],
+        ["Dedratermi", "Haru Urara (Original)", 0, "1800m Dirt (R)", "S2-3", "Haru Urara", "Original", 5],
+        ["Rihito", "Taiki Shuttle (Original)", 1, "1800m Dirt (R)", "S2-3", "Taiki Shuttle", "Original", 10],
+        ["Kenesu", "Taiki Shuttle (Original)", 0, "1800m Dirt (R)", "S2-3", "Taiki Shuttle", "Original", 10],
+        ["Frozt", "Haru Urara (Original)", 0, "1800m Dirt (R)", "S2-3", "Haru Urara", "Original", 5],
+        ["Spyder", "El Condor Pasa (Fantasy)", 3, "1800m Dirt (R)", "S2-3", "El Condor Pasa", "Fantasy", 10],
+        ["Raccoon", "Taiki Shuttle (Original)", 0, "1800m Dirt (R)", "S2-3", "Taiki Shuttle", "Original", 10],
+        ["Jedmumu", "Agnes Digital (Original)", 1, "1800m Dirt (R)", "S2-3", "Agnes Digital", "Original", 10]
     ],
     
     tournamentWinners: {
         "S2-1": ["Raccoon", "MetaHayato", "Spyder"],
-        "S2-2": ["HoriYon", "Synocra", "Kenesu"]
+        "S2-2": ["HoriYon", "Synocra", "Kenesu"],
+        "S2-3": ["MetaHayato", "CarmineView", "Bresto"],
     },
     
     tournamentBans: {
@@ -56,7 +75,13 @@ const S2_DATA = {
             "Silence Suzuka (Original)",
             "Seiun Sky (Original)",
             "Symboli Rudolf (Original)"
-        ]
+        ],
+        "S2-3": [
+            "Maruzensky (Summer)",
+            "Oguri Cap (Original)",
+            "El Condor Pasa (Original)",
+            "Oguri Cap (Christmas)"
+        ],
     },
     
     tournamentRaceResults: {
@@ -105,6 +130,29 @@ const S2_DATA = {
                 ["Pines", "Synocra", "Eva", "CarmineView", "MetaHayato", "Kenesu", "KN", "Jedmumu", "HoriYon"],
                 ["Eva", "KN", "Pines", "CarmineView", "Kenesu", "HoriYon", "Synocra", "MetaHayato", "Jedmumu"]
             ]
+        },
+        "S2-3": {
+            "Group A": [
+                ["CarmineView", "HoriYon", "Boop", "MetaHayato", "Bresto", "Prince of Uranus", "Run982", "Mixsy", "Divine"],
+                ["HoriYon", "Bresto", "CarmineView", "Boop", "MetaHayato", "Run982", "Prince of Uranus", "Mixsy", "Divine"],
+                ["MetaHayato", "Mixsy", "HoriYon", "CarmineView", "Prince of Uranus", "Run982", "Boop", "Divine", "Bresto"],
+                ["Boop", "HoriYon", "Run982", "Bresto", "Prince of Uranus", "CarmineView", "MetaHayato", "Mixsy", "Divine"],
+                ["HoriYon", "Boop", "Run982", "CarmineView", "MetaHayato", "Bresto", "Prince of Uranus", "Divine", "Mixsy"]
+            ],
+            "Group B": [
+                ["Pines", "FuHua", "Dedratermi", "Rihito", "Kenesu", "Frozt", "Spyder", "Raccoon", "Jedmumu"],
+                ["Spyder", "Jedmumu", "Raccoon", "FuHua", "Pines", "Kenesu", "Frozt", "Dedratermi", "Rihito"],
+                ["Spyder", "Kenesu", "Frozt", "Dedratermi", "Pines", "Jedmumu", "Rihito", "Raccoon", "FuHua"],
+                ["Jedmumu", "Raccoon", "Spyder", "Rihito", "Pines", "Frozt", "Kenesu", "Dedratermi", "FuHua"],
+                ["Spyder", "Pines", "Rihito", "FuHua", "Jedmumu", "Kenesu", "Dedratermi", "Frozt", "Raccoon"]
+            ],
+            "Finals": [
+                ["Rihito", "MetaHayato", "Bresto", "Pines", "CarmineView", "Kenesu", "Raccoon", "Spyder", "Jedmumu"],
+                ["CarmineView", "Pines", "Rihito", "Spyder", "MetaHayato", "Bresto", "Raccoon", "Jedmumu", "Kenesu"],
+                ["Bresto", "MetaHayato", "Pines", "Rihito", "Spyder", "CarmineView", "Raccoon", "Kenesu", "Jedmumu"],
+                ["CarmineView", "Spyder", "Pines", "MetaHayato", "Raccoon", "Rihito", "Bresto", "Kenesu", "Jedmumu"],
+                ["Pines", "CarmineView", "MetaHayato", "Spyder", "Raccoon", "Rihito", "Bresto", "Kenesu", "Jedmumu"]
+            ]
         }
     }
 };
@@ -112,3 +160,4 @@ const S2_DATA = {
 if (typeof module !== 'undefined') {
     module.exports = { S2_DATA };
 }
+
