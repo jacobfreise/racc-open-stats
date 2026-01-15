@@ -71,7 +71,19 @@ const S2_DATA = {
         ["Kenesu", "Oguri Cap (Original)", 0, "2200m Turf (L)", "S2-4", "Oguri Cap", "Original", 10],
         ["Ghost", "Oguri Cap (Original)", 0, "2200m Turf (L)", "S2-4", "Oguri Cap", "Original", 5],
         ["Raccoon", "Seiun Sky (Original)", 0, "2200m Turf (L)", "S2-4", "Seiun Sky", "Original", 10],
-        ["Bresto", "Daiwa Scarlet (Original)", 0, "2200m Turf (L)", "S2-4", "Daiwa Scarlet", "Original", 5]
+        ["Bresto", "Daiwa Scarlet (Original)", 0, "2200m Turf (L)", "S2-4", "Daiwa Scarlet", "Original", 5],
+        ["Raccoon", "Narita Taishin (Original)", 4, "3400m Turf (L)", "S2-5", "Narita Taishin", "Original", 5],
+        ["Run982", "Mayano Top Gun (Original)", 0, "3400m Turf (L)", "S2-5", "Mayano Top Gun", "Original", 5],
+        ["Spyder", "Special Week (Summer)", 0, "3400m Turf (L)", "S2-5", "Special Week", "Summer", 5],
+        ["Dedratermi", "Special Week (Original)", 0, "3400m Turf (L)", "S2-5", "Special Week", "Original", 5],
+        ["Alfheix", "Narita Taishin (Original)", 0, "3400m Turf (L)", "S2-5", "Narita Taishin", "Original", 5],
+        ["MetaHayato", "Special Week (Summer)", 1, "3400m Turf (L)", "S2-5", "Special Week", "Summer", 5],
+        ["Keejo", "Mejiro McQueen (Original)", 0, "3400m Turf (L)", "S2-5", "Mejiro McQueen", "Original", 5],
+        ["HoriYon", "Mayano Top Gun (Original)", 0, "3400m Turf (L)", "S2-5", "Mayano Top Gun", "Original", 5],
+        ["Bresto", "Biwa Hayahide (Christmas)", 0, "3400m Turf (L)", "S2-5", "Biwa Hayahide", "Christmas", 5],
+        ["Minty", "Biwa Hayahide (Christmas)", 0, "3400m Turf (L)", "S2-5", "Biwa Hayahide", "Christmas", 5],
+        ["Boop", "Narita Taishin (Original)", 0, "3400m Turf (L)", "S2-5", "Narita Taishin", "Original", 5],
+        ["FuHua", "Narita Taishin (Original)", 0, "3400m Turf (L)", "S2-5", "Narita Taishin", "Original", 5]
     ],
     
     tournamentWinners: {
@@ -79,6 +91,7 @@ const S2_DATA = {
         "S2-2": ["CarmineView", "Pines", "MetaHayato"],
         "S2-3": ["MetaHayato", "CarmineView", "Bresto"],
         "S2-4": ["Synocra", "KN", "Jedmumu"],
+        "S2-5": ["Raccoon", "Dedratermi", "Minty"],
     },
     
     tournamentBans: {
@@ -108,6 +121,12 @@ const S2_DATA = {
             "Gold Ship (Original)",
             "Oguri Cap (Christmas)",
             "Silence Suzuka (Original)"
+        ],
+        "S2-5": [
+            "Grass Wonder (Fantasy)",
+            "Gold Ship (Original)",
+            "Oguri Cap (Christmas)",
+            "Super Creek (Original)"
         ],
     },
     
@@ -203,6 +222,15 @@ const S2_DATA = {
                 ["Synocra", "HoriYon", "KN", "Boop", "Raccoon", "Jedmumu", "Kenesu", "Run982", "Praise"],
                 ["HoriYon", "Jedmumu", "Raccoon", "Boop", "Synocra", "KN", "Kenesu", "Run982", "Praise"]
             ]
+        },
+        "S2-5": {
+            "Finals": [
+                ["Raccoon", "Run982", "Spyder", "Dedratermi", "Alfheix", "MetaHayato", "Keejo", "HoriYon", "Bresto", "Minty", "Boop", "FuHua"],
+                ["MetaHayato", "Raccoon", "HoriYon", "Keejo", "Bresto", "Spyder", "Dedratermi", "FuHua", "Minty", "Boop", "Alfheix", "Run982"],
+                ["Raccoon", "Spyder", "Boop", "Dedratermi", "Run982", "HoriYon", "Keejo", "Alfheix", "FuHua", "Minty", "MetaHayato", "Bresto"],
+                ["Raccoon", "Alfheix", "MetaHayato", "Spyder", "Keejo", "Run982", "HoriYon", "Minty", "Dedratermi", "FuHua", "Boop", "Bresto"],
+                ["Raccoon", "Spyder", "Dedratermi", "MetaHayato", "FuHua", "Boop", "Alfheix", "Run982", "HoriYon", "Minty", "Bresto", "Keejo"]
+            ]
         }
     }
 };
@@ -210,6 +238,7 @@ const S2_DATA = {
 if (typeof module !== 'undefined') {
     module.exports = { S2_DATA };
 }
+
 
 
 
