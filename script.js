@@ -121,7 +121,7 @@ function getChampionshipPoints(activeTournaments, filteredData) {
                 const possibleOpponents = lobbySize - 1;
 
                 raceResult.forEach((player, rankIndex) => {
-                    if (player.includes("Player") || player === "DQ") return; 
+                    if (player.includes("Player") || player === "DQ" || player === "NPC-chan") return;
 
                     const opponentsBeaten = (lobbySize - 1) - rankIndex;
 
@@ -497,4 +497,5 @@ window.onload = function() {
     }
     // Initialize with whatever is selected in the HTML dropdown (default S2)
     switchSeason();
+
 };
