@@ -83,7 +83,24 @@ const S2_DATA = {
         ["Bresto", "Biwa Hayahide (Christmas)", 0, "3400m Turf (L)", "S2-5", "Biwa Hayahide", "Christmas", 5],
         ["Minty", "Biwa Hayahide (Christmas)", 0, "3400m Turf (L)", "S2-5", "Biwa Hayahide", "Christmas", 5],
         ["Boop", "Narita Taishin (Original)", 0, "3400m Turf (L)", "S2-5", "Narita Taishin", "Original", 5],
-        ["FuHua", "Narita Taishin (Original)", 0, "3400m Turf (L)", "S2-5", "Narita Taishin", "Original", 5]
+        ["FuHua", "Narita Taishin (Original)", 0, "3400m Turf (L)", "S2-5", "Narita Taishin", "Original", 5],
+        ["Kenesu", "Oguri Cap (Christmas)", 4, "2000m Dirt (R)", "S2-6", "Oguri Cap", "Christmas", 10],
+        ["Teki", "Oguri Cap (Christmas)", 0, "2000m Dirt (R)", "S2-6", "Oguri Cap", "Christmas", 5],
+        ["Spyder", "Oguri Cap (Christmas)", 0, "2000m Dirt (R)", "S2-6", "Oguri Cap", "Christmas", 10],
+        ["Cefiro", "T.M. Opera O (Original)", 0, "2000m Dirt (R)", "S2-6", "T.M. Opera O", "Original", 10],
+        ["Raccoon", "El Condor Pasa (Original)", 0, "2000m Dirt (R)", "S2-6", "El Condor Pasa", "Original", 5],
+        ["Run982", "Agnes Digital (Original)", 2, "2000m Dirt (R)", "S2-6", "Agnes Digital", "Original", 10],
+        ["FuHua", "Mejiro McQueen (Original)", 0, "2000m Dirt (R)", "S2-6", "Mejiro McQueen", "Original", 5],
+        ["Bresto", "El Condor Pasa (Original)", 0, "2000m Dirt (R)", "S2-6", "El Condor Pasa", "Original", 10],
+        ["Boop", "Oguri Cap (Christmas)", 0, "2000m Dirt (R)", "S2-6", "Oguri Cap", "Christmas", 10],
+        ["Pines", "Oguri Cap (Christmas)", 6, "2000m Dirt (R)", "S2-6", "Oguri Cap", "Christmas", 10],
+        ["HoriYon", "Oguri Cap (Christmas)", 1, "2000m Dirt (R)", "S2-6", "Oguri Cap", "Christmas", 10],
+        ["Dedratermi", "Special Week (Summer)", 0, "2000m Dirt (R)", "S2-6", "Special Week", "Summer", 5],
+        ["Jedmumu", "Agnes Digital (Original)", 1, "2000m Dirt (R)", "S2-6", "Agnes Digital", "Original", 5],
+        ["Nymaera", "Oguri Cap (Christmas)", 1, "2000m Dirt (R)", "S2-6", "Oguri Cap", "Christmas", 10],
+        ["Frozt", "Seiun Sky (Original)", 0, "2000m Dirt (R)", "S2-6", "Seiun Sky", "Original", 5],
+        ["Synocra", "Gold City (Festival)", 0, "2000m Dirt (R)", "S2-6", "Gold City", "Festival", 5],
+        ["Minty", "El Condor Pasa (Original)", 1, "2000m Dirt (R)", "S2-6", "El Condor Pasa", "Original", 5]
     ],
     
     tournamentWinners: {
@@ -92,6 +109,7 @@ const S2_DATA = {
         "S2-3": ["MetaHayato", "CarmineView", "Bresto"],
         "S2-4": ["Synocra", "KN", "Jedmumu"],
         "S2-5": ["Raccoon", "Dedratermi", "Minty"],
+        "S2-6": ["Pines", "HoriYon", "Nymaera"],
     },
     
     tournamentBans: {
@@ -127,6 +145,13 @@ const S2_DATA = {
             "Gold Ship (Original)",
             "Oguri Cap (Christmas)",
             "Super Creek (Original)"
+        ],
+        "S2-6": [
+            "Oguri Cap (Original)",
+            "Maruzensky (Original)",
+            "Special Week (Original)",
+            "Smart Falcon (Original)",
+            "Maruzensky (Summer)"
         ],
     },
     
@@ -231,6 +256,29 @@ const S2_DATA = {
                 ["Raccoon", "Alfheix", "MetaHayato", "Spyder", "Keejo", "Run982", "HoriYon", "Minty", "Dedratermi", "FuHua", "Boop", "Bresto"],
                 ["Raccoon", "Spyder", "Dedratermi", "MetaHayato", "FuHua", "Boop", "Alfheix", "Run982", "HoriYon", "Minty", "Bresto", "Keejo"]
             ]
+        },
+        "S2-6": {
+            "Group A": [
+                ["Kenesu", "Teki", "Spyder", "Cefiro", "Raccoon", "Run982", "FuHua", "Bresto", "Boop"],
+                ["Kenesu", "Spyder", "Cefiro", "Run982", "FuHua", "Raccoon", "Bresto", "Teki", "Boop"],
+                ["Kenesu", "Cefiro", "Boop", "Run982", "Raccoon", "FuHua", "Spyder", "Teki", "Bresto"],
+                ["Run982", "Raccoon", "Cefiro", "Bresto", "Teki", "FuHua", "Kenesu", "Spyder", "Boop"],
+                ["Run982", "Cefiro", "Kenesu", "FuHua", "Spyder", "Raccoon", "Teki", "Bresto", "Boop"]
+            ],
+            "Group B": [
+                ["Pines", "HoriYon", "Dedratermi", "Jedmumu", "Nymaera", "Frozt", "Synocra", "Minty", "NPC-chan"],
+                ["Pines", "Jedmumu", "Nymaera", "HoriYon", "Frozt", "Minty", "Dedratermi", "Synocra", "NPC-chan"],
+                ["Pines", "Nymaera", "Minty", "Dedratermi", "Jedmumu", "HoriYon", "Synocra", "Frozt", "NPC-chan"],
+                ["Pines", "HoriYon", "Nymaera", "Dedratermi", "Jedmumu", "Minty", "Synocra", "Frozt", "NPC-chan"],
+                ["Minty", "Pines", "Nymaera", "Frozt", "HoriYon", "Dedratermi", "Synocra", "Jedmumu", "NPC-chan"]
+            ],
+            "Finals": [
+                ["Kenesu", "HoriYon", "Pines", "Nymaera", "Boop", "Cefiro", "Run982", "Spyder", "Bresto"],
+                ["Nymaera", "Pines", "HoriYon", "Cefiro", "Run982", "Kenesu", "Spyder", "Bresto", "Boop"],
+                ["Pines", "Kenesu", "Cefiro", "HoriYon", "Run982", "Nymaera", "Spyder", "Bresto", "Boop"],
+                ["HoriYon", "Boop", "Cefiro", "Nymaera", "Run982", "Spyder", "Pines", "Kenesu", "Bresto"],
+                ["Pines", "Kenesu", "Nymaera", "Spyder", "Run982", "Bresto", "HoriYon", "Cefiro", "Boop"]
+            ]
         }
     }
 };
@@ -238,6 +286,7 @@ const S2_DATA = {
 if (typeof module !== 'undefined') {
     module.exports = { S2_DATA };
 }
+
 
 
 
