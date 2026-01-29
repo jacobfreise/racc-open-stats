@@ -1,5 +1,6 @@
+/* Default (Dark) */
 :root {
-    /* Default Theme (Dark Green/Grey - Original) */
+    color-scheme: dark;
     --bg-color: #1a1a1d;
     --card-bg: #2d2d30;
     --text-color: #e0e0e0;
@@ -12,10 +13,9 @@
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
-/* --- THEME DEFINITIONS --- */
-
 /* Ram */
 [data-theme="ram"] {
+    color-scheme: light;
     --bg-color: #fff1f2;
     --card-bg: #ffffff;
     --text-color: #881337;
@@ -27,6 +27,7 @@
 
 /* Rem */
 [data-theme="rem"] {
+    color-scheme: light;
     --bg-color: #f0f9ff;
     --card-bg: #ffffff;
     --text-color: #0c4a6e;
@@ -38,6 +39,7 @@
 
 /* Oguri Cap */
 [data-theme="oguri"] {
+    color-scheme: light;
     --bg-color: #eef2f6;
     --card-bg: #ffffff;
     --text-color: #374151;
@@ -49,6 +51,7 @@
 
 /* Coffee */
 [data-theme="coffee"] {
+    color-scheme: light;
     --bg-color: #fdf6e3;
     --card-bg: #fffbf0;
     --text-color: #432818;
@@ -60,6 +63,7 @@
 
 /* Nice Nature */
 [data-theme="nice-nature"] {
+    color-scheme: dark;
     --bg-color: #261e1b;
     --card-bg: #362b26;
     --text-color: #f3f3f3;
@@ -71,6 +75,7 @@
 
 /* Miku */
 [data-theme="miku"] {
+    color-scheme: dark;
     --bg-color: #111827;
     --card-bg: #1f2937;
     --text-color: #ccfbf1;
@@ -82,6 +87,7 @@
 
 /* Teto */
 [data-theme="teto"] {
+    color-scheme: dark;
     --bg-color: #1c1917;
     --card-bg: #292524;
     --text-color: #ffe4e6;
@@ -93,6 +99,7 @@
 
 /* Macchiato */
 [data-theme="macchiato"] {
+    color-scheme: dark;
     --bg-color: #24273a;
     --card-bg: #1e2030;
     --text-color: #cad3f5;
@@ -104,6 +111,7 @@
 
 /* Hina */
 [data-theme="hina"] {
+    color-scheme: dark;
     --bg-color: #1e1b4b;
     --card-bg: #312e81;
     --text-color: #faf5ff;
@@ -115,6 +123,7 @@
 
 /* Manga */
 [data-theme="manga"] {
+    color-scheme: light;
     --bg-color: #ffffff;
     --card-bg: #ffffff;
     --text-color: #000000;
@@ -129,6 +138,7 @@
 
 /* Succubus */
 [data-theme="succubus"] {
+    color-scheme: dark;
     --bg-color: #111111;
     --card-bg: #1f1f1f;
     --text-color: #f5f5f5;
@@ -698,5 +708,6 @@ tr:last-child td { border-bottom: none; }
         flex-shrink: 0;
     }
 }
+
 
 
