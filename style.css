@@ -510,6 +510,109 @@ tr:last-child td { border-bottom: none; }
     background: var(--accent-color);
 }
 
+/* --- NEW: LIVE DATA STYLING --- */
+
+.live-tourney-card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 25px;
+    margin-bottom: 25px;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-md);
+    animation: fadeIn 0.5s ease;
+}
+
+.live-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+
+.live-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: var(--accent-color);
+}
+
+.live-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+}
+
+.status-active {
+    background: rgba(46, 204, 113, 0.2);
+    color: #2ecc71;
+    border: 1px solid #2ecc71;
+}
+
+.status-completed {
+    background: rgba(149, 165, 166, 0.2);
+    color: #95a5a6;
+    border: 1px solid #7f8c8d;
+}
+
+.live-meta {
+    display: flex;
+    gap: 20px;
+    font-size: 0.9rem;
+    color: var(--text-color);
+    margin-bottom: 20px;
+}
+
+.live-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.live-table th {
+    background: var(--bg-color);
+    position: static; /* Override sticky for nested */
+}
+
+.live-table td {
+    vertical-align: middle;
+    padding: 12px;
+}
+
+.live-results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px;
+}
+
+.live-result-row {
+    display: flex;
+    align-items: center;
+    background: var(--bg-color);
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    font-size: 0.85rem;
+}
+
+.lr-rank {
+    width: 20px;
+    font-weight: bold;
+    opacity: 0.6;
+}
+
+.lr-name {
+    flex: 1;
+    font-weight: 600;
+}
+
+.lr-uma {
+    font-size: 0.8em;
+    opacity: 0.6;
+    margin-left: 5px;
+}
+
 /* Mobile Tweaks */
 @media (max-width: 768px) {
     .controls {
