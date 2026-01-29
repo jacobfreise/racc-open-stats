@@ -1,8 +1,10 @@
 // --- GLOBAL VARIABLES ---
 const POINTS_SYSTEM = [25, 18, 15, 12, 10, 8, 6, 4, 2, 1]; 
 
-let currentRawData = []; // The raw processed rows for the active season
-let activeDataset = null; // The full data object (winners, bans, etc) for active season
+let currentRawData = []; 
+let activeDataset = null; 
+// Store the raw firebase data separately
+let liveFirebaseData = [];
 
 // --- Helper: Distance Category ---
 function getDistanceCategory(surfaceString) {
@@ -25,6 +27,112 @@ function formatName(fullName) {
     const variant = parts[1].replace(')', '').trim();
     return `${mainName} <span class="variant-tag">${variant}</span>`;
 }
+
+// --- FIREBASE LIVE DATA LISTENER ---
+window.addEventListener('liveDataReady', (e) => {
+    liveFirebaseData = e.detail;
+    renderLiveTournaments();
+});
+
+function renderLiveTournaments() {
+    const container = document.getElementById('liveDataOutput');
+    if (!container) return;
+    
+    if (liveFirebaseData.length === 0) {
+        container.innerHTML = `<div style="text-align:center; padding:20px;">No live tournaments found.</div>`;
+        return;
+    }
+
+    let html = '';
+
+    liveFirebaseData.forEach(t => {
+        // Build Player Map for Quick Lookup
+        const playerMap = {};
+        if (t.players && Array.isArray(t.players)) {
+            t.players.forEach(p => {
+                playerMap[p.id] = { name: p.name, uma: p.uma };
+            });
+        }
+
+        html += `<div class="live-tourney-card">`;
+        
+        // Header
+        let statusClass = t.status === 'active' ? 'status-active' : 'status-completed';
+        html += `
+            <div class="live-header">
+                <h2>${t.name}</h2>
+                <span class="live-badge ${statusClass}">${t.status.toUpperCase()}</span>
+            </div>
+            <div class="live-meta">
+                <span><strong>Stage:</strong> ${t.stage || '-'}</span>
+                <span><strong>Teams:</strong> ${t.teams ? t.teams.length : 0}</span>
+                <span><strong>ID:</strong> <span style="font-family:monospace; opacity:0.7;">${t.id}</span></span>
+            </div>
+        `;
+
+        // Races Table
+        if (t.races && t.races.length > 0) {
+            
+            // Custom Sort Logic (Groups A/B/C then Finals)
+            const groupOrder = { 'A': 1, 'B': 2, 'C': 3, 'Finals': 4 };
+            const sortedRaces = [...t.races].sort((a, b) => {
+                const rankA = groupOrder[a.group] || 99;
+                const rankB = groupOrder[b.group] || 99;
+                if (rankA !== rankB) return rankA - rankB;
+                return a.raceNumber - b.raceNumber;
+            });
+
+            html += `<div class="table-wrapper" style="margin-top:20px;">
+                <table class="live-table">
+                    <thead>
+                        <tr>
+                            <th style="width:50px;">#</th>
+                            <th style="width:80px;">Group</th>
+                            <th>Results</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+
+            sortedRaces.forEach(race => {
+                // Convert placements object { "pid": 1 } to sorted array
+                const resultsArray = Object.entries(race.placements || {});
+                resultsArray.sort((a, b) => a[1] - b[1]);
+
+                // Build result string
+                const resultItems = resultsArray.map(([pid, rank]) => {
+                    const pInfo = playerMap[pid] || { name: "Unknown", uma: "?" };
+                    let rankColor = '';
+                    if(rank === 1) rankColor = '#ffd700';
+                    if(rank === 2) rankColor = '#c0c0c0';
+                    if(rank === 3) rankColor = '#cd7f32';
+                    
+                    const style = rankColor ? `style="color:${rankColor}; font-weight:bold;"` : '';
+                    
+                    return `<div class="live-result-row">
+                        <span class="lr-rank" ${style}>${rank}.</span>
+                        <span class="lr-name">${pInfo.name}</span>
+                        <span class="lr-uma">[${pInfo.uma}]</span>
+                    </div>`;
+                }).join('');
+
+                html += `<tr>
+                    <td style="text-align:center; font-weight:bold; color:var(--accent-color);">${race.raceNumber}</td>
+                    <td style="text-align:center;">${race.group}</td>
+                    <td><div class="live-results-grid">${resultItems}</div></td>
+                </tr>`;
+            });
+
+            html += `</tbody></table></div>`;
+        } else {
+            html += `<div style="padding:15px; opacity:0.6; font-style:italic;">No race results uploaded yet.</div>`;
+        }
+
+        html += `</div>`; // End Card
+    });
+
+    container.innerHTML = html;
+}
+
 
 // --- SEASON SWITCHER LOGIC ---
 function switchSeason() {
@@ -60,7 +168,8 @@ function switchSeason() {
     // 3. Refresh the UI
     updateData();
     renderStatsTable();
-    renderRaceResults(); // <--- NEW CALL
+    renderRaceResults();
+    // Note: We don't re-render live data here because it exists independently of the Season selector
 }
 
 // --- UI Logic: Tabs ---
@@ -75,6 +184,7 @@ function switchTab(tabId) {
     if (tabId === 'trainer-stats') tabs[2].classList.add('active');
     if (tabId === 'championship') tabs[3].classList.add('active');
     if (tabId === 'race-results') tabs[4].classList.add('active');
+    if (tabId === 'live-data') tabs[5].classList.add('active');
 }
 
 // --- Tier List View Switcher ---
@@ -101,18 +211,14 @@ function setTierView(index) {
 // --- Calculate Points & Beat Rate ---
 function getChampionshipPoints(activeTournaments, filteredData) {
     let stats = { trainer: {}, uma: {} };
-    
-    // Safety check if results exist
     if (!activeDataset.tournamentRaceResults) return stats;
 
-    // 1. Create a Map to link Trainer+Tourney -> UmaName
     const lookupMap = {};
     filteredData.forEach(row => {
         const key = `${row.RawLength}_${row.Trainer}`;
         lookupMap[key] = row.UniqueName;
     });
 
-    // 2. Iterate detailed race results
     for (const [tournamentName, stages] of Object.entries(activeDataset.tournamentRaceResults)) {
         if (!activeTournaments.has(tournamentName)) continue;
 
@@ -125,12 +231,9 @@ function getChampionshipPoints(activeTournaments, filteredData) {
                     if (player.includes("Player") || player === "DQ" || player === "NPC-chan") return;
 
                     const opponentsBeaten = (lobbySize - 1) - rankIndex;
-
-                    // --- A. Process Trainer ---
                     if (!stats.trainer[player]) {
                         stats.trainer[player] = { points: 0, races: 0, beaten: 0, totalOpp: 0 };
                     }
-                    
                     if (rankIndex < POINTS_SYSTEM.length) {
                         stats.trainer[player].points += POINTS_SYSTEM[rankIndex];
                     }
@@ -138,10 +241,8 @@ function getChampionshipPoints(activeTournaments, filteredData) {
                     stats.trainer[player].beaten += opponentsBeaten;
                     stats.trainer[player].totalOpp += possibleOpponents;
 
-                    // --- B. Process Uma ---
                     const key = `${tournamentName}_${player}`;
                     const umaName = lookupMap[key];
-                    
                     if (umaName) {
                         if (!stats.uma[umaName]) {
                             stats.uma[umaName] = { points: 0, races: 0, beaten: 0, totalOpp: 0 };
@@ -489,7 +590,7 @@ function renderStatsTable() {
     }).join('');
 }
 
-// --- NEW FUNCTION: RENDER RACE RESULTS ---
+// --- NEW FUNCTION: RENDER RACE RESULTS (Static) ---
 function renderRaceResults() {
     const container = document.getElementById('raceResultsOutput');
     if (!container) return;
