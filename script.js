@@ -18,6 +18,7 @@ function getDistanceCategory(surfaceString) {
 
 // --- Formatting Helper ---
 function formatName(fullName) {
+    if (!fullName) return "Unknown";
     if (!fullName.includes('(')) return fullName;
     const parts = fullName.split('(');
     const mainName = parts[0].trim();
@@ -33,8 +34,6 @@ function switchSeason() {
     if (season === 's1') {
         activeDataset = S1_DATA;
     } else {
-        // Fallback to S2 if selected or default
-        // Ensure S2_DATA exists in data_s2.js, otherwise fallback to empty object to prevent crash
         activeDataset = (typeof S2_DATA !== 'undefined') ? S2_DATA : { compactData: [], tournamentRaceResults: {} };
     }
 
@@ -61,6 +60,7 @@ function switchSeason() {
     // 3. Refresh the UI
     updateData();
     renderStatsTable();
+    renderRaceResults(); // <--- NEW CALL
 }
 
 // --- UI Logic: Tabs ---
@@ -74,6 +74,7 @@ function switchTab(tabId) {
     if (tabId === 'uma-stats') tabs[1].classList.add('active');
     if (tabId === 'trainer-stats') tabs[2].classList.add('active');
     if (tabId === 'championship') tabs[3].classList.add('active');
+    if (tabId === 'race-results') tabs[4].classList.add('active');
 }
 
 // --- Tier List View Switcher ---
@@ -85,7 +86,6 @@ function setTierView(index) {
     });
 
     const glider = document.getElementById('tierGlider');
-    // Adjusted width calc slightly in CSS, logic remains same
     if(glider) glider.style.transform = `translateX(${index * 100}%)`;
 
     const views = ['view-wr', 'view-dom', 'view-champ'];
@@ -319,7 +319,6 @@ function renderTable(tableId, data, columns) {
     }).join('');
 }
 
-// Updated Generic Tier List Render
 function renderTierList(containerId, data, countKey, minReq, sortKey) {
     const tiers = { S: [], A: [], B: [], C: [], D: [], F: [] };
 
@@ -488,6 +487,57 @@ function renderStatsTable() {
             </tr>
         `;
     }).join('');
+}
+
+// --- NEW FUNCTION: RENDER RACE RESULTS ---
+function renderRaceResults() {
+    const container = document.getElementById('raceResultsOutput');
+    if (!container) return;
+
+    if (!activeDataset.tournamentRaceResults || Object.keys(activeDataset.tournamentRaceResults).length === 0) {
+        container.innerHTML = `<div style="text-align:center; padding:40px; color:var(--text-color); opacity:0.6;">No detailed race results available for this season.</div>`;
+        return;
+    }
+
+    let html = '';
+    
+    // Sort keys or just iterate
+    for (const [tourneyName, stages] of Object.entries(activeDataset.tournamentRaceResults)) {
+        html += `<div class="race-tourney-card">`;
+        html += `<h2 class="race-tourney-title">${tourneyName}</h2>`;
+        
+        for (const [stageName, races] of Object.entries(stages)) {
+            html += `<div class="race-stage-block">`;
+            html += `<h3 class="race-stage-title">${stageName}</h3>`;
+            html += `<div class="race-grid">`;
+            
+            races.forEach((race, index) => {
+                html += `<div class="single-race-card">`;
+                html += `<div class="race-header">Race ${index + 1}</div>`;
+                html += `<ul class="race-standings">`;
+                
+                race.forEach((player, rank) => {
+                    let rankClass = `rank-other`;
+                    if (rank === 0) rankClass = `rank-1`;
+                    if (rank === 1) rankClass = `rank-2`;
+                    if (rank === 2) rankClass = `rank-3`;
+
+                    html += `<li class="${rankClass}">
+                        <span class="rank-num">${rank + 1}</span>
+                        <span class="player-name">${player}</span>
+                    </li>`;
+                });
+                
+                html += `</ul></div>`;
+            });
+            
+            html += `</div></div>`; // End Grid & Stage
+        }
+        
+        html += `</div>`; // End Tourney Card
+    }
+    
+    container.innerHTML = html;
 }
 
 window.onload = function() {
