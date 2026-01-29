@@ -22,7 +22,7 @@ function formatName(fullName) {
     const parts = fullName.split('(');
     const mainName = parts[0].trim();
     const variant = parts[1].replace(')', '').trim();
-    return `${mainName} <span class="variant-tag">(${variant})</span>`;
+    return `${mainName} <span class="variant-tag">${variant}</span>`;
 }
 
 // --- SEASON SWITCHER LOGIC ---
@@ -85,6 +85,7 @@ function setTierView(index) {
     });
 
     const glider = document.getElementById('tierGlider');
+    // Adjusted width calc slightly in CSS, logic remains same
     if(glider) glider.style.transform = `translateX(${index * 100}%)`;
 
     const views = ['view-wr', 'view-dom', 'view-champ'];
@@ -279,20 +280,20 @@ function calculateStats(filteredData) {
         };
 
         if (type === 'uma') {
-            stats.tourneyStatsDisplay = `${tWinPct}% <span style="font-size:0.8em; color:#888">(${item.tourneyWins}/${item.picks})</span>`;
+            stats.tourneyStatsDisplay = `${tWinPct}% <span style="font-size:0.8em; color:var(--text-color); opacity:0.7;">(${item.tourneyWins}/${item.picks})</span>`;
             const banRate = validBanTourneyCount > 0 ? (item.bans / validBanTourneyCount * 100).toFixed(1) : "0.0";
-            stats.banStatsDisplay = `${banRate}% <span style="font-size:0.8em; color:#888">(${item.bans}/${validBanTourneyCount})</span>`;
+            stats.banStatsDisplay = `${banRate}% <span style="font-size:0.8em; color:var(--text-color); opacity:0.7;">(${item.bans}/${validBanTourneyCount})</span>`;
         }
 
         if (type === 'trainer') {
-            stats.tourneyStatsDisplay = `${tWinPct}% <span style="font-size:0.8em; color:#888">(${item.tournamentWins}/${item.playedTourneys.size})</span>`;
+            stats.tourneyStatsDisplay = `${tWinPct}% <span style="font-size:0.8em; color:var(--text-color); opacity:0.7;">(${item.tournamentWins}/${item.playedTourneys.size})</span>`;
             const historyArr = Object.entries(item.characterHistory).map(([key, val]) => ({ name: key, ...val }));
             historyArr.sort((a, b) => b.picks - a.picks);
             const fav = historyArr[0];
             stats.favorite = fav ? `${formatName(fav.name)} <span class="stat-badge">x${fav.picks}</span>` : '-';
             historyArr.sort((a, b) => b.wins - a.wins || a.picks - b.picks);
             const best = historyArr[0];
-            stats.ace = (best && best.wins > 0) ? `${formatName(best.name)} <span class="stat-badge win-badge">★${best.wins}</span>` : '<span style="color:#666">-</span>';
+            stats.ace = (best && best.wins > 0) ? `${formatName(best.name)} <span class="stat-badge win-badge">★${best.wins}</span>` : '<span style="color:var(--text-color); opacity:0.5;">-</span>';
         }
 
         return stats;
@@ -368,7 +369,7 @@ function renderTierList(containerId, data, countKey, minReq, sortKey) {
             </div>`;
     });
 
-    if (html === '') html = '<div style="padding:20px; color:#888;">No data.</div>';
+    if (html === '') html = '<div style="padding:20px; color:var(--text-color); opacity:0.6; text-align:center;">No data fits these criteria.</div>';
     container.innerHTML = html;
 }
 
@@ -479,7 +480,7 @@ function renderStatsTable() {
     tbody.innerHTML = data.map((player, index) => {
         return `
             <tr>
-                <td>${index + 1}</td>
+                <td><span class="stat-badge">${index + 1}</span></td>
                 <td>${player.name}</td>
                 <td>${player.racesRun}</td>
                 <td>${player.totalPoints}</td>
@@ -497,5 +498,4 @@ window.onload = function() {
     }
     // Initialize with whatever is selected in the HTML dropdown (default S2)
     switchSeason();
-
 };
