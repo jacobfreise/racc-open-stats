@@ -4,56 +4,70 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Racc Open Analysis</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="container">
-    <h1>Racc Open Dashboard</h1>
+    <header class="app-header">
+        <h1>Racc Open <span class="highlight">Dashboard</span></h1>
+        <div class="header-decoration"></div>
+    </header>
     
     <div class="controls">
         <div class="control-group">
-            <label style="color:var(--accent-color);">Season</label>
-            <select id="seasonSelector" onchange="switchSeason()">
-                <option value="s1">Season 1</option>
-                <option value="s2" selected>Season 2</option>
-            </select>
+            <label>Season</label>
+            <div class="select-wrapper">
+                <select id="seasonSelector" onchange="switchSeason()">
+                    <option value="s1">Season 1</option>
+                    <option value="s2" selected>Season 2</option>
+                </select>
+            </div>
         </div>
 
         <div class="control-group">
             <label>Theme</label>
-            <select id="themeSelector" onchange="switchTheme()">
-                <option value="">Default (Dark)</option>
-                <option value="ram">Ram (Pink)</option>
-                <option value="rem">Rem (Blue)</option>
-                <option value="cappuchin">Cappuchin (Brown)</option>
-                <option value="miku">Miku (Teal)</option>
-                <option value="teto">Teto (Red)</option>
-                <option value="macchiato">Macchiato (Purple)</option>
-                <option value="nature">Nature (Green)</option>
-                <option value="hina">Hina (Violet)</option>
-            </select>
+            <div class="select-wrapper">
+                <select id="themeSelector" onchange="switchTheme()">
+                    <option value="">Default (Dark)</option>
+                    <option value="ram">Ram (Pink)</option>
+                    <option value="rem">Rem (Blue)</option>
+                    <option value="cappuchin">Cappuchin (Brown)</option>
+                    <option value="miku">Miku (Teal)</option>
+                    <option value="teto">Teto (Red)</option>
+                    <option value="macchiato">Macchiato (Purple)</option>
+                    <option value="nature">Nature (Green)</option>
+                    <option value="hina">Hina (Violet)</option>
+                </select>
+            </div>
         </div>
         <div class="control-group">
             <label>Surface</label>
-            <select id="surfaceFilter" onchange="updateData()">
-                <option value="All">All Surfaces</option>
-                <option value="Turf">Turf</option>
-                <option value="Dirt">Dirt</option>
-            </select>
+            <div class="select-wrapper">
+                <select id="surfaceFilter" onchange="updateData()">
+                    <option value="All">All Surfaces</option>
+                    <option value="Turf">Turf</option>
+                    <option value="Dirt">Dirt</option>
+                </select>
+            </div>
         </div>
         <div class="control-group">
             <label>Distance</label>
-            <select id="lengthFilter" onchange="updateData()">
-            <option value="All">All Distances</option>
-            <option value="Short">Short (≤1400m)</option>
-            <option value="Mile">Mile (1401-1800m)</option>
-            <option value="Medium">Medium (1801-2400m)</option>
-            <option value="Long">Long (>2400m)</option>
-        </select>
+            <div class="select-wrapper">
+                <select id="lengthFilter" onchange="updateData()">
+                    <option value="All">All Distances</option>
+                    <option value="Short">Short (≤1400m)</option>
+                    <option value="Mile">Mile (1401-1800m)</option>
+                    <option value="Medium">Medium (1801-2400m)</option>
+                    <option value="Long">Long (>2400m)</option>
+                </select>
+            </div>
         </div>
-        <div class="control-group" style="flex:1; max-width:300px;">
-            <label>Min Entries for Tier List: <span id="minEntriesVal" style="color:#4ecca3">5</span></label>
+        <div class="control-group slider-group">
+            <label>Min Entries: <span id="minEntriesVal">5</span></label>
             <div class="slider-container">
                 <input type="range" id="minEntries" min="1" max="20" value="5" oninput="updateData()">
             </div>
@@ -82,11 +96,11 @@
                 <h3 class="tier-subhead">Based on 1st Place finishes / Races Run</h3>
                 <div class="grid-container">
                     <div>
-                        <h3 style="text-align:center; color:var(--accent-color);">Umas</h3>
+                        <h3 class="section-title">Umas</h3>
                         <div id="umaTierListWR"></div>
                     </div>
                     <div>
-                        <h3 style="text-align:center; color:var(--accent-color);">Trainers</h3>
+                        <h3 class="section-title">Trainers</h3>
                         <div id="trainerTierListWR"></div>
                     </div>
                 </div>
@@ -96,11 +110,11 @@
                 <h3 class="tier-subhead">Based on % of Opponents Beaten</h3>
                 <div class="grid-container">
                     <div>
-                        <h3 style="text-align:center; color:var(--accent-color);">Umas</h3>
+                        <h3 class="section-title">Umas</h3>
                         <div id="umaTierListDom"></div>
                     </div>
                     <div>
-                        <h3 style="text-align:center; color:var(--accent-color);">Trainers</h3>
+                        <h3 class="section-title">Trainers</h3>
                         <div id="trainerTierListDom"></div>
                     </div>
                 </div>
@@ -110,11 +124,11 @@
                 <h3 class="tier-subhead">Based on Tournament Victories</h3>
                 <div class="grid-container">
                     <div>
-                        <h3 style="text-align:center; color:var(--accent-color);">Umas</h3>
+                        <h3 class="section-title">Umas</h3>
                         <div id="umaTierListChamp"></div>
                     </div>
                     <div>
-                        <h3 style="text-align:center; color:var(--accent-color);">Trainers</h3>
+                        <h3 class="section-title">Trainers</h3>
                         <div id="trainerTierListChamp"></div>
                     </div>
                 </div>
@@ -123,9 +137,9 @@
     </div>
 
     <div id="uma-stats" class="view-section">
-        <div class="card">
+        <div class="card table-card">
             <h2>Uma Statistics</h2>
-            <div style="overflow-x:auto;">
+            <div class="table-wrapper">
                 <table id="umaTable">
                 <thead>
                     <tr>
@@ -146,9 +160,9 @@
     </div>
 
     <div id="trainer-stats" class="view-section">
-        <div class="card">
+        <div class="card table-card">
             <h2>Trainer Statistics</h2>
-            <div style="overflow-x:auto;">
+            <div class="table-wrapper">
                <table id="trainerTable">
                     <thead>
                         <tr>
@@ -170,9 +184,9 @@
     </div>
 
     <div id="championship" class="view-section">
-        <div class="card">
+        <div class="card table-card">
             <h2>🏆 Championship Standings</h2>
-            <div style="overflow-x:auto;">
+            <div class="table-wrapper">
                 <table id="champTable" class="stats-table">
                     <thead>
                         <tr>
@@ -189,10 +203,6 @@
             </div>
         </div>
     </div>
-
-    <h1>Tournament Data</h1>
-    <div id="output">Loading...</div>
-
 </div> 
 
 <script src="data.js"></script>
