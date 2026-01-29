@@ -13,6 +13,8 @@
 }
 
 /* --- THEME DEFINITIONS --- */
+
+/* Ram */
 [data-theme="ram"] {
     --bg-color: #fff1f2;
     --card-bg: #ffffff;
@@ -22,6 +24,8 @@
     --border-color: #fecdd3;
     --hover-bg: rgba(244, 63, 94, 0.05);
 }
+
+/* Rem */
 [data-theme="rem"] {
     --bg-color: #f0f9ff;
     --card-bg: #ffffff;
@@ -31,7 +35,20 @@
     --border-color: #bae6fd;
     --hover-bg: rgba(14, 165, 233, 0.05);
 }
-[data-theme="cappuchin"] {
+
+/* Oguri Cap */
+[data-theme="oguri"] {
+    --bg-color: #eef2f6;
+    --card-bg: #ffffff;
+    --text-color: #374151;
+    --accent-color: #3b82f6;
+    --secondary-color: #dbeafe;
+    --border-color: #cbd5e1;
+    --hover-bg: rgba(59, 130, 246, 0.05);
+}
+
+/* Coffee */
+[data-theme="coffee"] {
     --bg-color: #fdf6e3;
     --card-bg: #fffbf0;
     --text-color: #432818;
@@ -40,6 +57,19 @@
     --border-color: #e6ccb2;
     --hover-bg: rgba(156, 102, 68, 0.05);
 }
+
+/* Nice Nature */
+[data-theme="nice-nature"] {
+    --bg-color: #261e1b;
+    --card-bg: #362b26;
+    --text-color: #f3f3f3;
+    --accent-color: #69c10c;
+    --secondary-color: #4a1a1a;
+    --border-color: #ff0000;
+    --hover-bg: rgba(105, 193, 12, 0.15);
+}
+
+/* Miku */
 [data-theme="miku"] {
     --bg-color: #111827;
     --card-bg: #1f2937;
@@ -49,6 +79,8 @@
     --border-color: #2d5e56;
     --hover-bg: rgba(45, 212, 191, 0.05);
 }
+
+/* Teto */
 [data-theme="teto"] {
     --bg-color: #1c1917;
     --card-bg: #292524;
@@ -58,6 +90,8 @@
     --border-color: #881337;
     --hover-bg: rgba(225, 29, 72, 0.05);
 }
+
+/* Macchiato */
 [data-theme="macchiato"] {
     --bg-color: #24273a;
     --card-bg: #1e2030;
@@ -67,15 +101,8 @@
     --border-color: #494d64;
     --hover-bg: rgba(198, 160, 246, 0.05);
 }
-[data-theme="nature"] {
-    --bg-color: #0c3823;
-    --card-bg: #19231e;
-    --text-color: #fefce0;
-    --accent-color: #c74e3c;
-    --secondary-color: #2b1d18;
-    --border-color: #5c4d3c;
-    --hover-bg: rgba(199, 78, 60, 0.05);
-}
+
+/* Hina */
 [data-theme="hina"] {
     --bg-color: #1e1b4b;
     --card-bg: #312e81;
@@ -84,6 +111,31 @@
     --secondary-color: #4c1d95;
     --border-color: #6d28d9;
     --hover-bg: rgba(192, 132, 252, 0.05);
+}
+
+/* Manga */
+[data-theme="manga"] {
+    --bg-color: #ffffff;
+    --card-bg: #ffffff;
+    --text-color: #000000;
+    --accent-color: #000000;
+    --secondary-color: #f3f3f3;
+    --border-color: #000000;
+    --hover-bg: rgba(0, 0, 0, 0.05);
+    --shadow-sm: 2px 2px 0px rgba(0,0,0,1);
+    --shadow-md: 4px 4px 0px rgba(0,0,0,1);
+    --shadow-lg: 6px 6px 0px rgba(0,0,0,1);
+}
+
+/* Succubus */
+[data-theme="succubus"] {
+    --bg-color: #111111;
+    --card-bg: #1f1f1f;
+    --text-color: #f5f5f5;
+    --accent-color: #ed2553;
+    --secondary-color: #2d2d2d;
+    --border-color: #333333;
+    --hover-bg: rgba(237, 37, 83, 0.1);
 }
 
 /* --- BASE STYLES --- */
@@ -646,3 +698,4 @@ tr:last-child td { border-bottom: none; }
         flex-shrink: 0;
     }
 }
+
