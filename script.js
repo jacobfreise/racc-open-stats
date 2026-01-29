@@ -168,8 +168,7 @@ function switchSeason() {
     // 3. Refresh the UI
     updateData();
     renderStatsTable();
-    renderRaceResults();
-    // Note: We don't re-render live data here because it exists independently of the Season selector
+    // Removed renderRaceResults();
 }
 
 // --- UI Logic: Tabs ---
@@ -183,8 +182,8 @@ function switchTab(tabId) {
     if (tabId === 'uma-stats') tabs[1].classList.add('active');
     if (tabId === 'trainer-stats') tabs[2].classList.add('active');
     if (tabId === 'championship') tabs[3].classList.add('active');
-    if (tabId === 'race-results') tabs[4].classList.add('active');
-    if (tabId === 'live-data') tabs[5].classList.add('active');
+    // Removed Race Results tab logic
+    if (tabId === 'live-data') tabs[4].classList.add('active');
 }
 
 // --- Tier List View Switcher ---
@@ -588,57 +587,6 @@ function renderStatsTable() {
             </tr>
         `;
     }).join('');
-}
-
-// --- NEW FUNCTION: RENDER RACE RESULTS (Static) ---
-function renderRaceResults() {
-    const container = document.getElementById('raceResultsOutput');
-    if (!container) return;
-
-    if (!activeDataset.tournamentRaceResults || Object.keys(activeDataset.tournamentRaceResults).length === 0) {
-        container.innerHTML = `<div style="text-align:center; padding:40px; color:var(--text-color); opacity:0.6;">No detailed race results available for this season.</div>`;
-        return;
-    }
-
-    let html = '';
-    
-    // Sort keys or just iterate
-    for (const [tourneyName, stages] of Object.entries(activeDataset.tournamentRaceResults)) {
-        html += `<div class="race-tourney-card">`;
-        html += `<h2 class="race-tourney-title">${tourneyName}</h2>`;
-        
-        for (const [stageName, races] of Object.entries(stages)) {
-            html += `<div class="race-stage-block">`;
-            html += `<h3 class="race-stage-title">${stageName}</h3>`;
-            html += `<div class="race-grid">`;
-            
-            races.forEach((race, index) => {
-                html += `<div class="single-race-card">`;
-                html += `<div class="race-header">Race ${index + 1}</div>`;
-                html += `<ul class="race-standings">`;
-                
-                race.forEach((player, rank) => {
-                    let rankClass = `rank-other`;
-                    if (rank === 0) rankClass = `rank-1`;
-                    if (rank === 1) rankClass = `rank-2`;
-                    if (rank === 2) rankClass = `rank-3`;
-
-                    html += `<li class="${rankClass}">
-                        <span class="rank-num">${rank + 1}</span>
-                        <span class="player-name">${player}</span>
-                    </li>`;
-                });
-                
-                html += `</ul></div>`;
-            });
-            
-            html += `</div></div>`; // End Grid & Stage
-        }
-        
-        html += `</div>`; // End Tourney Card
-    }
-    
-    container.innerHTML = html;
 }
 
 window.onload = function() {
