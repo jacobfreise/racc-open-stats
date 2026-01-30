@@ -3,7 +3,6 @@ const POINTS_SYSTEM = [25, 18, 15, 12, 10, 8, 6, 4, 2, 1];
 
 let currentRawData = []; 
 let activeDataset = null; 
-// Store the raw firebase data separately
 let liveFirebaseData = [];
 
 // --- Helper: Distance Category ---
@@ -30,7 +29,7 @@ function formatName(fullName) {
 
 // --- FIREBASE LIVE DATA LISTENER ---
 window.addEventListener('liveDataReady', (e) => {
-    liveFirebaseData = e.detail;
+    liveFirebaseData = e.detail; // Update global data
     renderLiveTournaments();
 });
 
@@ -56,12 +55,22 @@ function renderLiveTournaments() {
 
         html += `<div class="live-tourney-card">`;
         
-        // Header
+        // Header with Copy Button
         let statusClass = t.status === 'active' ? 'status-active' : 'status-completed';
         html += `
             <div class="live-header">
-                <h2>${t.name}</h2>
-                <span class="live-badge ${statusClass}">${t.status.toUpperCase()}</span>
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <h2>${t.name}</h2>
+                    <span class="live-badge ${statusClass}">${t.status.toUpperCase()}</span>
+                </div>
+                
+                <button onclick="copyTournamentResults('${t.id}')" class="copy-btn" title="Copy Results to Clipboard">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                    <span>Copy Text</span>
+                </button>
             </div>
             <div class="live-meta">
                 <span><strong>Stage:</strong> ${t.stage || '-'}</span>
@@ -133,6 +142,66 @@ function renderLiveTournaments() {
     container.innerHTML = html;
 }
 
+// --- Copy to Clipboard Logic ---
+function copyTournamentResults(tournamentId) {
+    const tournament = liveFirebaseData.find(t => t.id === tournamentId);
+    
+    if (!tournament) {
+        console.error("Tournament data not found for ID:", tournamentId);
+        return;
+    }
+
+    let text = `${tournament.name}\n\n`;
+    
+    // Helper to find player name/uma
+    const getPlayer = (id) => {
+        const p = tournament.players.find(pl => pl.id === id);
+        return p ? { name: p.name, uma: p.uma || "Unknown" } : { name: "Unknown", uma: "Unknown" };
+    };
+
+    // Define the order we want to print: Group A -> B -> C -> Finals
+    const groups = ["A", "B", "C", "Finals"];
+
+    groups.forEach(group => {
+        // Filter races for this specific group/stage
+        const races = tournament.races.filter(r => {
+            if (group === "Finals") return r.stage === "finals";
+            return r.group === group && r.stage === "groups";
+        });
+
+        // Sort by Race Number (1, 2, 3...)
+        races.sort((a, b) => a.raceNumber - b.raceNumber);
+
+        if (races.length > 0) {
+            races.forEach(race => {
+                // Header: "Group A Round 1" or "Finals Round 1"
+                const groupName = group === "Finals" ? "Finals" : `Group ${group}`;
+                text += `${groupName} Round ${race.raceNumber}\n`;
+
+                // Convert placements object {id: rank} into sorted array
+                const placements = Object.entries(race.placements || {})
+                    .map(([id, rank]) => ({ id, rank: Number(rank) }))
+                    .sort((a, b) => a.rank - b.rank);
+
+                // Add each player: "1. Name [Uma]"
+                placements.forEach(p => {
+                    const player = getPlayer(p.id);
+                    text += `${p.rank}. ${player.name} [${player.uma}]\n`;
+                });
+
+                text += "\n"; // Empty line between rounds
+            });
+        }
+    });
+
+    // Write to Clipboard
+    navigator.clipboard.writeText(text.trim()).then(() => {
+        alert("Results copied to clipboard!");
+    }).catch(err => {
+        console.error("Failed to copy: ", err);
+        alert("Failed to copy. See console.");
+    });
+}
 
 // --- SEASON SWITCHER LOGIC ---
 function switchSeason() {
@@ -168,7 +237,6 @@ function switchSeason() {
     // 3. Refresh the UI
     updateData();
     renderStatsTable();
-    // Removed renderRaceResults();
 }
 
 // --- UI Logic: Tabs ---
@@ -182,7 +250,6 @@ function switchTab(tabId) {
     if (tabId === 'uma-stats') tabs[1].classList.add('active');
     if (tabId === 'trainer-stats') tabs[2].classList.add('active');
     if (tabId === 'championship') tabs[3].classList.add('active');
-    // Removed Race Results tab logic
     if (tabId === 'live-data') tabs[4].classList.add('active');
 }
 
@@ -332,10 +399,10 @@ function calculateStats(filteredData) {
                 validBanTourneyCount++; 
                 const banList = activeDataset.tournamentBans[tourneyID];
                 banList.forEach(umaName => {
-                    if (!umaMap[umaName]) {
+                    if (!umaMap[umaName]) { 
                         umaMap[umaName] = { 
                             name: umaName, picks: 0, wins: 0, totalRacesRun: 0, tourneyWins: 0, bans: 0 
-                        };
+                        }; 
                     }
                     umaMap[umaName].bans++;
                 });
