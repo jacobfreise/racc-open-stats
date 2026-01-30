@@ -618,7 +618,7 @@ function calculateIndividualStats() {
             for (const [stageName, races] of Object.entries(stages)) {
                 races.forEach((raceResult) => {
                     raceResult.forEach((player, rankIndex) => {
-                        if (player.includes("Player") || player === "DQ") return;
+                        if (player.includes("Player") || player === "DQ" || player === "NPC-chan") return;
 
                         if (!stats[player]) { stats[player] = { name: player, totalPoints: 0, racesRun: 0 }; }
                         if (rankIndex < POINTS_SYSTEM.length) { stats[player].totalPoints += POINTS_SYSTEM[rankIndex]; }
@@ -665,3 +665,4 @@ window.onload = function() {
     // Initialize with whatever is selected in the HTML dropdown (default S2)
     switchSeason();
 };
+
