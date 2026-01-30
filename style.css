@@ -675,6 +675,30 @@ tr:last-child td { border-bottom: none; }
     margin-left: 5px;
 }
 
+.copy-btn {
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    padding: 6px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+}
+
+.copy-btn:hover {
+    background: var(--hover-bg);
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+}
+
+.copy-btn svg {
+    opacity: 0.8;
+}
+
 /* Mobile Tweaks */
 @media (max-width: 768px) {
     .controls {
@@ -708,6 +732,7 @@ tr:last-child td { border-bottom: none; }
         flex-shrink: 0;
     }
 }
+
 
 
 
