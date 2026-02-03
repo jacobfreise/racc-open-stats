@@ -683,17 +683,17 @@ tr:last-child td { border-bottom: none; }
     opacity: 0.8;
 }
 
-/* --- ICON & IMAGE STYLING (NEW) --- */
+/* --- ICON & IMAGE STYLING --- */
 .char-icon {
-    width: 32px;
-    height: 32px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     object-fit: cover;
-    margin-right: 10px;
+    margin-right: 12px;
     border: 1px solid var(--border-color);
     background-color: var(--card-bg);
-    flex-shrink: 0;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    flex-shrink: 0; 
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
 /* Helper to align cell content with icons */
@@ -753,6 +753,7 @@ tr:last-child td { border-bottom: none; }
         flex-shrink: 0;
     }
 }
+
 
 
 
