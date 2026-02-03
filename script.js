@@ -5,6 +5,23 @@ let currentRawData = [];
 let activeDataset = null; 
 let liveFirebaseData = [];
 
+// --- Helper: Generate Icon HTML (NEW) ---
+function getIconHtml(name, type) {
+    if (!name || name === "Unknown") return "";
+
+    // 1. Clean the name: Lowercase, remove dots/apostrophes, swap spaces for _
+    // Example: "T.M. Opera O" -> "tm_opera_o"
+    const fileName = name.toLowerCase()
+        .replace(/['.]/g, '')       // Remove ' and .
+        .replace(/\s+/g, '_');      // Replace spaces with _
+
+    const folder = type === 'uma' ? 'uma' : 'player';
+
+    // 2. Return Image Tag
+    // onerror="this.style.display='none'" -> If image is missing, hide the icon automatically
+    return `<img src="${folder}/${fileName}.png" class="char-icon" onerror="this.style.display='none'" alt="">`;
+}
+
 // --- Helper: Distance Category ---
 function getDistanceCategory(surfaceString) {
     const match = surfaceString.match(/(\d+)m/);
@@ -17,14 +34,26 @@ function getDistanceCategory(surfaceString) {
     return "Long";
 }
 
-// --- Formatting Helper ---
+// --- Formatting Helper (UPDATED WITH ICONS) ---
 function formatName(fullName) {
     if (!fullName) return "Unknown";
-    if (!fullName.includes('(')) return fullName;
-    const parts = fullName.split('(');
-    const mainName = parts[0].trim();
-    const variant = parts[1].replace(')', '').trim();
-    return `${mainName} <span class="variant-tag">${variant}</span>`;
+    
+    let mainName = fullName;
+    let variantHtml = "";
+
+    // Handle variants like "Oguri Cap (Christmas)"
+    if (fullName.includes('(')) {
+        const parts = fullName.split('(');
+        mainName = parts[0].trim();
+        const variant = parts[1].replace(')', '').trim();
+        variantHtml = ` <span class="variant-tag">${variant}</span>`;
+    }
+
+    // Assume it is an Uma for this specific function context
+    const icon = getIconHtml(mainName, 'uma'); 
+
+    // Return with name-cell class for alignment
+    return `<div class="name-cell">${icon}${mainName}${variantHtml}</div>`;
 }
 
 // --- FIREBASE LIVE DATA LISTENER ---
@@ -117,10 +146,24 @@ function renderLiveTournaments() {
                     
                     const style = rankColor ? `style="color:${rankColor}; font-weight:bold;"` : '';
                     
+                    // --- GENERATE ICONS (LIVE DATA) ---
+                    const pIcon = getIconHtml(pInfo.name, 'player');
+                    
+                    // Clean up Uma name (remove variant for icon matching)
+                    let umaBaseName = pInfo.uma;
+                    if(umaBaseName && umaBaseName.includes('(')) {
+                        umaBaseName = umaBaseName.split('(')[0].trim();
+                    }
+                    const uIcon = getIconHtml(umaBaseName, 'uma');
+                    
                     return `<div class="live-result-row">
                         <span class="lr-rank" ${style}>${rank}.</span>
-                        <span class="lr-name">${pInfo.name}</span>
-                        <span class="lr-uma">[${pInfo.uma}]</span>
+                        <span class="lr-name" style="display:flex; align-items:center;">
+                            ${pIcon}${pInfo.name}
+                        </span>
+                        <span class="lr-uma" style="display:flex; align-items:center;">
+                            ${uIcon}[${pInfo.uma}]
+                        </span>
                     </div>`;
                 }).join('');
 
@@ -644,10 +687,18 @@ function renderStatsTable() {
     const tbody = document.getElementById('points-table-body');
     if (!tbody) return;
     tbody.innerHTML = data.map((player, index) => {
+        
+        // Generate Player Icon (NEW)
+        const playerIcon = getIconHtml(player.name, 'player');
+
         return `
             <tr>
                 <td><span class="stat-badge">${index + 1}</span></td>
-                <td>${player.name}</td>
+                <td>
+                    <div class="name-cell">
+                        ${playerIcon}${player.name}
+                    </div>
+                </td>
                 <td>${player.racesRun}</td>
                 <td>${player.totalPoints}</td>
                 <td>${player.avgPoints}</td>
@@ -665,4 +716,3 @@ window.onload = function() {
     // Initialize with whatever is selected in the HTML dropdown (default S2)
     switchSeason();
 };
-
