@@ -685,14 +685,15 @@ tr:last-child td { border-bottom: none; }
 
 /* --- ICON & IMAGE STYLING (NEW) --- */
 .char-icon {
-    width: 24px;
-    height: 24px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     object-fit: cover;
-    margin-right: 8px;
+    margin-right: 10px;
     border: 1px solid var(--border-color);
     background-color: var(--card-bg);
-    flex-shrink: 0; 
+    flex-shrink: 0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
 
 /* Helper to align cell content with icons */
@@ -752,3 +753,4 @@ tr:last-child td { border-bottom: none; }
         flex-shrink: 0;
     }
 }
+
