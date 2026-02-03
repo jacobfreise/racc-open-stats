@@ -685,8 +685,8 @@ tr:last-child td { border-bottom: none; }
 
 /* --- ICON & IMAGE STYLING (NEW) --- */
 .char-icon {
-    width: 48px;
-    height: 48px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     object-fit: cover;
     margin-right: 10px;
@@ -753,5 +753,6 @@ tr:last-child td { border-bottom: none; }
         flex-shrink: 0;
     }
 }
+
 
 
