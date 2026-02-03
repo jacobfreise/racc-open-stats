@@ -1,5 +1,5 @@
-/* Default (Dark) */
 :root {
+    /* Default Theme (Dark Green/Grey - Original) */
     color-scheme: dark;
     --bg-color: #1a1a1d;
     --card-bg: #2d2d30;
@@ -313,7 +313,7 @@ input[type=range] {
 .tab.active { 
     opacity: 1; 
     background: var(--accent-color); 
-    color: var(--card-bg); /* Use card bg for contrast against accent */
+    color: var(--card-bg); 
     box-shadow: var(--shadow-md);
     transform: translateY(-1px);
 }
@@ -365,6 +365,7 @@ th, td {
     padding: 14px 20px; 
     text-align: left; 
     border-bottom: 1px solid var(--border-color); 
+    vertical-align: middle; /* Ensures icons align vertically */
 }
 
 th { 
@@ -451,7 +452,7 @@ tr:last-child td { border-bottom: none; }
 }
 
 .switch-option.active {
-    color: var(--card-bg); /* Contrast against glider */
+    color: var(--card-bg); 
     opacity: 1;
 }
 
@@ -516,7 +517,7 @@ tr:last-child td { border-bottom: none; }
     justify-content: center;
     font-weight: 800;
     font-size: 1.6em;
-    color: rgba(0,0,0,0.5); /* Modern subtle text */
+    color: rgba(0,0,0,0.5); 
     flex-shrink: 0;
 }
 
@@ -547,7 +548,7 @@ tr:last-child td { border-bottom: none; }
     color: var(--accent-color);
 }
 
-/* --- TIER COLORS (Pastel/Modern) --- */
+/* --- TIER COLORS --- */
 .tier-S { background-color: #ff6b6b; color: #fff !important; }
 .tier-A { background-color: #ff9f43; color: #fff !important; }
 .tier-B { background-color: #feca57; color: #fff !important; }
@@ -555,24 +556,7 @@ tr:last-child td { border-bottom: none; }
 .tier-D { background-color: #1dd1a1; color: #fff !important; }
 .tier-F { background-color: #54a0ff; color: #fff !important; }
 
-/* Scrollbar styling */
-::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
-}
-::-webkit-scrollbar-track {
-    background: var(--bg-color);
-}
-::-webkit-scrollbar-thumb {
-    background: var(--secondary-color);
-    border-radius: 5px;
-    border: 2px solid var(--bg-color);
-}
-::-webkit-scrollbar-thumb:hover {
-    background: var(--accent-color);
-}
-
-/* --- NEW: LIVE DATA STYLING --- */
+/* --- LIVE DATA STYLING --- */
 
 .live-tourney-card {
     background: var(--card-bg);
@@ -634,7 +618,7 @@ tr:last-child td { border-bottom: none; }
 
 .live-table th {
     background: var(--bg-color);
-    position: static; /* Override sticky for nested */
+    position: static; 
 }
 
 .live-table td {
@@ -699,6 +683,42 @@ tr:last-child td { border-bottom: none; }
     opacity: 0.8;
 }
 
+/* --- ICON & IMAGE STYLING (NEW) --- */
+.char-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 8px;
+    border: 1px solid var(--border-color);
+    background-color: var(--card-bg);
+    flex-shrink: 0; 
+}
+
+/* Helper to align cell content with icons */
+.name-cell {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+::-webkit-scrollbar-track {
+    background: var(--bg-color);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--secondary-color);
+    border-radius: 5px;
+    border: 2px solid var(--bg-color);
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-color);
+}
+
 /* Mobile Tweaks */
 @media (max-width: 768px) {
     .controls {
@@ -732,7 +752,3 @@ tr:last-child td { border-bottom: none; }
         flex-shrink: 0;
     }
 }
-
-
-
-
