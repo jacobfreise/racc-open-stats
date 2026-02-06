@@ -5,7 +5,7 @@ let currentRawData = [];
 let activeDataset = null; 
 let liveFirebaseData = [];
 
-// --- Helper: Generate Icon HTML ---
+// --- Helper: Generate Icon HTML (UPDATED FOLDER) ---
 function getIconHtml(name, type) {
     if (!name || name === "Unknown") return "";
 
@@ -13,7 +13,8 @@ function getIconHtml(name, type) {
         .replace(/['.]/g, '')       
         .replace(/\s+/g, '_');      
 
-    const folder = type === 'uma' ? 'uma' : 'player';
+    // CHANGED: Now looks in 'trainer' folder if type isn't 'uma'
+    const folder = type === 'uma' ? 'uma' : 'trainer';
 
     return `<img src="${folder}/${fileName}.png" 
         class="char-icon" 
@@ -23,10 +24,11 @@ function getIconHtml(name, type) {
         alt="">`;
 }
 
-// --- Helper: Preload Images ---
+// --- Helper: Preload Images (UPDATED FOLDER) ---
 function preloadImages(nameList, type) {
-    const folder = type === 'uma' ? 'uma' : 'player';
-    const uniqueNames = [...new Set(nameList)];
+    // CHANGED: Now uses 'trainer' folder
+    const folder = type === 'uma' ? 'uma' : 'trainer';
+    const uniqueNames = [...new Set(nameList)]; 
 
     uniqueNames.forEach(name => {
         if (!name || name === "Unknown") return;
@@ -49,7 +51,7 @@ function getDistanceCategory(surfaceString) {
 }
 
 // --- Formatting Helper ---
-function formatName(fullName) {
+function formatName(fullName, type = 'uma') {
     if (!fullName) return "Unknown";
     
     let mainName = fullName;
@@ -62,7 +64,7 @@ function formatName(fullName) {
         variantHtml = ` <span class="variant-tag">${variant}</span>`;
     }
 
-    const icon = getIconHtml(mainName, 'uma'); 
+    const icon = getIconHtml(mainName, type); 
 
     return `<div class="name-cell">${icon}${mainName}${variantHtml}</div>`;
 }
@@ -71,15 +73,13 @@ function formatName(fullName) {
 window.addEventListener('liveDataReady', (e) => {
     liveFirebaseData = e.detail; 
     
-    // --- SPEED BOOST: Preload names as soon as data arrives ---
-    const allPlayerNames = [];
+    const allTrainerNames = [];
     const allUmaNames = [];
     
     liveFirebaseData.forEach(t => {
         if(t.players) {
             t.players.forEach(p => {
-                allPlayerNames.push(p.name);
-                // Strip variant for preloading
+                allTrainerNames.push(p.name);
                 let uName = p.uma;
                 if(uName && uName.includes('(')) uName = uName.split('(')[0].trim();
                 allUmaNames.push(uName);
@@ -87,8 +87,8 @@ window.addEventListener('liveDataReady', (e) => {
         }
     });
     
-    // Start background download
-    preloadImages(allPlayerNames, 'player');
+    // CHANGED: Pass 'trainer' type
+    preloadImages(allTrainerNames, 'trainer');
     preloadImages(allUmaNames, 'uma');
 
     renderLiveTournaments();
@@ -171,7 +171,8 @@ function renderLiveTournaments() {
                     
                     const style = rankColor ? `style="color:${rankColor}; font-weight:bold;"` : '';
                     
-                    const pIcon = getIconHtml(pInfo.name, 'player');
+                    // CHANGED: Use 'trainer' type
+                    const pIcon = getIconHtml(pInfo.name, 'trainer');
                     
                     let umaBaseName = pInfo.uma;
                     if(umaBaseName && umaBaseName.includes('(')) {
@@ -265,24 +266,22 @@ function copyTournamentResults(tournamentId) {
 function switchSeason() {
     const season = document.getElementById('seasonSelector').value;
     
-    // 1. Select the Data Source
     if (season === 's1') {
         activeDataset = S1_DATA;
     } else {
         activeDataset = (typeof S2_DATA !== 'undefined') ? S2_DATA : { compactData: [], tournamentRaceResults: {} };
     }
 
-    // 2. Process the Raw Data for this season
     if (activeDataset.compactData) {
-        // --- SPEED BOOST: Preload Icons for Static Data ---
         const umaToPreload = [];
-        // Note: We don't have player names in compactData, only trainer names
-        
+        const trainerToPreload = [];
+
         currentRawData = activeDataset.compactData.map(r => {
-            // Collect name for preloading
             let umaBase = r[1];
             if(umaBase.includes('(')) umaBase = umaBase.split('(')[0].trim();
             umaToPreload.push(umaBase);
+
+            trainerToPreload.push(r[0]);
 
             const distCat = getDistanceCategory(r[3]);
             return {
@@ -298,13 +297,14 @@ function switchSeason() {
             };
         });
         
-        preloadImages(umaToPreload, 'uma'); // Start downloading immediately
+        // CHANGED: Preload from 'trainer' folder
+        preloadImages(umaToPreload, 'uma'); 
+        preloadImages(trainerToPreload, 'trainer'); 
         
     } else {
         currentRawData = [];
     }
 
-    // 3. Refresh the UI
     updateData();
     renderStatsTable();
 }
@@ -406,10 +406,8 @@ function calculateStats(filteredData) {
 
     filteredData.forEach(row => activeTournaments.add(row.RawLength));
 
-    // 1. Get Points
     const pointsData = getChampionshipPoints(activeTournaments, filteredData);
 
-    // 2. Process Basic Data
     filteredData.forEach(row => {
         // --- Uma Stats ---
         if (!umaMap[row.UniqueName]) { 
@@ -450,7 +448,6 @@ function calculateStats(filteredData) {
         t.characterHistory[row.UniqueName].wins += row.Wins;
     });
 
-    // 3. Process Tourney Wins
     Object.values(trainerMap).forEach(t => {
         t.playedTourneys.forEach(tourneyID => {
             if (activeDataset.tournamentWinners && activeDataset.tournamentWinners[tourneyID]) {
@@ -461,7 +458,6 @@ function calculateStats(filteredData) {
         });
     });
 
-    // 4. Process Bans
     let validBanTourneyCount = 0;
     if (activeDataset.tournamentBans) {
         Object.keys(activeDataset.tournamentBans).forEach(tourneyID => {
@@ -480,7 +476,7 @@ function calculateStats(filteredData) {
         });
     }
 
-    // 5. Formatting Helper
+    // 5. Formatting Helper (UPDATED WITH TRAINER TYPE)
     const formatItem = (item, type) => {
         const winRateVal = item.totalRacesRun > 0 
             ? (item.wins / item.totalRacesRun * 100).toFixed(1) 
@@ -507,9 +503,12 @@ function calculateStats(filteredData) {
             pickPctVal = (count / totalEntries * 100).toFixed(1);
         }
 
+        // CHANGED: Determine correct type for formatName call
+        const displayType = type === 'trainer' ? 'trainer' : 'uma';
+
         const stats = {
             ...item,
-            displayName: formatName(item.name),
+            displayName: formatName(item.name, displayType),
             winRate: winRateVal,
             dom: dominanceVal,
             tourneyWinPct: tWinPct,
@@ -527,10 +526,15 @@ function calculateStats(filteredData) {
             const historyArr = Object.entries(item.characterHistory).map(([key, val]) => ({ name: key, ...val }));
             historyArr.sort((a, b) => b.picks - a.picks);
             const fav = historyArr[0];
-            stats.favorite = fav ? `${formatName(fav.name)} <span class="stat-badge">x${fav.picks}</span>` : '-';
+            
+            // Favorites are Umas, so 'uma' type
+            stats.favorite = fav ? `${formatName(fav.name, 'uma')} <span class="stat-badge">x${fav.picks}</span>` : '-';
+            
             historyArr.sort((a, b) => b.wins - a.wins || a.picks - b.picks);
             const best = historyArr[0];
-            stats.ace = (best && best.wins > 0) ? `${formatName(best.name)} <span class="stat-badge win-badge">★${best.wins}</span>` : '<span style="color:var(--text-color); opacity:0.5;">-</span>';
+            
+            // Best Ace is an Uma, so 'uma' type
+            stats.ace = (best && best.wins > 0) ? `${formatName(best.name, 'uma')} <span class="stat-badge win-badge">★${best.wins}</span>` : '<span style="color:var(--text-color); opacity:0.5;">-</span>';
         }
 
         return stats;
@@ -617,7 +621,6 @@ function updateData() {
     if(document.getElementById('minEntriesVal')) 
         document.getElementById('minEntriesVal').textContent = minEntries;
 
-    // Use currentRawData (populated by switchSeason) instead of rawData
     const filtered = currentRawData.filter(d => {
         if (d.Trainer === "DQ") return false;
         const surfaceMatch = (surface === 'All' || d.Surface.includes(surface));
@@ -715,8 +718,8 @@ function renderStatsTable() {
     if (!tbody) return;
     tbody.innerHTML = data.map((player, index) => {
         
-        // Generate Player Icon (NEW)
-        const playerIcon = getIconHtml(player.name, 'player');
+        // CHANGED: Use 'trainer' type
+        const playerIcon = getIconHtml(player.name, 'trainer');
 
         return `
             <tr>
