@@ -19,6 +19,7 @@ function getIconHtml(name, type) {
     const cdnPath = `https://wsrv.nl/?url=${repoBaseUrl}/${localPath}&w=96&output=webp`;
     const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
     const finalSrc = isLocal ? localPath : cdnPath;
+    
     return `<img src="${finalSrc}" 
         class="char-icon" 
         loading="lazy" 
@@ -75,23 +76,8 @@ function formatName(fullName, type = 'uma') {
 window.addEventListener('liveDataReady', (e) => {
     liveFirebaseData = e.detail; 
     
-    const allTrainerNames = [];
-    const allUmaNames = [];
-    
-    liveFirebaseData.forEach(t => {
-        if(t.players) {
-            t.players.forEach(p => {
-                allTrainerNames.push(p.name);
-                let uName = p.uma;
-                if(uName && uName.includes('(')) uName = uName.split('(')[0].trim();
-                allUmaNames.push(uName);
-            });
-        }
-    });
-    
-    // CHANGED: Pass 'trainer' type
-    preloadImages(allTrainerNames, 'trainer');
-    preloadImages(allUmaNames, 'uma');
+    // NOTE: Removed image preloading here to save bandwidth for Live Data tab.
+    // Images will only load if you switch to other tabs (handled by switchSeason).
 
     renderLiveTournaments();
 });
@@ -173,23 +159,11 @@ function renderLiveTournaments() {
                     
                     const style = rankColor ? `style="color:${rankColor}; font-weight:bold;"` : '';
                     
-                    // CHANGED: Use 'trainer' type
-                    const pIcon = getIconHtml(pInfo.name, 'trainer');
-                    
-                    let umaBaseName = pInfo.uma;
-                    if(umaBaseName && umaBaseName.includes('(')) {
-                        umaBaseName = umaBaseName.split('(')[0].trim();
-                    }
-                    const uIcon = getIconHtml(umaBaseName, 'uma');
-                    
+                    // CHANGED: No icons here, just text
                     return `<div class="live-result-row">
                         <span class="lr-rank" ${style}>${rank}.</span>
-                        <span class="lr-name" style="display:flex; align-items:center;">
-                            ${pIcon}${pInfo.name}
-                        </span>
-                        <span class="lr-uma" style="display:flex; align-items:center;">
-                            ${uIcon}[${pInfo.uma}]
-                        </span>
+                        <span class="lr-name">${pInfo.name}</span>
+                        <span class="lr-uma">[${pInfo.uma}]</span>
                     </div>`;
                 }).join('');
 
@@ -299,7 +273,7 @@ function switchSeason() {
             };
         });
         
-        // CHANGED: Preload from 'trainer' folder
+        // This preloading stays because it's for the other tabs (Stats/Championship)
         preloadImages(umaToPreload, 'uma'); 
         preloadImages(trainerToPreload, 'trainer'); 
         
@@ -478,7 +452,7 @@ function calculateStats(filteredData) {
         });
     }
 
-    // 5. Formatting Helper (UPDATED WITH TRAINER TYPE)
+    // 5. Formatting Helper
     const formatItem = (item, type) => {
         const winRateVal = item.totalRacesRun > 0 
             ? (item.wins / item.totalRacesRun * 100).toFixed(1) 
@@ -505,7 +479,6 @@ function calculateStats(filteredData) {
             pickPctVal = (count / totalEntries * 100).toFixed(1);
         }
 
-        // CHANGED: Determine correct type for formatName call
         const displayType = type === 'trainer' ? 'trainer' : 'uma';
 
         const stats = {
@@ -529,13 +502,13 @@ function calculateStats(filteredData) {
             historyArr.sort((a, b) => b.picks - a.picks);
             const fav = historyArr[0];
             
-            // Favorites are Umas, so 'uma' type
+            // Favorites are Umas
             stats.favorite = fav ? `${formatName(fav.name, 'uma')} <span class="stat-badge">x${fav.picks}</span>` : '-';
             
             historyArr.sort((a, b) => b.wins - a.wins || a.picks - b.picks);
             const best = historyArr[0];
             
-            // Best Ace is an Uma, so 'uma' type
+            // Best Ace is an Uma
             stats.ace = (best && best.wins > 0) ? `${formatName(best.name, 'uma')} <span class="stat-badge win-badge">★${best.wins}</span>` : '<span style="color:var(--text-color); opacity:0.5;">-</span>';
         }
 
@@ -748,5 +721,3 @@ window.onload = function() {
     // Initialize with whatever is selected in the HTML dropdown (default S2)
     switchSeason();
 };
-
-
