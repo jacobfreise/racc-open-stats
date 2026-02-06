@@ -5,21 +5,35 @@ let currentRawData = [];
 let activeDataset = null; 
 let liveFirebaseData = [];
 
-// --- Helper: Generate Icon HTML (NEW) ---
+// --- Helper: Generate Icon HTML ---
 function getIconHtml(name, type) {
     if (!name || name === "Unknown") return "";
 
-    // 1. Clean the name: Lowercase, remove dots/apostrophes, swap spaces for _
-    // Example: "T.M. Opera O" -> "tm_opera_o"
     const fileName = name.toLowerCase()
-        .replace(/['.]/g, '')       // Remove ' and .
-        .replace(/\s+/g, '_');      // Replace spaces with _
+        .replace(/['.]/g, '')       
+        .replace(/\s+/g, '_');      
 
     const folder = type === 'uma' ? 'uma' : 'player';
 
-    // 2. Return Image Tag
-    // onerror="this.style.display='none'" -> If image is missing, hide the icon automatically
-    return `<img src="${folder}/${fileName}.png" class="char-icon" onerror="this.style.display='none'" alt="">`;
+    return `<img src="${folder}/${fileName}.png" 
+        class="char-icon" 
+        loading="lazy" 
+        decoding="async"
+        onerror="this.style.display='none'" 
+        alt="">`;
+}
+
+// --- Helper: Preload Images ---
+function preloadImages(nameList, type) {
+    const folder = type === 'uma' ? 'uma' : 'player';
+    const uniqueNames = [...new Set(nameList)];
+
+    uniqueNames.forEach(name => {
+        if (!name || name === "Unknown") return;
+        const fileName = name.toLowerCase().replace(/['.]/g, '').replace(/\s+/g, '_');
+        const img = new Image();
+        img.src = `${folder}/${fileName}.png`;
+    });
 }
 
 // --- Helper: Distance Category ---
@@ -34,14 +48,13 @@ function getDistanceCategory(surfaceString) {
     return "Long";
 }
 
-// --- Formatting Helper (UPDATED WITH ICONS) ---
+// --- Formatting Helper ---
 function formatName(fullName) {
     if (!fullName) return "Unknown";
     
     let mainName = fullName;
     let variantHtml = "";
 
-    // Handle variants like "Oguri Cap (Christmas)"
     if (fullName.includes('(')) {
         const parts = fullName.split('(');
         mainName = parts[0].trim();
@@ -49,16 +62,35 @@ function formatName(fullName) {
         variantHtml = ` <span class="variant-tag">${variant}</span>`;
     }
 
-    // Assume it is an Uma for this specific function context
     const icon = getIconHtml(mainName, 'uma'); 
 
-    // Return with name-cell class for alignment
     return `<div class="name-cell">${icon}${mainName}${variantHtml}</div>`;
 }
 
 // --- FIREBASE LIVE DATA LISTENER ---
 window.addEventListener('liveDataReady', (e) => {
-    liveFirebaseData = e.detail; // Update global data
+    liveFirebaseData = e.detail; 
+    
+    // --- SPEED BOOST: Preload names as soon as data arrives ---
+    const allPlayerNames = [];
+    const allUmaNames = [];
+    
+    liveFirebaseData.forEach(t => {
+        if(t.players) {
+            t.players.forEach(p => {
+                allPlayerNames.push(p.name);
+                // Strip variant for preloading
+                let uName = p.uma;
+                if(uName && uName.includes('(')) uName = uName.split('(')[0].trim();
+                allUmaNames.push(uName);
+            });
+        }
+    });
+    
+    // Start background download
+    preloadImages(allPlayerNames, 'player');
+    preloadImages(allUmaNames, 'uma');
+
     renderLiveTournaments();
 });
 
@@ -74,7 +106,6 @@ function renderLiveTournaments() {
     let html = '';
 
     liveFirebaseData.forEach(t => {
-        // Build Player Map for Quick Lookup
         const playerMap = {};
         if (t.players && Array.isArray(t.players)) {
             t.players.forEach(p => {
@@ -84,7 +115,6 @@ function renderLiveTournaments() {
 
         html += `<div class="live-tourney-card">`;
         
-        // Header with Copy Button
         let statusClass = t.status === 'active' ? 'status-active' : 'status-completed';
         html += `
             <div class="live-header">
@@ -108,10 +138,7 @@ function renderLiveTournaments() {
             </div>
         `;
 
-        // Races Table
         if (t.races && t.races.length > 0) {
-            
-            // Custom Sort Logic (Groups A/B/C then Finals)
             const groupOrder = { 'A': 1, 'B': 2, 'C': 3, 'Finals': 4 };
             const sortedRaces = [...t.races].sort((a, b) => {
                 const rankA = groupOrder[a.group] || 99;
@@ -132,11 +159,9 @@ function renderLiveTournaments() {
                     <tbody>`;
 
             sortedRaces.forEach(race => {
-                // Convert placements object { "pid": 1 } to sorted array
                 const resultsArray = Object.entries(race.placements || {});
                 resultsArray.sort((a, b) => a[1] - b[1]);
 
-                // Build result string
                 const resultItems = resultsArray.map(([pid, rank]) => {
                     const pInfo = playerMap[pid] || { name: "Unknown", uma: "?" };
                     let rankColor = '';
@@ -146,10 +171,8 @@ function renderLiveTournaments() {
                     
                     const style = rankColor ? `style="color:${rankColor}; font-weight:bold;"` : '';
                     
-                    // --- GENERATE ICONS (LIVE DATA) ---
                     const pIcon = getIconHtml(pInfo.name, 'player');
                     
-                    // Clean up Uma name (remove variant for icon matching)
                     let umaBaseName = pInfo.uma;
                     if(umaBaseName && umaBaseName.includes('(')) {
                         umaBaseName = umaBaseName.split('(')[0].trim();
@@ -179,7 +202,7 @@ function renderLiveTournaments() {
             html += `<div style="padding:15px; opacity:0.6; font-style:italic;">No race results uploaded yet.</div>`;
         }
 
-        html += `</div>`; // End Card
+        html += `</div>`; 
     });
 
     container.innerHTML = html;
@@ -196,48 +219,40 @@ function copyTournamentResults(tournamentId) {
 
     let text = `${tournament.name}\n\n`;
     
-    // Helper to find player name/uma
     const getPlayer = (id) => {
         const p = tournament.players.find(pl => pl.id === id);
         return p ? { name: p.name, uma: p.uma || "Unknown" } : { name: "Unknown", uma: "Unknown" };
     };
 
-    // Define the order we want to print: Group A -> B -> C -> Finals
     const groups = ["A", "B", "C", "Finals"];
 
     groups.forEach(group => {
-        // Filter races for this specific group/stage
         const races = tournament.races.filter(r => {
             if (group === "Finals") return r.stage === "finals";
             return r.group === group && r.stage === "groups";
         });
 
-        // Sort by Race Number (1, 2, 3...)
         races.sort((a, b) => a.raceNumber - b.raceNumber);
 
         if (races.length > 0) {
             races.forEach(race => {
-                // Header: "Group A Round 1" or "Finals Round 1"
                 const groupName = group === "Finals" ? "Finals" : `Group ${group}`;
                 text += `${groupName} Round ${race.raceNumber}\n`;
 
-                // Convert placements object {id: rank} into sorted array
                 const placements = Object.entries(race.placements || {})
                     .map(([id, rank]) => ({ id, rank: Number(rank) }))
                     .sort((a, b) => a.rank - b.rank);
 
-                // Add each player: "1. Name [Uma]"
                 placements.forEach(p => {
                     const player = getPlayer(p.id);
                     text += `${p.rank}. ${player.name} [${player.uma}]\n`;
                 });
 
-                text += "\n"; // Empty line between rounds
+                text += "\n"; 
             });
         }
     });
 
-    // Write to Clipboard
     navigator.clipboard.writeText(text.trim()).then(() => {
         alert("Results copied to clipboard!");
     }).catch(err => {
@@ -259,7 +274,16 @@ function switchSeason() {
 
     // 2. Process the Raw Data for this season
     if (activeDataset.compactData) {
+        // --- SPEED BOOST: Preload Icons for Static Data ---
+        const umaToPreload = [];
+        // Note: We don't have player names in compactData, only trainer names
+        
         currentRawData = activeDataset.compactData.map(r => {
+            // Collect name for preloading
+            let umaBase = r[1];
+            if(umaBase.includes('(')) umaBase = umaBase.split('(')[0].trim();
+            umaToPreload.push(umaBase);
+
             const distCat = getDistanceCategory(r[3]);
             return {
                 Trainer: r[0],
@@ -273,6 +297,9 @@ function switchSeason() {
                 RacesRun: r[7] 
             };
         });
+        
+        preloadImages(umaToPreload, 'uma'); // Start downloading immediately
+        
     } else {
         currentRawData = [];
     }
@@ -661,7 +688,7 @@ function calculateIndividualStats() {
             for (const [stageName, races] of Object.entries(stages)) {
                 races.forEach((raceResult) => {
                     raceResult.forEach((player, rankIndex) => {
-                        if (player.includes("Player") || player === "DQ" || player === "NPC-chan") return;
+                        if (player.includes("Player") || player === "DQ") return;
 
                         if (!stats[player]) { stats[player] = { name: player, totalPoints: 0, racesRun: 0 }; }
                         if (rankIndex < POINTS_SYSTEM.length) { stats[player].totalPoints += POINTS_SYSTEM[rankIndex]; }
