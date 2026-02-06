@@ -16,21 +16,19 @@ function getIconHtml(name, type) {
     const folder = type === 'uma' ? 'uma' : 'trainer';
     const repoBaseUrl = 'darkred1145.github.io/racc-open-stats'; 
     const localPath = `${folder}/${fileName}.png`;
-    const cdnPath = `https://wsrv.nl/?url=${repoBaseUrl}/${localPath}&w=96&q=80&output=webp`;
+    const cdnPath = `https://wsrv.nl/?url=${repoBaseUrl}/${localPath}&w=96&output=webp`;
     const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
     const finalSrc = isLocal ? localPath : cdnPath;
-
     return `<img src="${finalSrc}" 
         class="char-icon" 
         loading="lazy" 
         decoding="async"
-        onerror="this.style.display='none'" 
+        onerror="if (this.src.includes('.png')) { this.src = this.src.replace('.png', '.jpg'); } else { this.style.display='none'; }" 
         alt="">`;
 }
 
-// --- Helper: Preload Images (UPDATED FOLDER) ---
+// --- Helper: Preload Images ---
 function preloadImages(nameList, type) {
-    // CHANGED: Now uses 'trainer' folder
     const folder = type === 'uma' ? 'uma' : 'trainer';
     const uniqueNames = [...new Set(nameList)]; 
 
@@ -750,4 +748,5 @@ window.onload = function() {
     // Initialize with whatever is selected in the HTML dropdown (default S2)
     switchSeason();
 };
+
 
