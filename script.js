@@ -5,7 +5,7 @@ let currentRawData = [];
 let activeDataset = null; 
 let liveFirebaseData = [];
 
-// --- Helper: Generate Icon HTML (UPDATED FOLDER) ---
+// --- Helper: Generate Icon HTML ---
 function getIconHtml(name, type) {
     if (!name || name === "Unknown") return "";
 
@@ -13,10 +13,14 @@ function getIconHtml(name, type) {
         .replace(/['.]/g, '')       
         .replace(/\s+/g, '_');      
 
-    // CHANGED: Now looks in 'trainer' folder if type isn't 'uma'
     const folder = type === 'uma' ? 'uma' : 'trainer';
+    const repoBaseUrl = 'darkred1145.github.io/racc-open-stats'; 
+    const localPath = `${folder}/${fileName}.png`;
+    const cdnPath = `https://wsrv.nl/?url=${repoBaseUrl}/${localPath}&w=96&q=80&output=webp`;
+    const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+    const finalSrc = isLocal ? localPath : cdnPath;
 
-    return `<img src="${folder}/${fileName}.png" 
+    return `<img src="${finalSrc}" 
         class="char-icon" 
         loading="lazy" 
         decoding="async"
@@ -746,3 +750,4 @@ window.onload = function() {
     // Initialize with whatever is selected in the HTML dropdown (default S2)
     switchSeason();
 };
+
