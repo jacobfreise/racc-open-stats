@@ -546,16 +546,16 @@ function renderTierList(containerId, data, countKey, minReq, sortKey) {
         
         if (sortKey === 'winRate') {
              if (val <= 1.0) tier = 'F';
-             else if (val >= 25.0) tier = 'S'; 
+             else if (val >= 20.0) tier = 'S'; 
              else if (val >= 15.0) tier = 'A';
              else if (val >= 10.0) tier = 'B';
              else if (val >= 5.0) tier = 'C';
         } else if (sortKey === 'tourneyWinPct') {
              if (val <= 0.0) tier = 'F';
-             else if (val >= 25.0) tier = 'S';
-             else if (val >= 15.0) tier = 'A';
-             else if (val >= 10.0) tier = 'B';
-             else if (val >= 5.0) tier = 'C';
+             else if (val >= 40.0) tier = 'S';
+             else if (val >= 30.0) tier = 'A';
+             else if (val >= 20.0) tier = 'B';
+             else if (val >= 10.0) tier = 'C';
         } else {
             if (val <= 15.0) tier = 'F';
             else if (val >= 65.0) tier = 'S'; 
@@ -721,3 +721,4 @@ window.onload = function() {
     // Initialize with whatever is selected in the HTML dropdown (default S2)
     switchSeason();
 };
+
