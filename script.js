@@ -19,12 +19,13 @@ function getIconHtml(name, type) {
     const cdnPath = `https://wsrv.nl/?url=${repoBaseUrl}/${localPath}&w=96&output=webp`;
     const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
     const finalSrc = isLocal ? localPath : cdnPath;
-    
+    const fallbackLogic = "if (this.src.includes('.png')) { this.src = this.src.replace('.png', '.jpg'); } else if (this.src.includes('.jpg')) { this.src = this.src.replace('.jpg', '.gif'); } else { this.style.display='none'; }";
+
     return `<img src="${finalSrc}" 
         class="char-icon" 
         loading="lazy" 
         decoding="async"
-        onerror="if (this.src.includes('.png')) { this.src = this.src.replace('.png', '.jpg'); } else { this.style.display='none'; }" 
+        onerror="${fallbackLogic}" 
         alt="">`;
 }
 
@@ -37,6 +38,14 @@ function preloadImages(nameList, type) {
         if (!name || name === "Unknown") return;
         const fileName = name.toLowerCase().replace(/['.]/g, '').replace(/\s+/g, '_');
         const img = new Image();
+        img.onerror = function() {
+            if (this.src.includes('.png')) {
+                this.src = this.src.replace('.png', '.jpg');
+            } else if (this.src.includes('.jpg')) {
+                this.src = this.src.replace('.jpg', '.gif');
+            }
+        };
+        
         img.src = `${folder}/${fileName}.png`;
     });
 }
@@ -721,4 +730,5 @@ window.onload = function() {
     // Initialize with whatever is selected in the HTML dropdown (default S2)
     switchSeason();
 };
+
 
