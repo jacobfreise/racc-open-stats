@@ -1,5 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
 import { getFirestore, collection, getDocs, orderBy, query } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyAOZOQKH7slZ2fW_jjZEvFCH0T82EMBiVg",
@@ -9,9 +10,11 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
 
 async function fetchTournaments() {
     try {
+        await signInAnonymously(auth);
         const tournamentsRef = collection(db, 'artifacts', 'default-app','public', 'data', 'tournaments');
         const snapshot = await getDocs(query(tournamentsRef, orderBy('createdAt', 'desc'))); // Changed to desc to see newest first
 
