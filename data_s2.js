@@ -210,7 +210,7 @@ const S2_DATA = {
         ["Run982", "Fine Motion (Original)", 0, "1600m Turf (R)", "S2-14", "Fine Motion", "Original", 10],
         ["Sumpfranze", "Taiki Shuttle (Original)", 2, "1600m Turf (R)", "S2-14", "Taiki Shuttle", "Original", 5],
         ["Frozt", "Vodka (Original)", 0, "1600m Turf (R)", "S2-14", "Vodka", "Original", 5],
-        ["NiSe", "Narita Brian (Original)", 0, "1600m Turf (R)", "S2-14", "Narita Brian", "Original", 5],
+        ["NiSE", "Narita Brian (Original)", 0, "1600m Turf (R)", "S2-14", "Narita Brian", "Original", 5],
         ["Honsler", "Mayano Top Gun (Original)", 0, "1600m Turf (R)", "S2-14", "Mayano Top Gun", "Original", 5],
         ["Prince of Uranus", "Mihono Bourbon (Original)", 1, "1600m Turf (R)", "S2-14", "Mihono Bourbon", "Original", 5],
         ["Jedmumu", "T.M. Opera O (New Year)", 1, "1600m Turf (R)", "S2-14", "T.M. Opera O", "New Year", 10],
@@ -224,7 +224,7 @@ const S2_DATA = {
         ["Sumpfranze", "Mejiro Dober (Original)", 4, "2300m Turf (L)", "S2-15", "Mejiro Dober", "Original", 10],
         ["Alfheix", "Smart Falcon (Original)", 1, "2300m Turf (L)", "S2-15", "Smart Falcon", "Original", 10],
         ["Justy", "Special Week (Original)", 0, "2300m Turf (L)", "S2-15", "Special Week", "Original", 10],
-        ["NiSe", "Mejiro Dober (Original)", 0, "2300m Turf (L)", "S2-15", "Mejiro Dober", "Original", 5],
+        ["NiSE", "Mejiro Dober (Original)", 0, "2300m Turf (L)", "S2-15", "Mejiro Dober", "Original", 5],
         ["Raccoon", "Smart Falcon (Original)", 0, "2300m Turf (L)", "S2-15", "Smart Falcon", "Original", 10],
         ["Prince of Uranus", "Rice Shower (Halloween)", 0, "2300m Turf (L)", "S2-15", "Rice Shower", "Halloween", 10],
         ["Synocra", "Gold City (Festival)", 0, "2300m Turf (L)", "S2-15", "Gold City", "Festival", 5],
@@ -589,11 +589,11 @@ const S2_DATA = {
         },
         "S2-14": {
             "Group A": [
-                ["Boop", "FuHua", "Divine", "Bresto", "Run982", "Sumpfranze", "Frozt", "NiSe", "Honsler"],
-                ["Sumpfranze", "Bresto", "FuHua", "NiSe", "Frozt", "Boop", "Run982", "Honsler", "NPC-chan"],
-                ["Boop", "Sumpfranze", "NiSe", "Run982", "Bresto", "FuHua", "Frozt", "Honsler", "NPC-chan"],
-                ["Sumpfranze", "NiSe", "Run982", "Frozt", "Boop", "FuHua", "Bresto", "Honsler", "NPC-chan"],
-                ["Boop", "NiSe", "Bresto", "Run982", "Sumpfranze", "Frozt", "FuHua", "Honsler", "NPC-chan"]
+                ["Boop", "FuHua", "Divine", "Bresto", "Run982", "Sumpfranze", "Frozt", "NiSE", "Honsler"],
+                ["Sumpfranze", "Bresto", "FuHua", "NiSE", "Frozt", "Boop", "Run982", "Honsler", "NPC-chan"],
+                ["Boop", "Sumpfranze", "NiSE", "Run982", "Bresto", "FuHua", "Frozt", "Honsler", "NPC-chan"],
+                ["Sumpfranze", "NiSE", "Run982", "Frozt", "Boop", "FuHua", "Bresto", "Honsler", "NPC-chan"],
+                ["Boop", "NiSE", "Bresto", "Run982", "Sumpfranze", "Frozt", "FuHua", "Honsler", "NPC-chan"]
             ],
             "Group B": [
                 ["Prince of Uranus", "Jedmumu", "Spyder", "Draguin", "HoriYon", "Raccoon", "Kenesu", "KN", "Rihito"],
@@ -612,11 +612,11 @@ const S2_DATA = {
         },
         "S2-15": {
             "Group A": [
-                ["Sumpfranze", "Alfheix", "Justy", "NiSe", "Raccoon", "Prince of Uranus", "Synocra", "Eva", "HoriYon", "Spyder", "Minty", "Divine"],
-                ["Alfheix", "Spyder", "Synocra", "HoriYon", "Prince of Uranus", "Raccoon", "Sumpfranze", "Eva", "Minty", "NiSe", "Justy", "Divine"],
-                ["Sumpfranze", "Synocra", "Spyder", "HoriYon", "Alfheix", "Eva", "Prince of Uranus", "Raccoon", "NiSe", "Minty", "Divine", "Justy"],
-                ["Sumpfranze", "HoriYon", "Spyder", "Prince of Uranus", "Alfheix", "Synocra", "Raccoon", "Eva", "NiSe", "Justy", "Divine", "Minty"],
-                ["Sumpfranze", "Alfheix", "Spyder", "HoriYon", "Justy", "Synocra", "Minty", "Prince of Uranus", "Raccoon", "Eva", "Divine", "NiSe"]
+                ["Sumpfranze", "Alfheix", "Justy", "NiSE", "Raccoon", "Prince of Uranus", "Synocra", "Eva", "HoriYon", "Spyder", "Minty", "Divine"],
+                ["Alfheix", "Spyder", "Synocra", "HoriYon", "Prince of Uranus", "Raccoon", "Sumpfranze", "Eva", "Minty", "NiSE", "Justy", "Divine"],
+                ["Sumpfranze", "Synocra", "Spyder", "HoriYon", "Alfheix", "Eva", "Prince of Uranus", "Raccoon", "NiSE", "Minty", "Divine", "Justy"],
+                ["Sumpfranze", "HoriYon", "Spyder", "Prince of Uranus", "Alfheix", "Synocra", "Raccoon", "Eva", "NiSE", "Justy", "Divine", "Minty"],
+                ["Sumpfranze", "Alfheix", "Spyder", "HoriYon", "Justy", "Synocra", "Minty", "Prince of Uranus", "Raccoon", "Eva", "Divine", "NiSE"]
             ],
             "Group B": [
                 ["Roidee", "Frozt", "KN", "Pines", "Bresto", "Boop", "Draguin", "Kenesu", "Teki", "Jedmumu", "Rihito", "FuHua"],
@@ -639,10 +639,3 @@ const S2_DATA = {
 if (typeof module !== 'undefined') {
     module.exports = { S2_DATA };
 }
-
-
-
-
-
-
-
