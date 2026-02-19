@@ -50,6 +50,7 @@
         }
     </style>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
 
@@ -126,7 +127,9 @@
             <div class="tab" onclick="switchTab('trainer-stats')">Trainer Stats</div>
             <div class="tab" onclick="switchTab('championship')">Championship</div>
             <div class="tab" onclick="switchTab('live-data')">Live Data</div>
-            <div class="tab" onclick="switchTab('meta-trends')">Meta Trends</div> </div>
+            <div class="tab" onclick="switchTab('meta-trends')">Meta Trends</div>
+            <div class="tab" onclick="switchTab('trainer-card')">Trainer Card</div>
+        </div>
         <button onclick="exportCurrentTableToCSV()" class="copy-btn" style="height: fit-content;">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
             Export CSV
@@ -283,7 +286,66 @@
                 </p>
             </div>
         </div>
-</div> 
+</div>
+
+<div id="trainer-card" class="view-section">
+        <div class="card" style="display: flex; flex-direction: column; align-items: center; gap: 20px;">
+            <div style="display: flex; gap: 15px; align-items: center; width: 100%; justify-content: center; flex-wrap: wrap;">
+                <label style="margin: 0;">Select Trainer:</label>
+                <div class="select-wrapper" style="min-width: 200px;">
+                    <select id="cardTrainerSelector" onchange="updateTrainerCard()">
+                        </select>
+                </div>
+                <button onclick="downloadTrainerCard()" class="copy-btn" style="background: var(--accent-color); color: var(--card-bg); font-weight: bold; border: none;">
+                    📸 Download Card
+                </button>
+            </div>
+
+            <div id="captureCard" class="tc-container">
+                <div class="tc-header">
+                    <div id="tc-avatar" class="tc-avatar-placeholder"></div>
+                    <div class="tc-title">
+                        <h2 id="tc-name">Trainer Name</h2>
+                        <div class="tc-subtitle">Racc Open Competitor</div>
+                    </div>
+                </div>
+                
+                <div class="tc-stats-grid">
+                    <div class="tc-stat-box">
+                        <div class="tc-stat-label">Win Rate</div>
+                        <div class="tc-stat-value" id="tc-wr">0.0%</div>
+                    </div>
+                    <div class="tc-stat-box">
+                        <div class="tc-stat-label">Dominance</div>
+                        <div class="tc-stat-value" id="tc-dom">0.0%</div>
+                    </div>
+                    <div class="tc-stat-box">
+                        <div class="tc-stat-label">Tourney Wins</div>
+                        <div class="tc-stat-value" id="tc-twins">0</div>
+                    </div>
+                    <div class="tc-stat-box">
+                        <div class="tc-stat-label">Races Run</div>
+                        <div class="tc-stat-value" id="tc-races">0</div>
+                    </div>
+                </div>
+
+                <div class="tc-favorites">
+                    <div class="tc-fav-item">
+                        <span class="tc-stat-label">Ace (Most Wins)</span>
+                        <div id="tc-ace" class="tc-fav-content">-</div>
+                    </div>
+                    <div class="tc-fav-item">
+                        <span class="tc-stat-label">Favorite (Most Picked)</span>
+                        <div id="tc-fav" class="tc-fav-content">-</div>
+                    </div>
+                </div>
+                
+                <div class="tc-footer">
+                    Racc Open • Season Stats
+                </div>
+            </div>
+        </div>
+    </div>
 
 <footer id="main-footer">
     <div class="footer-content">
@@ -360,6 +422,7 @@
 
 </body>
 </html>
+
 
 
 
