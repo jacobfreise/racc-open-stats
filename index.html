@@ -49,6 +49,7 @@
             }
         }
     </style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
@@ -118,12 +119,18 @@
         </div>
     </div>
 
-    <div class="tabs">
-        <div class="tab active" onclick="switchTab('tier-lists')">Tier Lists</div>
-        <div class="tab" onclick="switchTab('uma-stats')">Uma Stats</div>
-        <div class="tab" onclick="switchTab('trainer-stats')">Trainer Stats</div>
-        <div class="tab" onclick="switchTab('championship')">Championship</div>
-        <div class="tab" onclick="switchTab('live-data')">Live Data</div>
+    <div class="tabs" style="display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <div class="tab active" onclick="switchTab('tier-lists')">Tier Lists</div>
+            <div class="tab" onclick="switchTab('uma-stats')">Uma Stats</div>
+            <div class="tab" onclick="switchTab('trainer-stats')">Trainer Stats</div>
+            <div class="tab" onclick="switchTab('championship')">Championship</div>
+            <div class="tab" onclick="switchTab('live-data')">Live Data</div>
+            <div class="tab" onclick="switchTab('meta-trends')">Meta Trends</div> </div>
+        <button onclick="exportCurrentTableToCSV()" class="copy-btn" style="height: fit-content;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            Export CSV
+        </button>
     </div>
 
     <div id="tier-lists" class="view-section active">
@@ -256,7 +263,26 @@
             </div>
         </div>
     </div>
-
+    
+    <div id="meta-trends" class="view-section">
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;">
+                    <h2 style="margin: 0;">📈 Uma Meta Trends</h2>
+                    <div class="select-wrapper" style="min-width: 250px;">
+                        <select id="trendUmaSelector" onchange="updateChart()">
+                            </select>
+                    </div>
+                </div>
+                
+                <div style="position: relative; height: 400px; width: 100%;">
+                    <canvas id="metaChart"></canvas>
+                </div>
+                
+                <p style="text-align: center; font-size: 0.85em; opacity: 0.6; margin-top: 15px;">
+                    Solid line = Pick Rate % | Dashed line = Win Rate % (1st Place Finishes / Races Run)
+                </p>
+            </div>
+        </div>
 </div> 
 
 <footer id="main-footer">
@@ -334,6 +360,7 @@
 
 </body>
 </html>
+
 
 
 
