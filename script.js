@@ -1035,16 +1035,43 @@ function downloadTrainerCard() {
     const cardElement = document.getElementById('captureCard');
     const trainerName = document.getElementById('cardTrainerSelector').value;
     
-    // We use useCORS to allow the CDN images (wsrv.nl) to be drawn onto the canvas
+    // Grab the button to show a loading state
+    const btn = document.querySelector('button[onclick="downloadTrainerCard()"]');
+    const originalText = btn.innerHTML;
+    btn.innerHTML = "⏳ Generating...";
+    btn.style.opacity = "0.7";
+    btn.disabled = true;
+    
+    // We use useCORS to allow the CDN images (wsrv.nl) to be drawn
     html2canvas(cardElement, {
         useCORS: true,
         backgroundColor: null, 
-        scale: 2 // Higher resolution for a crisp image
+        scale: 2, // Higher resolution for a crisp image
+        logging: false, // Turn off background logging to speed things up
+        ignoreElements: (element) => {
+            // Tell html2canvas to completely ignore the Chart.js canvas
+            // so it doesn't throw the "tainted" error
+            if (element.id === 'metaChart') return true;
+            return false;
+        }
     }).then(canvas => {
         const link = document.createElement('a');
         link.download = `${trainerName}_Racc_Open_Stats.png`;
         link.href = canvas.toDataURL('image/png');
         link.click();
+        
+        // Restore the button
+        btn.innerHTML = originalText;
+        btn.style.opacity = "1";
+        btn.disabled = false;
+    }).catch(err => {
+        console.error("Card generation failed:", err);
+        alert("Failed to generate the Trainer Card. See console for details.");
+        
+        // Restore the button even if it fails
+        btn.innerHTML = originalText;
+        btn.style.opacity = "1";
+        btn.disabled = false;
     });
 }
 
@@ -1058,3 +1085,4 @@ window.onload = function() {
     // Initialize with whatever is selected in the HTML dropdown
     switchSeason();
 };
+
