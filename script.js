@@ -374,6 +374,7 @@ function switchTab(tabId) {
     if (tabId === 'trainer-stats') tabs[2].classList.add('active');
     if (tabId === 'championship') tabs[3].classList.add('active');
     if (tabId === 'live-data') tabs[4].classList.add('active');
+    if (tabId === 'meta-trends') tabs[5].classList.add('active');
 }
 
 // --- Tier List View Switcher ---
@@ -699,6 +700,7 @@ function updateData() {
     renderTierList('trainerTierListDom', stats.trainerStats, 'entries', minEntries, 'dom');
     renderTierList('umaTierListChamp', stats.umaStats, 'picks', minEntries, 'tourneyWinPct');
     renderTierList('trainerTierListChamp', stats.trainerStats, 'entries', minEntries, 'tourneyWinPct');
+    populateTrendDropdown();
 }
 
 // --- Sorting, Theme, Init ---
@@ -789,6 +791,151 @@ function renderStatsTable() {
     }).join('');
 }
 
+// --- META TRENDS CHARTING LOGIC ---
+let metaChartInstance = null;
+
+function populateTrendDropdown() {
+    const selector = document.getElementById('trendUmaSelector');
+    if (!selector) return;
+
+    // Get unique Umas from currentRawData
+    const umas = [...new Set(currentRawData.map(d => d.UniqueName))].sort();
+    
+    // Keep current selection if possible when switching seasons
+    const currentSelection = selector.value;
+    
+    selector.innerHTML = umas.map(uma => `<option value="${uma}">${uma}</option>`).join('');
+    
+    if (umas.includes(currentSelection)) {
+        selector.value = currentSelection;
+    } else if (umas.length > 0) {
+        selector.value = umas[0];
+    }
+    
+    updateChart();
+}
+
+function updateChart() {
+    const ctx = document.getElementById('metaChart');
+    if (!ctx) return;
+    
+    const selectedUma = document.getElementById('trendUmaSelector').value;
+    if (!selectedUma) return;
+
+    // 1. Group data by Tournament ID
+    const tourneyMap = {};
+    currentRawData.forEach(r => {
+        const tId = r.RawLength; // The Tourney ID (e.g., "Open 1", "S2-15")
+        if (!tourneyMap[tId]) {
+            tourneyMap[tId] = { totalEntries: 0, umaPicks: 0, umaWins: 0, umaRacesRun: 0 };
+        }
+        tourneyMap[tId].totalEntries++;
+        if (r.UniqueName === selectedUma) {
+            tourneyMap[tId].umaPicks++;
+            tourneyMap[tId].umaWins += r.Wins;
+            tourneyMap[tId].umaRacesRun += r.RacesRun;
+        }
+    });
+
+    // 2. Sort Tournaments chronologically based on the numbers in their names
+    const sortedTourneys = Object.keys(tourneyMap).sort((a, b) => {
+        const numA = parseInt(a.replace(/\D/g, '')) || 0;
+        const numB = parseInt(b.replace(/\D/g, '')) || 0;
+        return numA - numB;
+    });
+
+    // 3. Prepare Chart Data
+    const labels = [];
+    const pickRates = [];
+    const winRates = [];
+
+    sortedTourneys.forEach(tId => {
+        labels.push(tId);
+        const data = tourneyMap[tId];
+        
+        const pickRate = data.totalEntries > 0 ? ((data.umaPicks / data.totalEntries) * 100) : 0;
+        const winRate = data.umaRacesRun > 0 ? ((data.umaWins / data.umaRacesRun) * 100) : 0;
+        
+        pickRates.push(pickRate.toFixed(1));
+        winRates.push(winRate.toFixed(1));
+    });
+
+    // 4. Render Chart
+    if (metaChartInstance) {
+        metaChartInstance.destroy(); // Clear old chart
+    }
+
+    // Grab the CSS accent color dynamically for the chart
+    const rootStyle = getComputedStyle(document.body);
+    const accentColor = rootStyle.getPropertyValue('--accent-color').trim() || '#4ecca3';
+    const textColor = rootStyle.getPropertyValue('--text-color').trim() || '#e0e0e0';
+    const gridColor = rootStyle.getPropertyValue('--border-color').trim() || '#333333';
+
+    metaChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Pick Rate %',
+                    data: pickRates,
+                    borderColor: accentColor,
+                    backgroundColor: accentColor + '33', // 20% opacity hex
+                    yAxisID: 'y',
+                    tension: 0.3,
+                    fill: true,
+                    pointRadius: 4,
+                    pointHoverRadius: 6
+                },
+                {
+                    label: 'Win Rate %',
+                    data: winRates,
+                    borderColor: '#ffd700', // Distinct Gold color
+                    backgroundColor: 'transparent',
+                    yAxisID: 'y1',
+                    tension: 0.3,
+                    borderDash: [5, 5], // Dashed line to separate visually
+                    pointRadius: 4,
+                    pointHoverRadius: 6
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: { mode: 'index', intersect: false },
+            plugins: {
+                legend: { labels: { color: textColor, font: { family: 'Inter' } } },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) { return context.dataset.label + ': ' + context.parsed.y + '%'; }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    ticks: { color: textColor, maxRotation: 45, minRotation: 45 },
+                    grid: { color: gridColor }
+                },
+                y: {
+                    type: 'linear', display: true, position: 'left',
+                    title: { display: true, text: 'Pick Rate %', color: accentColor },
+                    ticks: { color: textColor },
+                    grid: { color: gridColor },
+                    min: 0
+                },
+                y1: {
+                    type: 'linear', display: true, position: 'right',
+                    title: { display: true, text: 'Win Rate %', color: '#ffd700' },
+                    ticks: { color: textColor },
+                    grid: { drawOnChartArea: false }, // Prevent overlapping grid lines
+                    min: 0
+                }
+            }
+        }
+    });
+}
+
 window.onload = function() {
     const savedTheme = localStorage.getItem('siteTheme');
     if (savedTheme) {
@@ -798,6 +945,7 @@ window.onload = function() {
     // Initialize with whatever is selected in the HTML dropdown (default S2)
     switchSeason();
 };
+
 
 
 
