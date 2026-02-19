@@ -112,6 +112,14 @@
                 </select>
             </div>
         </div>
+
+        <div class="control-group">
+            <label>Search</label>
+            <div class="select-wrapper">
+                <input type="text" id="searchInput" onkeyup="updateData(); renderStatsTable();" placeholder="Trainer or Uma..." style="width: 100%; padding: 10px 15px; background-color: var(--bg-color); color: var(--text-color); border: 1px solid var(--border-color); border-radius: 8px; font-family: inherit; box-sizing: border-box;">
+            </div>
+        </div>
+        
         <div class="control-group slider-group">
             <label>Min Entries: <span id="minEntriesVal">5</span></label>
             <div class="slider-container">
@@ -422,6 +430,7 @@
 
 </body>
 </html>
+
 
 
 
