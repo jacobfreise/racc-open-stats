@@ -4,6 +4,7 @@ const POINTS_SYSTEM = [25, 18, 15, 12, 10, 8, 6, 4, 2, 1];
 let currentRawData = []; 
 let activeDataset = null; 
 let liveFirebaseData = [];
+let currentCalculatedStats = null; // Stored globally for Trainer Card generator
 
 // --- Helper: Generate Icon HTML ---
 function getIconHtml(name, type) {
@@ -84,10 +85,6 @@ function formatName(fullName, type = 'uma') {
 // --- FIREBASE LIVE DATA LISTENER ---
 window.addEventListener('liveDataReady', (e) => {
     liveFirebaseData = e.detail; 
-    
-    // NOTE: Removed image preloading here to save bandwidth for Live Data tab.
-    // Images will only load if you switch to other tabs (handled by switchSeason).
-
     renderLiveTournaments();
 });
 
@@ -103,7 +100,6 @@ function renderLiveTournaments() {
     let html = '';
 
     liveFirebaseData.forEach(t => {
-        // Build a quick lookup map for players
         const playerMap = {};
         if (t.players && Array.isArray(t.players)) {
             t.players.forEach(p => {
@@ -174,7 +170,6 @@ function renderLiveTournaments() {
 
         // --- 4. TEAM STANDINGS ---
         if (t.teams && t.teams.length > 0) {
-            // Check if we are in groups or finals to determine which points to sort by
             const pointKey = t.stage === 'finals' ? 'finalsPoints' : 'points';
             const sortedTeams = [...t.teams].sort((a, b) => (b[pointKey] || 0) - (a[pointKey] || 0));
             
@@ -350,7 +345,6 @@ function switchSeason() {
             };
         });
         
-        // This preloading stays because it's for the other tabs (Stats/Championship)
         preloadImages(umaToPreload, 'uma'); 
         preloadImages(trainerToPreload, 'trainer'); 
         
@@ -375,6 +369,9 @@ function switchTab(tabId) {
     if (tabId === 'championship') tabs[3].classList.add('active');
     if (tabId === 'live-data') tabs[4].classList.add('active');
     if (tabId === 'meta-trends') tabs[5].classList.add('active');
+    if (tabId === 'trainer-card') {
+        if(tabs[6]) tabs[6].classList.add('active'); // Trainer card tab
+    }
 }
 
 // --- Tier List View Switcher ---
@@ -580,13 +577,11 @@ function calculateStats(filteredData) {
             historyArr.sort((a, b) => b.picks - a.picks);
             const fav = historyArr[0];
             
-            // Favorites are Umas
             stats.favorite = fav ? `${formatName(fav.name, 'uma')} <span class="stat-badge">x${fav.picks}</span>` : '-';
             
             historyArr.sort((a, b) => b.wins - a.wins || a.picks - b.picks);
             const best = historyArr[0];
             
-            // Best Ace is an Uma
             stats.ace = (best && best.wins > 0) ? `${formatName(best.name, 'uma')} <span class="stat-badge win-badge">★${best.wins}</span>` : '<span style="color:var(--text-color); opacity:0.5;">-</span>';
         }
 
@@ -670,6 +665,7 @@ function updateData() {
     const surface = document.getElementById('surfaceFilter').value;
     const length = document.getElementById('lengthFilter').value;
     const minEntries = document.getElementById('minEntries').value;
+    const searchQuery = document.getElementById('searchInput') ? document.getElementById('searchInput').value.toLowerCase() : "";
 
     if(document.getElementById('minEntriesVal')) 
         document.getElementById('minEntriesVal').textContent = minEntries;
@@ -678,10 +674,19 @@ function updateData() {
         if (d.Trainer === "DQ") return false;
         const surfaceMatch = (surface === 'All' || d.Surface.includes(surface));
         const lengthMatch = (length === 'All' || d.DistanceCategory === length);
-        return surfaceMatch && lengthMatch;
+        
+        // CSV Phase 1 Search Check
+        const searchMatch = searchQuery === "" || 
+                            d.Trainer.toLowerCase().includes(searchQuery) || 
+                            d.UniqueName.toLowerCase().includes(searchQuery);
+
+        return surfaceMatch && lengthMatch && searchMatch;
     });
 
     const stats = calculateStats(filtered);
+    
+    // Store globally for the Trainer Card
+    currentCalculatedStats = stats;
 
     // Sort Tables
     stats.umaStats.sort((a, b) => b.dom - a.dom);
@@ -700,7 +705,9 @@ function updateData() {
     renderTierList('trainerTierListDom', stats.trainerStats, 'entries', minEntries, 'dom');
     renderTierList('umaTierListChamp', stats.umaStats, 'picks', minEntries, 'tourneyWinPct');
     renderTierList('trainerTierListChamp', stats.trainerStats, 'entries', minEntries, 'tourneyWinPct');
+    
     populateTrendDropdown();
+    populateTrainerDropdown(); // Hydrate the Trainer Card Generator dropdown
 }
 
 // --- Sorting, Theme, Init ---
@@ -739,6 +746,7 @@ function switchTheme() {
 // Calculate total unfiltered stats for the Championship Tab
 function calculateIndividualStats() {
     let stats = {};
+    const searchQuery = document.getElementById('searchInput') ? document.getElementById('searchInput').value.toLowerCase() : "";
     
     if (activeDataset.tournamentRaceResults) {
         for (const [tournamentName, stages] of Object.entries(activeDataset.tournamentRaceResults)) {
@@ -755,14 +763,16 @@ function calculateIndividualStats() {
             }
         }
     }
-    const leaderboard = Object.values(stats).map(player => {
-        return {
-            name: player.name,
-            totalPoints: player.totalPoints,
-            racesRun: player.racesRun,
-            avgPoints: player.racesRun > 0 ? (player.totalPoints / player.racesRun).toFixed(2) : "0.00"
-        };
-    });
+    const leaderboard = Object.values(stats)
+        .filter(player => searchQuery === "" || player.name.toLowerCase().includes(searchQuery)) // Phase 1 Search inclusion
+        .map(player => {
+            return {
+                name: player.name,
+                totalPoints: player.totalPoints,
+                racesRun: player.racesRun,
+                avgPoints: player.racesRun > 0 ? (player.totalPoints / player.racesRun).toFixed(2) : "0.00"
+            };
+        });
     return leaderboard.sort((a, b) => b.totalPoints - a.totalPoints);
 }
 
@@ -936,16 +946,115 @@ function updateChart() {
     });
 }
 
+// --- CSV EXPORT LOGIC ---
+function exportCurrentTableToCSV() {
+    // Determine which tab is active
+    const activeTab = document.querySelector('.view-section.active').id;
+    let tableId = '';
+    
+    if (activeTab === 'uma-stats') tableId = 'umaTable';
+    else if (activeTab === 'trainer-stats') tableId = 'trainerTable';
+    else if (activeTab === 'championship') tableId = 'champTable';
+    else {
+        alert("Please navigate to Uma Stats, Trainer Stats, or Championship to export a table.");
+        return;
+    }
+
+    const table = document.getElementById(tableId);
+    let csvContent = "";
+
+    // Parse headers
+    const headers = Array.from(table.querySelectorAll("thead th")).map(th => `"${th.innerText.trim()}"`);
+    csvContent += headers.join(",") + "\n";
+
+    // Parse rows
+    const rows = Array.from(table.querySelectorAll("tbody tr"));
+    rows.forEach(row => {
+        const rowData = Array.from(row.querySelectorAll("td")).map(td => {
+            // Clean up inner text (remove newlines, quotes)
+            let text = td.innerText.replace(/(\r\n|\n|\r)/gm, " ").replace(/"/g, '""');
+            return `"${text.trim()}"`;
+        });
+        csvContent += rowData.join(",") + "\n";
+    });
+
+    // Create download link
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", `racc_open_${tableId}_export.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+// --- TRAINER CARD LOGIC ---
+function populateTrainerDropdown() {
+    const selector = document.getElementById('cardTrainerSelector');
+    if (!selector || !currentCalculatedStats) return;
+
+    // Grab all trainers currently in the filtered stats
+    const trainers = currentCalculatedStats.trainerStats.map(t => t.name).sort();
+    
+    const currentSelection = selector.value;
+    selector.innerHTML = trainers.map(t => `<option value="${t}">${t}</option>`).join('');
+    
+    if (trainers.includes(currentSelection)) {
+        selector.value = currentSelection;
+    } else if (trainers.includes("Kenesu")) {
+        selector.value = "Kenesu";
+    } else if (trainers.length > 0) {
+        selector.value = trainers[0];
+    }
+    
+    updateTrainerCard();
+}
+
+function updateTrainerCard() {
+    const selectedName = document.getElementById('cardTrainerSelector').value;
+    if (!selectedName || !currentCalculatedStats) return;
+
+    const tData = currentCalculatedStats.trainerStats.find(t => t.name === selectedName);
+    if (!tData) return;
+
+    document.getElementById('tc-name').innerText = tData.name;
+    document.getElementById('tc-avatar').innerHTML = getIconHtml(tData.name, 'trainer');
+    
+    document.getElementById('tc-wr').innerText = `${tData.winRate}%`;
+    document.getElementById('tc-dom').innerText = `${tData.dom}%`;
+    document.getElementById('tc-twins').innerText = tData.tournamentWins;
+    document.getElementById('tc-races').innerText = tData.totalRacesRun;
+
+    document.getElementById('tc-ace').innerHTML = tData.ace;
+    document.getElementById('tc-fav').innerHTML = tData.favorite;
+}
+
+function downloadTrainerCard() {
+    const cardElement = document.getElementById('captureCard');
+    const trainerName = document.getElementById('cardTrainerSelector').value;
+    
+    // We use useCORS to allow the CDN images (wsrv.nl) to be drawn onto the canvas
+    html2canvas(cardElement, {
+        useCORS: true,
+        backgroundColor: null, 
+        scale: 2 // Higher resolution for a crisp image
+    }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = `${trainerName}_Racc_Open_Stats.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+    });
+}
+
+
 window.onload = function() {
     const savedTheme = localStorage.getItem('siteTheme');
     if (savedTheme) {
         document.getElementById('themeSelector').value = savedTheme;
         document.body.setAttribute('data-theme', savedTheme);
     }
-    // Initialize with whatever is selected in the HTML dropdown (default S2)
+    // Initialize with whatever is selected in the HTML dropdown
     switchSeason();
 };
-
-
-
-
