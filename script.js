@@ -103,6 +103,7 @@ function renderLiveTournaments() {
     let html = '';
 
     liveFirebaseData.forEach(t => {
+        // Build a quick lookup map for players
         const playerMap = {};
         if (t.players && Array.isArray(t.players)) {
             t.players.forEach(p => {
@@ -112,6 +113,7 @@ function renderLiveTournaments() {
 
         html += `<div class="live-tourney-card">`;
         
+        // --- 1. HEADER ---
         let statusClass = t.status === 'active' ? 'status-active' : 'status-completed';
         html += `
             <div class="live-header">
@@ -135,6 +137,73 @@ function renderLiveTournaments() {
             </div>
         `;
 
+        // --- 2. LIVE BANS ---
+        if (t.bans && t.bans.length > 0) {
+            const banHtml = t.bans.map(b => `<span class="variant-tag" style="border: 1px solid var(--border-color); font-size: 0.9em; padding: 4px 10px;">🚫 ${b}</span>`).join('');
+            html += `
+            <div style="margin-bottom: 25px;">
+                <strong style="color: var(--accent-color); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em;">Banned Umas</strong><br>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px;">${banHtml}</div>
+            </div>`;
+        }
+
+        // --- 3. DRAFT ORDER ---
+        if (t.draft && t.draft.order && t.draft.order.length > 0) {
+            const draftHtml = t.draft.order.map((playerId, idx) => {
+                const pInfo = playerMap[playerId] || { name: 'Unknown', uma: null };
+                const umaDisplay = pInfo.uma ? `[${pInfo.uma}]` : '[Pending Pick]';
+                const umaStyle = pInfo.uma ? `color: var(--text-color);` : `color: var(--accent-color); opacity: 0.7;`;
+                
+                return `<div class="live-result-row">
+                    <span class="lr-rank" style="width: auto; margin-right: 10px; color: var(--accent-color);">P${idx + 1}</span>
+                    <span class="lr-name">${pInfo.name}</span>
+                    <span class="lr-uma" style="${umaStyle}">${umaDisplay}</span>
+                </div>`;
+            }).join('');
+
+            html += `
+            <div class="table-wrapper" style="margin-bottom: 25px;">
+                <table class="live-table">
+                    <thead><tr><th>Draft Priority</th></tr></thead>
+                    <tbody><tr><td style="padding: 15px;">
+                        <div class="live-results-grid">${draftHtml}</div>
+                    </td></tr></tbody>
+                </table>
+            </div>`;
+        }
+
+        // --- 4. TEAM STANDINGS ---
+        if (t.teams && t.teams.length > 0) {
+            // Check if we are in groups or finals to determine which points to sort by
+            const pointKey = t.stage === 'finals' ? 'finalsPoints' : 'points';
+            const sortedTeams = [...t.teams].sort((a, b) => (b[pointKey] || 0) - (a[pointKey] || 0));
+            
+            let teamRows = sortedTeams.map((team, index) => {
+                return `
+                    <tr>
+                        <td style="text-align:center;"><span class="stat-badge">${index + 1}</span></td>
+                        <td style="font-weight: 600;">${team.name} <span style="opacity: 0.5; font-size: 0.85em; font-weight: 400; margin-left: 8px;">(Group ${team.group})</span></td>
+                        <td style="text-align:center; color: var(--accent-color); font-weight: bold; font-size: 1.1em;">${team[pointKey] || 0}</td>
+                    </tr>
+                `;
+            }).join('');
+
+            html += `
+            <div class="table-wrapper" style="margin-bottom: 25px;">
+                <table class="live-table">
+                    <thead>
+                        <tr>
+                            <th style="width:60px; text-align:center;">Rank</th>
+                            <th>Team Standings</th>
+                            <th style="width:80px; text-align:center;">Points</th>
+                        </tr>
+                    </thead>
+                    <tbody>${teamRows}</tbody>
+                </table>
+            </div>`;
+        }
+
+        // --- 5. INDIVIDUAL RACE RESULTS ---
         if (t.races && t.races.length > 0) {
             const groupOrder = { 'A': 1, 'B': 2, 'C': 3, 'Finals': 4 };
             const sortedRaces = [...t.races].sort((a, b) => {
@@ -144,13 +213,13 @@ function renderLiveTournaments() {
                 return a.raceNumber - b.raceNumber;
             });
 
-            html += `<div class="table-wrapper" style="margin-top:20px;">
+            html += `<div class="table-wrapper">
                 <table class="live-table">
                     <thead>
                         <tr>
                             <th style="width:50px;">#</th>
                             <th style="width:80px;">Group</th>
-                            <th>Results</th>
+                            <th>Race Results</th>
                         </tr>
                     </thead>
                     <tbody>`;
@@ -168,7 +237,6 @@ function renderLiveTournaments() {
                     
                     const style = rankColor ? `style="color:${rankColor}; font-weight:bold;"` : '';
                     
-                    // CHANGED: No icons here, just text
                     return `<div class="live-result-row">
                         <span class="lr-rank" ${style}>${rank}.</span>
                         <span class="lr-name">${pInfo.name}</span>
@@ -185,7 +253,7 @@ function renderLiveTournaments() {
 
             html += `</tbody></table></div>`;
         } else {
-            html += `<div style="padding:15px; opacity:0.6; font-style:italic;">No race results uploaded yet.</div>`;
+            html += `<div style="padding:15px; opacity:0.6; font-style:italic; border: 1px dashed var(--border-color); border-radius: 8px; text-align: center;">No individual race results uploaded yet.</div>`;
         }
 
         html += `</div>`; 
@@ -730,5 +798,6 @@ window.onload = function() {
     // Initialize with whatever is selected in the HTML dropdown (default S2)
     switchSeason();
 };
+
 
 
