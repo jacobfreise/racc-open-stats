@@ -346,11 +346,40 @@
 
                     <div class="select-wrapper">
                         <select id="boxCategoryFilter" onchange="renderBoxTable()">
-                            <option value="All">All Types</option>
+                            <option value="All">All Categories</option>
                             <option value="Uma">Umas Only</option>
                             <option value="Support">Support Cards</option>
                         </select>
                     </div>
+
+                    <div class="select-wrapper">
+                        <select id="boxRarityFilter" onchange="renderBoxTable()">
+                            <option value="All">All Rarities</option>
+                            <option disabled>── Supports ──</option>
+                            <option value="SSR">SSR</option>
+                            <option value="SR">SR</option>
+                            <option value="R">R</option>
+                            <option disabled>── Umas ──</option>
+                            <option value="5★">5★</option>
+                            <option value="4★">4★</option>
+                            <option value="3★">3★</option>
+                            <option value="2★">2★</option>
+                            <option value="1★">1★</option>
+                        </select>
+                    </div>
+
+                    <div class="select-wrapper">
+                        <select id="boxStatFilter" onchange="renderBoxTable()">
+                            <option value="All">All Types</option>
+                            <option value="Speed">Speed</option>
+                            <option value="Stamina">Stamina</option>
+                            <option value="Power">Power</option>
+                            <option value="Guts">Guts</option>
+                            <option value="Wisdom">Wisdom</option>
+                            <option value="Friend">Friend</option>
+                        </select>
+                    </div>
+
                     <div class="select-wrapper">
                         <input type="text" id="boxSearch" onkeyup="renderBoxTable()" placeholder="Search Name..." style="padding: 10px 15px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-color); font-family: inherit;">
                     </div>
