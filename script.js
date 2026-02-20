@@ -372,8 +372,8 @@ function switchTab(tabId) {
         if(tabs[5]) tabs[5].classList.add('active'); 
     }
     if (tabId === 'trainer-box') {
-        if(tabs[6]) tabs[6].classList.add('active'); // Added the 7th tab
-        renderBoxTable(); // Render the Trainer Box table whenever switched to
+        if(tabs[6]) tabs[6].classList.add('active'); 
+        renderBoxTable(); 
     }
 }
 
@@ -459,6 +459,7 @@ function calculateStats(filteredData) {
     const totalEntries = filteredData.length;
 
     filteredData.forEach(row => activeTournaments.add(row.RawLength));
+    const totalTournaments = activeTournaments.size; // Needed for Presence calculations
 
     const pointsData = getChampionshipPoints(activeTournaments, filteredData);
 
@@ -467,12 +468,15 @@ function calculateStats(filteredData) {
         if (!umaMap[row.UniqueName]) { 
             umaMap[row.UniqueName] = { 
                 name: row.UniqueName, 
-                picks: 0, wins: 0, totalRacesRun: 0, tourneyWins: 0, bans: 0 
+                picks: 0, wins: 0, totalRacesRun: 0, tourneyWins: 0, bans: 0,
+                pickedInTourneys: new Set(), // Tracking for presence
+                bannedInTourneys: new Set()  // Tracking for presence
             }; 
         }
         umaMap[row.UniqueName].picks++;
         umaMap[row.UniqueName].wins += row.Wins;
         umaMap[row.UniqueName].totalRacesRun += row.RacesRun;
+        umaMap[row.UniqueName].pickedInTourneys.add(row.RawLength);
 
         if (activeDataset.tournamentWinners && activeDataset.tournamentWinners[row.RawLength]) {
             if (activeDataset.tournamentWinners[row.RawLength].includes(row.Trainer)) {
@@ -521,10 +525,13 @@ function calculateStats(filteredData) {
                 banList.forEach(umaName => {
                     if (!umaMap[umaName]) { 
                         umaMap[umaName] = { 
-                            name: umaName, picks: 0, wins: 0, totalRacesRun: 0, tourneyWins: 0, bans: 0 
+                            name: umaName, picks: 0, wins: 0, totalRacesRun: 0, tourneyWins: 0, bans: 0,
+                            pickedInTourneys: new Set(),
+                            bannedInTourneys: new Set()
                         }; 
                     }
                     umaMap[umaName].bans++;
+                    umaMap[umaName].bannedInTourneys.add(tourneyID);
                 });
             }
         });
@@ -572,6 +579,16 @@ function calculateStats(filteredData) {
             stats.tourneyStatsDisplay = `${tWinPct}% <span style="font-size:0.8em; color:var(--text-color); opacity:0.7;">(${item.tourneyWins}/${item.picks})</span>`;
             const banRate = validBanTourneyCount > 0 ? (item.bans / validBanTourneyCount * 100).toFixed(1) : "0.0";
             stats.banStatsDisplay = `${banRate}% <span style="font-size:0.8em; color:var(--text-color); opacity:0.7;">(${item.bans}/${validBanTourneyCount})</span>`;
+            
+            // --- Presence Calculation ---
+            const combinedPresenceSet = new Set([...item.pickedInTourneys, ...item.bannedInTourneys]);
+            const presenceRate = totalTournaments > 0 ? (combinedPresenceSet.size / totalTournaments * 100).toFixed(1) : "0.0";
+            stats.presenceDisplay = `${presenceRate}% <span style="font-size:0.8em; color:var(--text-color); opacity:0.7;">(${combinedPresenceSet.size}/${totalTournaments})</span>`;
+
+            // --- True Pick Rate Calculation ---
+            const availableTournaments = totalTournaments - item.bans;
+            const truePickRate = availableTournaments > 0 ? ((item.picks / availableTournaments) * 100).toFixed(1) : "0.0";
+            stats.truePickPct = truePickRate; 
         }
 
         if (type === 'trainer') {
@@ -604,7 +621,7 @@ function renderTable(tableId, data, columns) {
     tbody.innerHTML = data.map(row => {
         const cells = columns.map(col => {
             if (col === 'name') return `<td>${row.displayName}</td>`;
-            if (col === 'winRate' || col === 'dom' || col === 'tourneyWinPct' || col === 'pickPct') return `<td>${row[col]}%</td>`;
+            if (col === 'winRate' || col === 'dom' || col === 'tourneyWinPct' || col === 'pickPct' || col === 'truePickPct') return `<td>${row[col]}%</td>`;
             return `<td>${row[col]}</td>`;
         });
         return `<tr>${cells.join('')}</tr>`;
@@ -678,7 +695,6 @@ function updateData() {
         const surfaceMatch = (surface === 'All' || d.Surface.includes(surface));
         const lengthMatch = (length === 'All' || d.DistanceCategory === length);
         
-        // CSV Phase 1 Search Check
         const searchMatch = searchQuery === "" || 
                             d.Trainer.toLowerCase().includes(searchQuery) || 
                             d.UniqueName.toLowerCase().includes(searchQuery);
@@ -688,13 +704,13 @@ function updateData() {
 
     const stats = calculateStats(filtered);
     
-    // Store globally for the Trainer Card
     currentCalculatedStats = stats;
 
     // Sort Tables
     stats.umaStats.sort((a, b) => b.dom - a.dom);
     renderTable('umaTable', stats.umaStats, 
-        ['name', 'picks', 'pickPct', 'wins', 'winRate', 'dom', 'tourneyStatsDisplay', 'banStatsDisplay']
+        // Including truePickPct and presenceDisplay here
+        ['name', 'picks', 'pickPct', 'truePickPct', 'wins', 'winRate', 'dom', 'tourneyStatsDisplay', 'banStatsDisplay', 'presenceDisplay']
     );
 
     stats.trainerStats.sort((a, b) => b.dom - a.dom);
@@ -709,7 +725,7 @@ function updateData() {
     renderTierList('umaTierListChamp', stats.umaStats, 'picks', minEntries, 'tourneyWinPct');
     renderTierList('trainerTierListChamp', stats.trainerStats, 'entries', minEntries, 'tourneyWinPct');
     
-    populateTrainerDropdown(); // Hydrate the Trainer Card Generator dropdown
+    populateTrainerDropdown(); 
 }
 
 // --- Sorting, Theme, Init ---
