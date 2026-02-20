@@ -135,6 +135,7 @@
             <div class="tab" onclick="switchTab('championship')">Championship</div>
             <div class="tab" onclick="switchTab('live-data')">Live Data</div>
             <div class="tab" onclick="switchTab('trainer-card')">Trainer Card</div>
+            <div class="tab" onclick="switchTab('trainer-box')">Trainer Box</div>
         </div>
         <button onclick="exportCurrentTableToCSV()" class="copy-btn" style="height: fit-content;">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
@@ -272,9 +273,8 @@
             </div>
         </div>
     </div>
-</div>
 
-<div id="trainer-card" class="view-section">
+    <div id="trainer-card" class="view-section">
         <div class="card" style="display: flex; flex-direction: column; align-items: center; gap: 20px;">
             <div style="display: flex; gap: 15px; align-items: center; width: 100%; justify-content: center; flex-wrap: wrap;">
                 <label style="margin: 0;">Select Trainer:</label>
@@ -332,6 +332,52 @@
             </div>
         </div>
     </div>
+
+    <div id="trainer-box" class="view-section">
+        <div class="card table-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 20px; padding: 0 10px;">
+                <h2 style="margin: 0;">📦 Trainer Box</h2>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    
+                    <div class="select-wrapper">
+                        <select id="boxTrainerSelector" onchange="renderBoxTable()">
+                            <option value="Kenesu">Kenesu</option>
+                            <option value="Spyder">Spyder</option>
+                        </select>
+                    </div>
+
+                    <div class="select-wrapper">
+                        <select id="boxCategoryFilter" onchange="renderBoxTable()">
+                            <option value="All">All Types</option>
+                            <option value="Uma">Umas Only</option>
+                            <option value="Support">Support Cards</option>
+                        </select>
+                    </div>
+                    <div class="select-wrapper">
+                        <input type="text" id="boxSearch" onkeyup="renderBoxTable()" placeholder="Search Name..." style="padding: 10px 15px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-color); font-family: inherit;">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="table-wrapper">
+                <table id="boxTable">
+                    <thead>
+                        <tr>
+                            <th style="width: 100px;">Category</th>
+                            <th style="width: 80px;">Rarity</th>
+                            <th style="width: 120px;">Stat / Type</th>
+                            <th>Name</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody id="box-table-body">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
 
 <footer id="main-footer">
     <div class="footer-content">
@@ -403,6 +449,7 @@
 
 <script src="data.js"></script>
 <script src="data_s2.js"></script>
+<script src="box_data.js"></script>
 <script src="script.js"></script>
 <script type="module" src="dataFetch.js"></script>
 
