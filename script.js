@@ -456,10 +456,16 @@ function calculateStats(filteredData) {
     const umaMap = {};
     const trainerMap = {};
     const activeTournaments = new Set();
+    const tourneyEntryCount = {}; // NEW: Track total player entries per tournament
     const totalEntries = filteredData.length;
 
-    filteredData.forEach(row => activeTournaments.add(row.RawLength));
-    const totalTournaments = activeTournaments.size; // Needed for Presence calculations
+    filteredData.forEach(row => {
+        activeTournaments.add(row.RawLength);
+        // NEW: Count how many total entries exist in each specific tournament
+        tourneyEntryCount[row.RawLength] = (tourneyEntryCount[row.RawLength] || 0) + 1;
+    });
+    
+    const totalTournaments = activeTournaments.size; 
 
     const pointsData = getChampionshipPoints(activeTournaments, filteredData);
 
@@ -469,8 +475,8 @@ function calculateStats(filteredData) {
             umaMap[row.UniqueName] = { 
                 name: row.UniqueName, 
                 picks: 0, wins: 0, totalRacesRun: 0, tourneyWins: 0, bans: 0,
-                pickedInTourneys: new Set(), // Tracking for presence
-                bannedInTourneys: new Set()  // Tracking for presence
+                pickedInTourneys: new Set(), 
+                bannedInTourneys: new Set()  
             }; 
         }
         umaMap[row.UniqueName].picks++;
@@ -585,9 +591,16 @@ function calculateStats(filteredData) {
             const presenceRate = totalTournaments > 0 ? (combinedPresenceSet.size / totalTournaments * 100).toFixed(1) : "0.0";
             stats.presenceDisplay = `${presenceRate}% <span style="font-size:0.8em; color:var(--text-color); opacity:0.7;">(${combinedPresenceSet.size}/${totalTournaments})</span>`;
 
-            // --- True Pick Rate Calculation ---
-            const availableTournaments = totalTournaments - item.bans;
-            const truePickRate = availableTournaments > 0 ? ((item.picks / availableTournaments) * 100).toFixed(1) : "0.0";
+            // --- FIXED: True Pick Rate Calculation ---
+            // Calculate how many total player entries occurred during tournaments where this Uma was BANNED
+            let bannedEntries = 0;
+            item.bannedInTourneys.forEach(tId => {
+                bannedEntries += (tourneyEntryCount[tId] || 0);
+            });
+            
+            // Subtract those impossible entries from the total entries pool
+            const availableEntries = totalEntries - bannedEntries;
+            const truePickRate = availableEntries > 0 ? ((item.picks / availableEntries) * 100).toFixed(1) : "0.0";
             stats.truePickPct = truePickRate; 
         }
 
