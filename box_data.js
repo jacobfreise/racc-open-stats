@@ -31,7 +31,7 @@ const KENESU_BOX = [
     { cat: 'Uma', rarity: '3★', stat: 'Uma', name: 'T.M. Opera O (New Year)', details: 'Potential Lvl 5' },
     { cat: 'Uma', rarity: '3★', stat: 'Uma', name: 'Narita Brian (Original)', details: 'Potential Lvl 5' },
     { cat: 'Uma', rarity: '3★', stat: 'Uma', name: 'Air Groove (Wedding)', details: 'Potential Lvl 5' },
-    { cat: 'Uma', rarity: '3★', stat: 'Uma', name: 'Tamomo Cross (Original)', details: 'Potential Lvl 5' },
+    { cat: 'Uma', rarity: '3★', stat: 'Uma', name: 'Tamamo Cross (Original)', details: 'Potential Lvl 5' },
     { cat: 'Uma', rarity: '3★', stat: 'Uma', name: 'Mayano Top Gun (Wedding)', details: 'Potential Lvl 5' },
     { cat: 'Uma', rarity: '3★', stat: 'Uma', name: 'Mihono Bourbon (Original)', details: 'Potential Lvl 5' },
     { cat: 'Uma', rarity: '3★', stat: 'Uma', name: 'Gold City (Festival)', details: 'Potential Lvl 1' },
@@ -51,7 +51,7 @@ const KENESU_BOX = [
     { cat: 'Support', rarity: 'SSR', stat: 'Stamina', name: 'Mejiro McQueen', details: 'MLB (Lvl 50)' },
     { cat: 'Support', rarity: 'SSR', stat: 'Power', name: 'El Condor Pasa', details: '0LB (Lvl 30)' },
     { cat: 'Support', rarity: 'SSR', stat: 'Speed', name: 'Narita Brian', details: 'MLB (Lvl 50)' },
-    { cat: 'Support', rarity: 'SSR', stat: 'Power', name: 'Tamomo Cross', details: '0LB (Lvl 30)' },
+    { cat: 'Support', rarity: 'SSR', stat: 'Power', name: 'Tamamo Cross', details: '0LB (Lvl 30)' },
     { cat: 'Support', rarity: 'SSR', stat: 'Wisdom', name: 'Fine Motion', details: '0LB (Lvl 30)' },
     { cat: 'Support', rarity: 'SSR', stat: 'Wisdom', name: 'Mihono Bourbon', details: 'MLB (Lvl 50)' },
     { cat: 'Support', rarity: 'SSR', stat: 'Guts', name: 'Yukino Bijin', details: 'MLB (Lvl 50)' },
@@ -84,7 +84,7 @@ const KENESU_BOX = [
     { cat: 'Support', rarity: 'SR', stat: 'Power', name: 'Hishi Amazon', details: 'MLB (Lvl 45)' },
     { cat: 'Support', rarity: 'SR', stat: 'Guts', name: 'Air Groove', details: 'MLB (Lvl 45)' },
     { cat: 'Support', rarity: 'SR', stat: 'Power', name: 'Agnes Digital', details: '3LB (Lvl 40)' },
-    { cat: 'Support', rarity: 'SR', stat: 'Guts', name: 'Tamomo Cross', details: '0LB (Lvl 1)' },
+    { cat: 'Support', rarity: 'SR', stat: 'Guts', name: 'Tamamo Cross', details: '0LB (Lvl 1)' },
     { cat: 'Support', rarity: 'SR', stat: 'Power', name: 'Fine Motion', details: '0LB (Lvl 25)' },
     { cat: 'Support', rarity: 'SR', stat: 'Power', name: 'Biwa Hayahide', details: 'MLB (Lvl 45)' },
     { cat: 'Support', rarity: 'SR', stat: 'Stamina', name: 'Mayano Top Gun', details: '3LB (Lvl 40)' },
@@ -133,7 +133,7 @@ const KENESU_BOX = [
     { cat: 'Support', rarity: 'R', stat: 'Wisdom', name: 'Symboli Rudolf', details: 'MLB (Lvl 40)' },
     { cat: 'Support', rarity: 'R', stat: 'Power', name: 'Agnes Digital', details: 'MLB (Lvl 1)' },
     { cat: 'Support', rarity: 'R', stat: 'Stamina', name: 'Seiun Sky', details: 'MLB (Lvl 1)' },
-    { cat: 'Support', rarity: 'R', stat: 'Stamina', name: 'Tamomo Cross', details: 'MLB (Lvl 1)' },
+    { cat: 'Support', rarity: 'R', stat: 'Stamina', name: 'Tamamo Cross', details: 'MLB (Lvl 1)' },
     { cat: 'Support', rarity: 'R', stat: 'Wisdom', name: 'Fine Motion', details: 'MLB (Lvl 1)' },
     { cat: 'Support', rarity: 'R', stat: 'Power', name: 'Biwa Hayahide', details: 'MLB (Lvl 1)' },
     { cat: 'Support', rarity: 'R', stat: 'Stamina', name: 'Mayano Top Gun', details: 'MLB (Lvl 1)' },
@@ -200,4 +200,5 @@ const PLAYER_BOX = [
 const ALL_TRAINER_BOXES = {
     "Kenesu": KENESU_BOX,
     "Player": PLAYER_BOX
+
 };
