@@ -961,22 +961,26 @@ function renderBoxTable() {
     // 2. Grab their specific data from the master object we made in box_data.js
     const currentBoxData = (typeof ALL_TRAINER_BOXES !== 'undefined' && ALL_TRAINER_BOXES[selectedTrainer]) ? ALL_TRAINER_BOXES[selectedTrainer] : [];
 
-    const categoryFilterElement = document.getElementById('boxCategoryFilter');
-    const categoryFilter = categoryFilterElement ? categoryFilterElement.value : 'All';
-    
-    const searchElement = document.getElementById('boxSearch');
-    const searchQuery = searchElement ? searchElement.value.toLowerCase() : '';
+    // 3. Grab all filter values
+    const categoryFilter = document.getElementById('boxCategoryFilter') ? document.getElementById('boxCategoryFilter').value : 'All';
+    const rarityFilter = document.getElementById('boxRarityFilter') ? document.getElementById('boxRarityFilter').value : 'All';
+    const statFilter = document.getElementById('boxStatFilter') ? document.getElementById('boxStatFilter').value : 'All';
+    const searchQuery = document.getElementById('boxSearch') ? document.getElementById('boxSearch').value.toLowerCase() : '';
 
-    // 3. Filter the currently selected trainer's data
+    // 4. Apply all active filters to the data
     const filteredData = currentBoxData.filter(item => {
         const matchesCategory = categoryFilter === 'All' || item.cat === categoryFilter;
+        const matchesRarity = rarityFilter === 'All' || item.rarity === rarityFilter;
+        // Ignore stat filtering if it's an Uma (since Umas don't have Speed/Stamina types)
+        const matchesStat = statFilter === 'All' || item.stat === 'Uma' || item.stat.toLowerCase() === statFilter.toLowerCase();
         const matchesSearch = item.name.toLowerCase().includes(searchQuery) || item.stat.toLowerCase().includes(searchQuery);
-        return matchesCategory && matchesSearch;
+        
+        return matchesCategory && matchesRarity && matchesStat && matchesSearch;
     });
 
     // Helper classes for styling
     const getRarityClass = (rarity) => {
-        if (rarity === 'SSR' || rarity === '4★') return 'rarity-ssr';
+        if (rarity === 'SSR' || rarity === '4★' || rarity === '5★') return 'rarity-ssr';
         if (rarity === 'SR' || rarity === '3★') return 'rarity-sr';
         return 'rarity-r';
     };
