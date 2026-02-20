@@ -261,7 +261,31 @@ const S2_DATA = {
         ["Pines", "Mihono Bourbon (Original)", 1, "1600m Turf (L)", "S2-16", "Mihono Bourbon", "Original", 5],
         ["Raccoon", "Tamamo Cross (Original)", 0, "1600m Turf (L)", "S2-16", "Tamamo Cross", "Original", 5],
         ["Eva", "Narita Brian (Original)", 0, "1600m Turf (L)", "S2-16", "Narita Brian", "Original", 10],
-        ["Synocra", "Gold Ship (Original)", 0, "1600m Turf (L)", "S2-16", "Gold Ship", "Original", 10]
+        ["Synocra", "Gold Ship (Original)", 0, "1600m Turf (L)", "S2-16", "Gold Ship", "Original", 10],
+        ["Roidee", "Mihono Bourbon (Valentine)", 3, "2000m Turf (L)", "S2-17", "Mihono Bourbon", "Valentine", 10],
+        ["Madara", "Oguri Cap (Original)", 1, "2000m Turf (L)", "S2-17", "Oguri Cap", "Original", 10],
+        ["Spyder", "Mihono Bourbon (Valentine)", 4, "2000m Turf (L)", "S2-17", "Mihono Bourbon", "Valentine", 10],
+        ["Cefiro", "Agnes Tachyon (Original)", 0, "2000m Turf (L)", "S2-17", "Agnes Tachyon", "Original", 5],
+        ["Pines", "Mihono Bourbon (Valentine)", 0, "2000m Turf (L)", "S2-17", "Mihono Bourbon", "Valentine", 10],
+        ["Eva", "Mihono Bourbon (Valentine)", 0, "2000m Turf (L)", "S2-17", "Mihono Bourbon", "Valentine", 5],
+        ["Mixsy", "Tamamo Cross (Original)", 0, "2000m Turf (L)", "S2-17", "Tamamo Cross", "Original", 5],
+        ["NiSE", "Narita Brian (Original)", 1, "2000m Turf (L)", "S2-17", "Narita Brian", "Original", 10],
+        ["LeBricc", "Oguri Cap (Original)", 1, "2000m Turf (L)", "S2-17", "Oguri Cap", "Original", 5],
+        ["Boop", "Smart Falcon (Original)", 0, "2000m Turf (L)", "S2-17", "Smart Falcon", "Original", 5],
+        ["HoriYon", "Oguri Cap (Original)", 0, "2000m Turf (L)", "S2-17", "Oguri Cap", "Original", 10],
+        ["FuHua", "Mejiro Dober (Original)", 0, "2000m Turf (L)", "S2-17", "Mejiro Dober", "Original", 5],
+        ["Draguin", "Mihono Bourbon (Valentine)", 4, "2000m Turf (L)", "S2-17", "Mihono Bourbon", "Valentine", 10],
+        ["Justy", "Taiki Shuttle (Original)", 0, "2000m Turf (L)", "S2-17", "Taiki Shuttle", "Original", 5],
+        ["Sumpfranze", "Mihono Bourbon (Valentine)", 0, "2000m Turf (L)", "S2-17", "Mihono Bourbon", "Valentine", 5],
+        ["Prince of Uranus", "Mihono Bourbon (Valentine)", 0, "2000m Turf (L)", "S2-17", "Mihono Bourbon", "Valentine", 5],
+        ["Synocra", "Mihono Bourbon (Valentine)", 0, "2000m Turf (L)", "S2-17", "Mihono Bourbon", "Valentine", 5],
+        ["Bresto", "Oguri Cap (Original)", 0, "2000m Turf (L)", "S2-17", "Oguri Cap", "Original", 10],
+        ["Nymaera", "Mihono Bourbon (Valentine)", 0, "2000m Turf (L)", "S2-17", "Mihono Bourbon", "Valentine", 10],
+        ["Kenesu", "Oguri Cap (Original)", 0, "2000m Turf (L)", "S2-17", "Oguri Cap", "Original", 5],
+        ["Jedmumu", "T.M. Opera O (New Year)", 0, "2000m Turf (L)", "S2-17", "T.M. Opera O", "New Year", 10],
+        ["KN", "Mihono Bourbon (Valentine)", 1, "2000m Turf (L)", "S2-17", "Mihono Bourbon", "Valentine", 10],
+        ["Raccoon", "Manhattan Cafe (Original)", 0, "2000m Turf (L)", "S2-17", "Manhattan Cafe", "Original", 5],
+        ["Frozt", "Mihono Bourbon (Valentine)", 0, "2000m Turf (L)", "S2-17", "Mihono Bourbon", "Valentine", 10]
     ],
     
     tournamentWinners: {
@@ -281,6 +305,7 @@ const S2_DATA = {
         "S2-14": ["Boop", "Run982", "Bresto"],
         "S2-15": ["Roidee", "Kenesu", "Bresto"],
         "S2-16": ["FuHua", "LeBricc", "Roidee"],
+        "S2-17": ["Spyder", "Pines", "HoriYon"],
     },
     
     tournamentBans: {
@@ -393,6 +418,13 @@ const S2_DATA = {
             "Narita Taishin (Original)",
             "El Condor Pasa (Original)",
             "Oguri Cap (Original)"
+        ],
+        "S2-17": [
+            "Seiun Sky (Original)",
+            "Maruzensky (Summer)",
+            "Maruzensky (Original)",
+            "Silence Suzuka (Original)",
+            "Oguri Cap (Christmas)"
         ],
     },
     
@@ -680,6 +712,29 @@ const S2_DATA = {
                 ["Roidee", "Mixsy", "Boop", "LeBricc", "Eva", "HoriYon", "FuHua", "Justy", "Synocra"],
                 ["HoriYon", "FuHua", "Eva", "Synocra", "LeBricc", "Boop", "Justy", "Mixsy", "Roidee"]
             ]
+        },
+        "S2-17": {
+            "Group A": [
+                ["Roidee", "Madara", "Spyder", "Cefiro", "Pines", "Eva", "Mixsy", "NiSE", "LeBricc", "Boop", "HoriYon", "FuHua"],
+                ["LeBricc", "Roidee", "HoriYon", "Spyder", "NiSE", "Cefiro", "Madara", "Boop", "Eva", "Mixsy", "FuHua", "Pines"],
+                ["Roidee", "Pines", "Cefiro", "Boop", "Mixsy", "LeBricc", "NiSE", "Spyder", "Eva", "HoriYon", "Madara", "FuHua"],
+                ["Roidee", "NiSE", "Cefiro", "HoriYon", "Pines", "Boop", "Eva", "Madara", "Mixsy", "Spyder", "LeBricc", "FuHua"],
+                ["Spyder", "Roidee", "Cefiro", "NiSE", "Madara", "Pines", "Boop", "HoriYon", "LeBricc", "Mixsy", "FuHua", "Eva"]
+            ],
+            "Group B": [
+                ["Draguin", "Justy", "Sumpfranze", "Prince of Uranus", "Synocra", "Bresto", "Nymaera", "Kenesu", "Jedmumu", "KN", "Raccoon", "Frozt"],
+                ["Draguin", "Frozt", "Raccoon", "Kenesu", "Prince of Uranus", "Jedmumu", "Nymaera", "Synocra", "Sumpfranze", "Bresto", "Justy", "KN"],
+                ["Draguin", "Sumpfranze", "Frozt", "KN", "Justy", "Synocra", "Raccoon", "Jedmumu", "Kenesu", "Prince of Uranus", "Nymaera", "Bresto"],
+                ["KN", "Sumpfranze", "Raccoon", "Nymaera", "Prince of Uranus", "Bresto", "Draguin", "Jedmumu", "Justy", "Synocra", "Frozt", "Kenesu"],
+                ["Draguin", "Frozt", "Prince of Uranus", "KN", "Jedmumu", "Synocra", "Justy", "Sumpfranze", "Kenesu", "Raccoon", "Nymaera", "Bresto"]
+            ],
+            "Finals": [
+                ["Spyder", "Roidee", "NiSE", "Draguin", "Nymaera", "Madara", "Pines", "Jedmumu", "HoriYon", "Frozt", "KN", "Bresto"],
+                ["Spyder", "HoriYon", "Draguin", "KN", "NiSE", "Pines", "Frozt", "Jedmumu", "Roidee", "Madara", "Bresto", "Nymaera"],
+                ["NiSE", "Draguin", "KN", "Spyder", "Pines", "Roidee", "HoriYon", "Madara", "Jedmumu", "Frozt", "Bresto", "Nymaera"],
+                ["Madara", "Draguin", "Pines", "Roidee", "Spyder", "KN", "HoriYon", "NiSE", "Jedmumu", "Bresto", "Frozt", "Nymaera"],
+                ["Spyder", "NiSE", "Jedmumu", "Draguin", "KN", "Pines", "Bresto", "Nymaera", "HoriYon", "Roidee", "Madara", "Frozt"]
+            ]
         }
     }
 };
@@ -687,4 +742,5 @@ const S2_DATA = {
 if (typeof module !== 'undefined') {
     module.exports = { S2_DATA };
 }
+
 
