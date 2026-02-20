@@ -369,7 +369,11 @@ function switchTab(tabId) {
     if (tabId === 'championship') tabs[3].classList.add('active');
     if (tabId === 'live-data') tabs[4].classList.add('active');
     if (tabId === 'trainer-card') {
-        if(tabs[5]) tabs[5].classList.add('active'); // Shifted to 5 because meta-trends was removed
+        if(tabs[5]) tabs[5].classList.add('active'); 
+    }
+    if (tabId === 'trainer-box') {
+        if(tabs[6]) tabs[6].classList.add('active'); // Added the 7th tab
+        renderBoxTable(); // Render the Trainer Box table whenever switched to
     }
 }
 
@@ -922,6 +926,69 @@ function downloadTrainerCard() {
     });
 }
 
+// --- TRAINER BOX LOGIC ---
+function renderBoxTable() {
+    const tbody = document.getElementById('box-table-body');
+    if (!tbody) return;
+
+    // 1. Find out who is currently selected in the dropdown
+    const selectedTrainerElement = document.getElementById('boxTrainerSelector');
+    const selectedTrainer = selectedTrainerElement ? selectedTrainerElement.value : 'Kenesu';
+    
+    // 2. Grab their specific data from the master object we made in box_data.js
+    const currentBoxData = (typeof ALL_TRAINER_BOXES !== 'undefined' && ALL_TRAINER_BOXES[selectedTrainer]) ? ALL_TRAINER_BOXES[selectedTrainer] : [];
+
+    const categoryFilterElement = document.getElementById('boxCategoryFilter');
+    const categoryFilter = categoryFilterElement ? categoryFilterElement.value : 'All';
+    
+    const searchElement = document.getElementById('boxSearch');
+    const searchQuery = searchElement ? searchElement.value.toLowerCase() : '';
+
+    // 3. Filter the currently selected trainer's data
+    const filteredData = currentBoxData.filter(item => {
+        const matchesCategory = categoryFilter === 'All' || item.cat === categoryFilter;
+        const matchesSearch = item.name.toLowerCase().includes(searchQuery) || item.stat.toLowerCase().includes(searchQuery);
+        return matchesCategory && matchesSearch;
+    });
+
+    // Helper classes for styling
+    const getRarityClass = (rarity) => {
+        if (rarity === 'SSR' || rarity === '4★') return 'rarity-ssr';
+        if (rarity === 'SR' || rarity === '3★') return 'rarity-sr';
+        return 'rarity-r';
+    };
+
+    const getStatClass = (stat) => {
+        const s = stat.toLowerCase();
+        if (s === 'speed') return 'stat-speed';
+        if (s === 'stamina') return 'stat-stamina';
+        if (s === 'power') return 'stat-power';
+        if (s === 'guts') return 'stat-guts';
+        if (s === 'wisdom') return 'stat-wisdom';
+        if (s === 'friend') return 'stat-friend';
+        return 'stat-uma'; // Default Uma color
+    };
+
+    tbody.innerHTML = filteredData.map(item => {
+        const iconHtml = item.cat === 'Uma' ? getIconHtml(item.name.split('(')[0].trim(), 'uma') : '';
+
+        return `
+            <tr>
+                <td style="text-align: center; color: var(--accent-color); font-weight: bold;">${item.cat}</td>
+                <td style="text-align: center;"><span class="box-badge ${getRarityClass(item.rarity)}">${item.rarity}</span></td>
+                <td style="text-align: center;"><span class="box-badge ${getStatClass(item.stat)}">${item.stat}</span></td>
+                <td>
+                    <div class="name-cell">
+                        ${iconHtml}
+                        <span style="font-weight: 500;">${item.name}</span>
+                    </div>
+                </td>
+                <td>${item.details}</td>
+            </tr>
+        `;
+    }).join('');
+}
+
 
 window.onload = function() {
     const savedTheme = localStorage.getItem('siteTheme');
@@ -931,4 +998,5 @@ window.onload = function() {
     }
     // Initialize with whatever is selected in the HTML dropdown
     switchSeason();
+    renderBoxTable();
 };
