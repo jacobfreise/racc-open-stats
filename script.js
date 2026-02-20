@@ -4,8 +4,7 @@ const POINTS_SYSTEM = [25, 18, 15, 12, 10, 8, 6, 4, 2, 1];
 let currentRawData = []; 
 let activeDataset = null; 
 let liveFirebaseData = [];
-let currentCalculatedStats = null; // Stored globally for Trainer Card generator
-
+let currentCalculatedStats = null;
 // --- Helper: Generate Icon HTML ---
 function getIconHtml(name, type) {
     if (!name || name === "Unknown") return "";
@@ -138,7 +137,7 @@ function renderLiveTournaments() {
             const banHtml = t.bans.map(b => `<span class="variant-tag" style="border: 1px solid var(--border-color); font-size: 0.9em; padding: 4px 10px;">🚫 ${b}</span>`).join('');
             html += `
             <div style="margin-bottom: 25px;">
-                <strong style="color: var(--accent-color); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em;">Banned Umas</strong><br>
+                <strong style="color: var(--accent-color); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em;">Banned Umas</strong>
                 <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px;">${banHtml}</div>
             </div>`;
         }
@@ -368,9 +367,8 @@ function switchTab(tabId) {
     if (tabId === 'trainer-stats') tabs[2].classList.add('active');
     if (tabId === 'championship') tabs[3].classList.add('active');
     if (tabId === 'live-data') tabs[4].classList.add('active');
-    if (tabId === 'meta-trends') tabs[5].classList.add('active');
     if (tabId === 'trainer-card') {
-        if(tabs[6]) tabs[6].classList.add('active'); // Trainer card tab
+        if(tabs[5]) tabs[5].classList.add('active'); // Shifted to 5 because meta-trends was removed
     }
 }
 
@@ -706,7 +704,6 @@ function updateData() {
     renderTierList('umaTierListChamp', stats.umaStats, 'picks', minEntries, 'tourneyWinPct');
     renderTierList('trainerTierListChamp', stats.trainerStats, 'entries', minEntries, 'tourneyWinPct');
     
-    populateTrendDropdown();
     populateTrainerDropdown(); // Hydrate the Trainer Card Generator dropdown
 }
 
@@ -801,151 +798,6 @@ function renderStatsTable() {
     }).join('');
 }
 
-// --- META TRENDS CHARTING LOGIC ---
-let metaChartInstance = null;
-
-function populateTrendDropdown() {
-    const selector = document.getElementById('trendUmaSelector');
-    if (!selector) return;
-
-    // Get unique Umas from currentRawData
-    const umas = [...new Set(currentRawData.map(d => d.UniqueName))].sort();
-    
-    // Keep current selection if possible when switching seasons
-    const currentSelection = selector.value;
-    
-    selector.innerHTML = umas.map(uma => `<option value="${uma}">${uma}</option>`).join('');
-    
-    if (umas.includes(currentSelection)) {
-        selector.value = currentSelection;
-    } else if (umas.length > 0) {
-        selector.value = umas[0];
-    }
-    
-    updateChart();
-}
-
-function updateChart() {
-    const ctx = document.getElementById('metaChart');
-    if (!ctx) return;
-    
-    const selectedUma = document.getElementById('trendUmaSelector').value;
-    if (!selectedUma) return;
-
-    // 1. Group data by Tournament ID
-    const tourneyMap = {};
-    currentRawData.forEach(r => {
-        const tId = r.RawLength; // The Tourney ID (e.g., "Open 1", "S2-15")
-        if (!tourneyMap[tId]) {
-            tourneyMap[tId] = { totalEntries: 0, umaPicks: 0, umaWins: 0, umaRacesRun: 0 };
-        }
-        tourneyMap[tId].totalEntries++;
-        if (r.UniqueName === selectedUma) {
-            tourneyMap[tId].umaPicks++;
-            tourneyMap[tId].umaWins += r.Wins;
-            tourneyMap[tId].umaRacesRun += r.RacesRun;
-        }
-    });
-
-    // 2. Sort Tournaments chronologically based on the numbers in their names
-    const sortedTourneys = Object.keys(tourneyMap).sort((a, b) => {
-        const numA = parseInt(a.replace(/\D/g, '')) || 0;
-        const numB = parseInt(b.replace(/\D/g, '')) || 0;
-        return numA - numB;
-    });
-
-    // 3. Prepare Chart Data
-    const labels = [];
-    const pickRates = [];
-    const winRates = [];
-
-    sortedTourneys.forEach(tId => {
-        labels.push(tId);
-        const data = tourneyMap[tId];
-        
-        const pickRate = data.totalEntries > 0 ? ((data.umaPicks / data.totalEntries) * 100) : 0;
-        const winRate = data.umaRacesRun > 0 ? ((data.umaWins / data.umaRacesRun) * 100) : 0;
-        
-        pickRates.push(pickRate.toFixed(1));
-        winRates.push(winRate.toFixed(1));
-    });
-
-    // 4. Render Chart
-    if (metaChartInstance) {
-        metaChartInstance.destroy(); // Clear old chart
-    }
-
-    // Grab the CSS accent color dynamically for the chart
-    const rootStyle = getComputedStyle(document.body);
-    const accentColor = rootStyle.getPropertyValue('--accent-color').trim() || '#4ecca3';
-    const textColor = rootStyle.getPropertyValue('--text-color').trim() || '#e0e0e0';
-    const gridColor = rootStyle.getPropertyValue('--border-color').trim() || '#333333';
-
-    metaChartInstance = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: labels,
-            datasets: [
-                {
-                    label: 'Pick Rate %',
-                    data: pickRates,
-                    borderColor: accentColor,
-                    backgroundColor: accentColor + '33', // 20% opacity hex
-                    yAxisID: 'y',
-                    tension: 0.3,
-                    fill: true,
-                    pointRadius: 4,
-                    pointHoverRadius: 6
-                },
-                {
-                    label: 'Win Rate %',
-                    data: winRates,
-                    borderColor: '#ffd700', // Distinct Gold color
-                    backgroundColor: 'transparent',
-                    yAxisID: 'y1',
-                    tension: 0.3,
-                    borderDash: [5, 5], // Dashed line to separate visually
-                    pointRadius: 4,
-                    pointHoverRadius: 6
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            interaction: { mode: 'index', intersect: false },
-            plugins: {
-                legend: { labels: { color: textColor, font: { family: 'Inter' } } },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) { return context.dataset.label + ': ' + context.parsed.y + '%'; }
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    ticks: { color: textColor, maxRotation: 45, minRotation: 45 },
-                    grid: { color: gridColor }
-                },
-                y: {
-                    type: 'linear', display: true, position: 'left',
-                    title: { display: true, text: 'Pick Rate %', color: accentColor },
-                    ticks: { color: textColor },
-                    grid: { color: gridColor },
-                    min: 0
-                },
-                y1: {
-                    type: 'linear', display: true, position: 'right',
-                    title: { display: true, text: 'Win Rate %', color: '#ffd700' },
-                    ticks: { color: textColor },
-                    grid: { drawOnChartArea: false }, // Prevent overlapping grid lines
-                    min: 0
-                }
-            }
-        }
-    });
-}
-
 // --- CSV EXPORT LOGIC ---
 function exportCurrentTableToCSV() {
     // Determine which tab is active
@@ -1020,69 +872,4 @@ function updateTrainerCard() {
     if (!tData) return;
 
     document.getElementById('tc-name').innerText = tData.name;
-    document.getElementById('tc-avatar').innerHTML = getIconHtml(tData.name, 'trainer');
-    
-    document.getElementById('tc-wr').innerText = `${tData.winRate}%`;
-    document.getElementById('tc-dom').innerText = `${tData.dom}%`;
-    document.getElementById('tc-twins').innerText = tData.tournamentWins;
-    document.getElementById('tc-races').innerText = tData.totalRacesRun;
-
-    document.getElementById('tc-ace').innerHTML = tData.ace;
-    document.getElementById('tc-fav').innerHTML = tData.favorite;
-}
-
-function downloadTrainerCard() {
-    const cardElement = document.getElementById('captureCard');
-    const trainerName = document.getElementById('cardTrainerSelector').value;
-    
-    // Grab the button to show a loading state
-    const btn = document.querySelector('button[onclick="downloadTrainerCard()"]');
-    const originalText = btn.innerHTML;
-    btn.innerHTML = "⏳ Generating...";
-    btn.style.opacity = "0.7";
-    btn.disabled = true;
-    
-    // We use useCORS to allow the CDN images (wsrv.nl) to be drawn
-    html2canvas(cardElement, {
-        useCORS: true,
-        backgroundColor: null, 
-        scale: 2, // Higher resolution for a crisp image
-        logging: false, // Turn off background logging to speed things up
-        ignoreElements: (element) => {
-            // Tell html2canvas to completely ignore the Chart.js canvas
-            // so it doesn't throw the "tainted" error
-            if (element.id === 'metaChart') return true;
-            return false;
-        }
-    }).then(canvas => {
-        const link = document.createElement('a');
-        link.download = `${trainerName}_Racc_Open_Stats.png`;
-        link.href = canvas.toDataURL('image/png');
-        link.click();
-        
-        // Restore the button
-        btn.innerHTML = originalText;
-        btn.style.opacity = "1";
-        btn.disabled = false;
-    }).catch(err => {
-        console.error("Card generation failed:", err);
-        alert("Failed to generate the Trainer Card. See console for details.");
-        
-        // Restore the button even if it fails
-        btn.innerHTML = originalText;
-        btn.style.opacity = "1";
-        btn.disabled = false;
-    });
-}
-
-
-window.onload = function() {
-    const savedTheme = localStorage.getItem('siteTheme');
-    if (savedTheme) {
-        document.getElementById('themeSelector').value = savedTheme;
-        document.body.setAttribute('data-theme', savedTheme);
-    }
-    // Initialize with whatever is selected in the HTML dropdown
-    switchSeason();
-};
-
+    document.getElementById('tc-avatar').innerHTML = getIconHtml(tData.name, '
