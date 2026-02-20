@@ -456,16 +456,13 @@ function calculateStats(filteredData) {
     const umaMap = {};
     const trainerMap = {};
     const activeTournaments = new Set();
-    const tourneyEntryCount = {}; // NEW: Track total player entries per tournament
+    const tourneyEntryCount = {}; 
     const totalEntries = filteredData.length;
 
     filteredData.forEach(row => {
         activeTournaments.add(row.RawLength);
-        // NEW: Count how many total entries exist in each specific tournament
         tourneyEntryCount[row.RawLength] = (tourneyEntryCount[row.RawLength] || 0) + 1;
     });
-    
-    const totalTournaments = activeTournaments.size; 
 
     const pointsData = getChampionshipPoints(activeTournaments, filteredData);
 
@@ -522,11 +519,9 @@ function calculateStats(filteredData) {
         });
     });
 
-    let validBanTourneyCount = 0;
     if (activeDataset.tournamentBans) {
         Object.keys(activeDataset.tournamentBans).forEach(tourneyID => {
             if (activeTournaments.has(tourneyID)) {
-                validBanTourneyCount++; 
                 const banList = activeDataset.tournamentBans[tourneyID];
                 banList.forEach(umaName => {
                     if (!umaMap[umaName]) { 
@@ -564,12 +559,6 @@ function calculateStats(filteredData) {
             tWinPct = tourneyCount > 0 ? (item.tournamentWins / tourneyCount * 100).toFixed(1) : "0.0";
         }
 
-        let pickPctVal = "0.0";
-        if (totalEntries > 0) {
-            const count = type === 'uma' ? item.picks : item.entries;
-            pickPctVal = (count / totalEntries * 100).toFixed(1);
-        }
-
         const displayType = type === 'trainer' ? 'trainer' : 'uma';
 
         const stats = {
@@ -577,34 +566,83 @@ function calculateStats(filteredData) {
             displayName: formatName(item.name, displayType),
             winRate: winRateVal,
             dom: dominanceVal,
-            tourneyWinPct: tWinPct,
-            pickPct: pickPctVal 
+            tourneyWinPct: tWinPct
         };
 
         if (type === 'uma') {
             stats.tourneyStatsDisplay = `${tWinPct}% <span style="font-size:0.8em; color:var(--text-color); opacity:0.7;">(${item.tourneyWins}/${item.picks})</span>`;
-            const banRate = validBanTourneyCount > 0 ? (item.bans / validBanTourneyCount * 100).toFixed(1) : "0.0";
-            stats.banStatsDisplay = `${banRate}% <span style="font-size:0.8em; color:var(--text-color); opacity:0.7;">(${item.bans}/${validBanTourneyCount})</span>`;
             
-            // --- Presence Calculation ---
-            const combinedPresenceSet = new Set([...item.pickedInTourneys, ...item.bannedInTourneys]);
-            const presenceRate = totalTournaments > 0 ? (combinedPresenceSet.size / totalTournaments * 100).toFixed(1) : "0.0";
-            stats.presenceDisplay = `${presenceRate}% <span style="font-size:0.8em; color:var(--text-color); opacity:0.7;">(${combinedPresenceSet.size}/${totalTournaments})</span>`;
+            // --- UNRELEASED UMA CHECKING ---
+            // Safely check if UMA_RELEASE_MAP exists (from release_data.js) and find release index
+            let releaseIndex = 0;
+            if (typeof UMA_RELEASE_MAP !== 'undefined' && UMA_RELEASE_MAP[item.name]) {
+                releaseIndex = typeof TOURNAMENT_ORDER !== 'undefined' ? TOURNAMENT_ORDER.indexOf(UMA_RELEASE_MAP[item.name]) : -1;
+                if (releaseIndex === -1) releaseIndex = 0; 
+            }
 
-            // --- FIXED: True Pick Rate Calculation ---
-            // Calculate how many total player entries occurred during tournaments where this Uma was BANNED
-            let bannedEntries = 0;
+            let validTournamentsForUma = 0;
+            let validEntriesForUma = 0;
+
+            activeTournaments.forEach(tId => {
+                let tIndex = typeof TOURNAMENT_ORDER !== 'undefined' ? TOURNAMENT_ORDER.indexOf(tId) : -1;
+                // Only count the tournament if it exists in our order list AND happened on/after the release date
+                if (tIndex === -1 || tIndex >= releaseIndex) {
+                    validTournamentsForUma++;
+                    validEntriesForUma += (tourneyEntryCount[tId] || 0);
+                }
+            });
+
+            // 1. Adjusted Standard Pick Rate
+            let pickPctVal = "0.0";
+            if (validEntriesForUma > 0) {
+                pickPctVal = ((item.picks / validEntriesForUma) * 100).toFixed(1);
+            }
+            stats.pickPct = pickPctVal; 
+
+            // 2. Adjusted Ban Rate
+            let validBanTourneysAfterRelease = 0;
+            if (activeDataset.tournamentBans) {
+                Object.keys(activeDataset.tournamentBans).forEach(tId => {
+                    if (activeTournaments.has(tId)) {
+                        let tIndex = typeof TOURNAMENT_ORDER !== 'undefined' ? TOURNAMENT_ORDER.indexOf(tId) : -1;
+                        if (tIndex === -1 || tIndex >= releaseIndex) {
+                            validBanTourneysAfterRelease++;
+                        }
+                    }
+                });
+            }
+            const banRate = validBanTourneysAfterRelease > 0 ? (item.bans / validBanTourneysAfterRelease * 100).toFixed(1) : "0.0";
+            stats.banStatsDisplay = `${banRate}% <span style="font-size:0.8em; color:var(--text-color); opacity:0.7;">(${item.bans}/${validBanTourneysAfterRelease})</span>`;
+            
+            // 3. Adjusted Presence
+            const validPresenceSet = new Set();
+            [...item.pickedInTourneys, ...item.bannedInTourneys].forEach(tId => {
+                let tIndex = typeof TOURNAMENT_ORDER !== 'undefined' ? TOURNAMENT_ORDER.indexOf(tId) : -1;
+                if (tIndex === -1 || tIndex >= releaseIndex) {
+                    validPresenceSet.add(tId);
+                }
+            });
+            const presenceRate = validTournamentsForUma > 0 ? (validPresenceSet.size / validTournamentsForUma * 100).toFixed(1) : "0.0";
+            stats.presenceDisplay = `${presenceRate}% <span style="font-size:0.8em; color:var(--text-color); opacity:0.7;">(${validPresenceSet.size}/${validTournamentsForUma})</span>`;
+
+            // 4. Adjusted True Pick Rate
+            let bannedEntriesAfterRelease = 0;
             item.bannedInTourneys.forEach(tId => {
-                bannedEntries += (tourneyEntryCount[tId] || 0);
+                let tIndex = typeof TOURNAMENT_ORDER !== 'undefined' ? TOURNAMENT_ORDER.indexOf(tId) : -1;
+                if (tIndex === -1 || tIndex >= releaseIndex) {
+                    bannedEntriesAfterRelease += (tourneyEntryCount[tId] || 0);
+                }
             });
             
-            // Subtract those impossible entries from the total entries pool
-            const availableEntries = totalEntries - bannedEntries;
+            // Subtract impossible (banned) entries from the VALID (post-release) entries pool
+            const availableEntries = validEntriesForUma - bannedEntriesAfterRelease;
             const truePickRate = availableEntries > 0 ? ((item.picks / availableEntries) * 100).toFixed(1) : "0.0";
             stats.truePickPct = truePickRate; 
         }
 
         if (type === 'trainer') {
+            // Trainers don't have release dates, so standard denominator applies
+            stats.pickPct = totalEntries > 0 ? ((item.entries / totalEntries) * 100).toFixed(1) : "0.0";
             stats.tourneyStatsDisplay = `${tWinPct}% <span style="font-size:0.8em; color:var(--text-color); opacity:0.7;">(${item.tournamentWins}/${item.playedTourneys.size})</span>`;
             const historyArr = Object.entries(item.characterHistory).map(([key, val]) => ({ name: key, ...val }));
             historyArr.sort((a, b) => b.picks - a.picks);
@@ -722,7 +760,6 @@ function updateData() {
     // Sort Tables
     stats.umaStats.sort((a, b) => b.dom - a.dom);
     renderTable('umaTable', stats.umaStats, 
-        // Including truePickPct and presenceDisplay here
         ['name', 'picks', 'pickPct', 'truePickPct', 'wins', 'winRate', 'dom', 'tourneyStatsDisplay', 'banStatsDisplay', 'presenceDisplay']
     );
 
