@@ -927,6 +927,29 @@ function downloadTrainerCard() {
 }
 
 // --- TRAINER BOX LOGIC ---
+function populateBoxTrainerDropdown() {
+    const selector = document.getElementById('boxTrainerSelector');
+    if (!selector || typeof ALL_TRAINER_BOXES === 'undefined') return;
+
+    // Get all the trainer names from the box_data.js object and sort them alphabetically
+    const trainers = Object.keys(ALL_TRAINER_BOXES).sort();
+    
+    // Remember current selection if reloading
+    const currentSelection = selector.value;
+    
+    // Populate the dropdown
+    selector.innerHTML = trainers.map(t => `<option value="${t}">${t}</option>`).join('');
+    
+    // Set a smart default (Kenesu first, or whoever is alphabetically first)
+    if (trainers.includes(currentSelection)) {
+        selector.value = currentSelection;
+    } else if (trainers.includes("Kenesu")) {
+        selector.value = "Kenesu";
+    } else if (trainers.length > 0) {
+        selector.value = trainers[0];
+    }
+}
+
 function renderBoxTable() {
     const tbody = document.getElementById('box-table-body');
     if (!tbody) return;
@@ -998,5 +1021,6 @@ window.onload = function() {
     }
     // Initialize with whatever is selected in the HTML dropdown
     switchSeason();
+    populateBoxTrainerDropdown();
     renderBoxTable();
 };
