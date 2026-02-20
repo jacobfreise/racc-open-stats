@@ -4,7 +4,8 @@ const POINTS_SYSTEM = [25, 18, 15, 12, 10, 8, 6, 4, 2, 1];
 let currentRawData = []; 
 let activeDataset = null; 
 let liveFirebaseData = [];
-let currentCalculatedStats = null;
+let currentCalculatedStats = null; // Stored globally for Trainer Card generator
+
 // --- Helper: Generate Icon HTML ---
 function getIconHtml(name, type) {
     if (!name || name === "Unknown") return "";
@@ -872,4 +873,62 @@ function updateTrainerCard() {
     if (!tData) return;
 
     document.getElementById('tc-name').innerText = tData.name;
-    document.getElementById('tc-avatar').innerHTML = getIconHtml(tData.name, '
+    document.getElementById('tc-avatar').innerHTML = getIconHtml(tData.name, 'trainer');
+    
+    document.getElementById('tc-wr').innerText = `${tData.winRate}%`;
+    document.getElementById('tc-dom').innerText = `${tData.dom}%`;
+    document.getElementById('tc-twins').innerText = tData.tournamentWins;
+    document.getElementById('tc-races').innerText = tData.totalRacesRun;
+
+    document.getElementById('tc-ace').innerHTML = tData.ace;
+    document.getElementById('tc-fav').innerHTML = tData.favorite;
+}
+
+function downloadTrainerCard() {
+    const cardElement = document.getElementById('captureCard');
+    const trainerName = document.getElementById('cardTrainerSelector').value;
+    
+    // Grab the button to show a loading state
+    const btn = document.querySelector('button[onclick="downloadTrainerCard()"]');
+    const originalText = btn.innerHTML;
+    btn.innerHTML = "⏳ Generating...";
+    btn.style.opacity = "0.7";
+    btn.disabled = true;
+    
+    // We use useCORS to allow the CDN images (wsrv.nl) to be drawn
+    html2canvas(cardElement, {
+        useCORS: true,
+        backgroundColor: null, 
+        scale: 2, // Higher resolution for a crisp image
+        logging: false // Turn off background logging to speed things up
+    }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = `${trainerName}_Racc_Open_Stats.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+        
+        // Restore the button
+        btn.innerHTML = originalText;
+        btn.style.opacity = "1";
+        btn.disabled = false;
+    }).catch(err => {
+        console.error("Card generation failed:", err);
+        alert("Failed to generate the Trainer Card. See console for details.");
+        
+        // Restore the button even if it fails
+        btn.innerHTML = originalText;
+        btn.style.opacity = "1";
+        btn.disabled = false;
+    });
+}
+
+
+window.onload = function() {
+    const savedTheme = localStorage.getItem('siteTheme');
+    if (savedTheme) {
+        document.getElementById('themeSelector').value = savedTheme;
+        document.body.setAttribute('data-theme', savedTheme);
+    }
+    // Initialize with whatever is selected in the HTML dropdown
+    switchSeason();
+};
