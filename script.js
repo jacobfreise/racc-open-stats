@@ -312,10 +312,12 @@ function copyTournamentResults(tournamentId) {
 
 // --- SEASON SWITCHER LOGIC ---
 function switchSeason() {
-    const season = document.getElementById('seasonSelector').value;
+    const seasonEl = document.getElementById('seasonSelector');
+    if (!seasonEl) return;
+    const season = seasonEl.value;
     
     if (season === 's1') {
-        activeDataset = S1_DATA;
+        activeDataset = typeof S1_DATA !== 'undefined' ? S1_DATA : { compactData: [], tournamentRaceResults: {} };
     } else {
         activeDataset = (typeof S2_DATA !== 'undefined') ? S2_DATA : { compactData: [], tournamentRaceResults: {} };
     }
@@ -360,21 +362,16 @@ function switchSeason() {
 function switchTab(tabId) {
     document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
     document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
-    document.getElementById(tabId).classList.add('active');
+    
+    const targetSection = document.getElementById(tabId);
+    if (targetSection) targetSection.classList.add('active');
 
-    const tabs = document.querySelectorAll('.tab');
-    if (tabId === 'tier-lists') tabs[0].classList.add('active');
-    if (tabId === 'uma-stats') tabs[1].classList.add('active');
-    if (tabId === 'trainer-stats') tabs[2].classList.add('active');
-    if (tabId === 'championship') tabs[3].classList.add('active');
-    if (tabId === 'live-data') tabs[4].classList.add('active');
-    if (tabId === 'trainer-card') {
-        if(tabs[5]) tabs[5].classList.add('active'); 
-    }
-    if (tabId === 'trainer-box') {
-        if(tabs[6]) tabs[6].classList.add('active'); 
-        renderBoxTable(); 
-    }
+    // Make the tab button active safely
+    const tabBtn = document.querySelector(`.tab[onclick="switchTab('${tabId}')"]`);
+    if (tabBtn) tabBtn.classList.add('active');
+    
+    if (tabId === 'trainer-box' && typeof renderBoxTable === 'function') renderBoxTable(); 
+    if (tabId === 'theorycrafter' && typeof generateTheorycraft === 'function') generateTheorycraft(); 
 }
 
 // --- Tier List View Switcher ---
@@ -573,7 +570,6 @@ function calculateStats(filteredData) {
             stats.tourneyStatsDisplay = `${tWinPct}% <span style="font-size:0.8em; color:var(--text-color); opacity:0.7;">(${item.tourneyWins}/${item.picks})</span>`;
             
             // --- UNRELEASED UMA CHECKING ---
-            // Safely check if UMA_RELEASE_MAP exists (from release_data.js) and find release index
             let releaseIndex = 0;
             if (typeof UMA_RELEASE_MAP !== 'undefined' && UMA_RELEASE_MAP[item.name]) {
                 releaseIndex = typeof TOURNAMENT_ORDER !== 'undefined' ? TOURNAMENT_ORDER.indexOf(UMA_RELEASE_MAP[item.name]) : -1;
@@ -585,7 +581,6 @@ function calculateStats(filteredData) {
 
             activeTournaments.forEach(tId => {
                 let tIndex = typeof TOURNAMENT_ORDER !== 'undefined' ? TOURNAMENT_ORDER.indexOf(tId) : -1;
-                // Only count the tournament if it exists in our order list AND happened on/after the release date
                 if (tIndex === -1 || tIndex >= releaseIndex) {
                     validTournamentsForUma++;
                     validEntriesForUma += (tourneyEntryCount[tId] || 0);
@@ -634,14 +629,12 @@ function calculateStats(filteredData) {
                 }
             });
             
-            // Subtract impossible (banned) entries from the VALID (post-release) entries pool
             const availableEntries = validEntriesForUma - bannedEntriesAfterRelease;
             const truePickRate = availableEntries > 0 ? ((item.picks / availableEntries) * 100).toFixed(1) : "0.0";
             stats.truePickPct = truePickRate; 
         }
 
         if (type === 'trainer') {
-            // Trainers don't have release dates, so standard denominator applies
             stats.pickPct = totalEntries > 0 ? ((item.entries / totalEntries) * 100).toFixed(1) : "0.0";
             stats.tourneyStatsDisplay = `${tWinPct}% <span style="font-size:0.8em; color:var(--text-color); opacity:0.7;">(${item.tournamentWins}/${item.playedTourneys.size})</span>`;
             const historyArr = Object.entries(item.characterHistory).map(([key, val]) => ({ name: key, ...val }));
@@ -733,10 +726,15 @@ function renderTierList(containerId, data, countKey, minReq, sortKey) {
 }
 
 function updateData() {
-    const surface = document.getElementById('surfaceFilter').value;
-    const length = document.getElementById('lengthFilter').value;
-    const minEntries = document.getElementById('minEntries').value;
-    const searchQuery = document.getElementById('searchInput') ? document.getElementById('searchInput').value.toLowerCase() : "";
+    const surfaceEl = document.getElementById('surfaceFilter');
+    const lengthEl = document.getElementById('lengthFilter');
+    const minEl = document.getElementById('minEntries');
+    const searchEl = document.getElementById('searchInput');
+
+    const surface = surfaceEl ? surfaceEl.value : 'All';
+    const length = lengthEl ? lengthEl.value : 'All';
+    const minEntries = minEl ? minEl.value : 5;
+    const searchQuery = searchEl ? searchEl.value.toLowerCase() : "";
 
     if(document.getElementById('minEntriesVal')) 
         document.getElementById('minEntriesVal').textContent = minEntries;
@@ -757,25 +755,32 @@ function updateData() {
     
     currentCalculatedStats = stats;
 
-    // Sort Tables
-    stats.umaStats.sort((a, b) => b.dom - a.dom);
-    renderTable('umaTable', stats.umaStats, 
-        ['name', 'picks', 'pickPct', 'truePickPct', 'wins', 'winRate', 'dom', 'tourneyStatsDisplay', 'banStatsDisplay', 'presenceDisplay']
-    );
+    // Sort Tables (Safe checks so it doesn't break on teambuilder.html)
+    if (document.getElementById('umaTable')) {
+        stats.umaStats.sort((a, b) => b.dom - a.dom);
+        renderTable('umaTable', stats.umaStats, 
+            ['name', 'picks', 'pickPct', 'truePickPct', 'wins', 'winRate', 'dom', 'tourneyStatsDisplay', 'banStatsDisplay', 'presenceDisplay']
+        );
+    }
 
-    stats.trainerStats.sort((a, b) => b.dom - a.dom);
-    renderTable('trainerTable', stats.trainerStats, 
-        ['name', 'entries', 'wins', 'winRate', 'dom', 'tourneyStatsDisplay', 'favorite', 'ace']
-    );
+    if (document.getElementById('trainerTable')) {
+        stats.trainerStats.sort((a, b) => b.dom - a.dom);
+        renderTable('trainerTable', stats.trainerStats, 
+            ['name', 'entries', 'wins', 'winRate', 'dom', 'tourneyStatsDisplay', 'favorite', 'ace']
+        );
+    }
 
-    renderTierList('umaTierListWR', stats.umaStats, 'picks', minEntries, 'winRate');
-    renderTierList('trainerTierListWR', stats.trainerStats, 'entries', minEntries, 'winRate');
-    renderTierList('umaTierListDom', stats.umaStats, 'picks', minEntries, 'dom');
-    renderTierList('trainerTierListDom', stats.trainerStats, 'entries', minEntries, 'dom');
-    renderTierList('umaTierListChamp', stats.umaStats, 'picks', minEntries, 'tourneyWinPct');
-    renderTierList('trainerTierListChamp', stats.trainerStats, 'entries', minEntries, 'tourneyWinPct');
+    if (document.getElementById('umaTierListWR')) {
+        renderTierList('umaTierListWR', stats.umaStats, 'picks', minEntries, 'winRate');
+        renderTierList('trainerTierListWR', stats.trainerStats, 'entries', minEntries, 'winRate');
+        renderTierList('umaTierListDom', stats.umaStats, 'picks', minEntries, 'dom');
+        renderTierList('trainerTierListDom', stats.trainerStats, 'entries', minEntries, 'dom');
+        renderTierList('umaTierListChamp', stats.umaStats, 'picks', minEntries, 'tourneyWinPct');
+        renderTierList('trainerTierListChamp', stats.trainerStats, 'entries', minEntries, 'tourneyWinPct');
+    }
     
-    populateTrainerDropdown(); 
+    if (typeof populateTrainerDropdown === 'function') populateTrainerDropdown(); 
+    if (typeof populateTheorycrafterDropdown === 'function') populateTheorycrafterDropdown(); 
 }
 
 // --- Sorting, Theme, Init ---
@@ -784,6 +789,7 @@ function sortTable(tableId, colIndex, isNumeric = false) {
     const key = tableId + colIndex;
     sortState[key] = !sortState[key];
     const tbody = document.querySelector(`#${tableId} tbody`);
+    if (!tbody) return;
     const rows = Array.from(tbody.rows);
 
     rows.sort((a, b) => {
@@ -814,7 +820,8 @@ function switchTheme() {
 // Calculate total unfiltered stats for the Championship Tab
 function calculateIndividualStats() {
     let stats = {};
-    const searchQuery = document.getElementById('searchInput') ? document.getElementById('searchInput').value.toLowerCase() : "";
+    const searchEl = document.getElementById('searchInput');
+    const searchQuery = searchEl ? searchEl.value.toLowerCase() : "";
     
     if (activeDataset.tournamentRaceResults) {
         for (const [tournamentName, stages] of Object.entries(activeDataset.tournamentRaceResults)) {
@@ -832,7 +839,7 @@ function calculateIndividualStats() {
         }
     }
     const leaderboard = Object.values(stats)
-        .filter(player => searchQuery === "" || player.name.toLowerCase().includes(searchQuery)) // Phase 1 Search inclusion
+        .filter(player => searchQuery === "" || player.name.toLowerCase().includes(searchQuery)) 
         .map(player => {
             return {
                 name: player.name,
@@ -850,7 +857,6 @@ function renderStatsTable() {
     if (!tbody) return;
     tbody.innerHTML = data.map((player, index) => {
         
-        // CHANGED: Use 'trainer' type
         const playerIcon = getIconHtml(player.name, 'trainer');
 
         return `
@@ -871,8 +877,10 @@ function renderStatsTable() {
 
 // --- CSV EXPORT LOGIC ---
 function exportCurrentTableToCSV() {
-    // Determine which tab is active
-    const activeTab = document.querySelector('.view-section.active').id;
+    const activeTabObj = document.querySelector('.view-section.active');
+    if (!activeTabObj) return;
+    
+    const activeTab = activeTabObj.id;
     let tableId = '';
     
     if (activeTab === 'uma-stats') tableId = 'umaTable';
@@ -884,24 +892,22 @@ function exportCurrentTableToCSV() {
     }
 
     const table = document.getElementById(tableId);
+    if (!table) return;
+    
     let csvContent = "";
 
-    // Parse headers
     const headers = Array.from(table.querySelectorAll("thead th")).map(th => `"${th.innerText.trim()}"`);
     csvContent += headers.join(",") + "\n";
 
-    // Parse rows
     const rows = Array.from(table.querySelectorAll("tbody tr"));
     rows.forEach(row => {
         const rowData = Array.from(row.querySelectorAll("td")).map(td => {
-            // Clean up inner text (remove newlines, quotes)
             let text = td.innerText.replace(/(\r\n|\n|\r)/gm, " ").replace(/"/g, '""');
             return `"${text.trim()}"`;
         });
         csvContent += rowData.join(",") + "\n";
     });
 
-    // Create download link
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement("a");
     const url = URL.createObjectURL(blob);
@@ -918,9 +924,7 @@ function populateTrainerDropdown() {
     const selector = document.getElementById('cardTrainerSelector');
     if (!selector || !currentCalculatedStats) return;
 
-    // Grab all trainers currently in the filtered stats
     const trainers = currentCalculatedStats.trainerStats.map(t => t.name).sort();
-    
     const currentSelection = selector.value;
     selector.innerHTML = trainers.map(t => `<option value="${t}">${t}</option>`).join('');
     
@@ -936,9 +940,10 @@ function populateTrainerDropdown() {
 }
 
 function updateTrainerCard() {
-    const selectedName = document.getElementById('cardTrainerSelector').value;
-    if (!selectedName || !currentCalculatedStats) return;
+    const selector = document.getElementById('cardTrainerSelector');
+    if (!selector || !currentCalculatedStats) return;
 
+    const selectedName = selector.value;
     const tData = currentCalculatedStats.trainerStats.find(t => t.name === selectedName);
     if (!tData) return;
 
@@ -956,28 +961,28 @@ function updateTrainerCard() {
 
 function downloadTrainerCard() {
     const cardElement = document.getElementById('captureCard');
-    const trainerName = document.getElementById('cardTrainerSelector').value;
+    const selector = document.getElementById('cardTrainerSelector');
+    if (!cardElement || !selector) return;
     
-    // Grab the button to show a loading state
+    const trainerName = selector.value;
     const btn = document.querySelector('button[onclick="downloadTrainerCard()"]');
     const originalText = btn.innerHTML;
+    
     btn.innerHTML = "⏳ Generating...";
     btn.style.opacity = "0.7";
     btn.disabled = true;
     
-    // We use useCORS to allow the CDN images (wsrv.nl) to be drawn
     html2canvas(cardElement, {
         useCORS: true,
         backgroundColor: null, 
-        scale: 2, // Higher resolution for a crisp image
-        logging: false // Turn off background logging to speed things up
+        scale: 2, 
+        logging: false 
     }).then(canvas => {
         const link = document.createElement('a');
         link.download = `${trainerName}_Racc_Open_Stats.png`;
         link.href = canvas.toDataURL('image/png');
         link.click();
         
-        // Restore the button
         btn.innerHTML = originalText;
         btn.style.opacity = "1";
         btn.disabled = false;
@@ -985,7 +990,6 @@ function downloadTrainerCard() {
         console.error("Card generation failed:", err);
         alert("Failed to generate the Trainer Card. See console for details.");
         
-        // Restore the button even if it fails
         btn.innerHTML = originalText;
         btn.style.opacity = "1";
         btn.disabled = false;
@@ -997,16 +1001,11 @@ function populateBoxTrainerDropdown() {
     const selector = document.getElementById('boxTrainerSelector');
     if (!selector || typeof ALL_TRAINER_BOXES === 'undefined') return;
 
-    // Get all the trainer names from the box_data.js object and sort them alphabetically
     const trainers = Object.keys(ALL_TRAINER_BOXES).sort();
-    
-    // Remember current selection if reloading
     const currentSelection = selector.value;
     
-    // Populate the dropdown
     selector.innerHTML = trainers.map(t => `<option value="${t}">${t}</option>`).join('');
     
-    // Set a smart default (Kenesu first, or whoever is alphabetically first)
     if (trainers.includes(currentSelection)) {
         selector.value = currentSelection;
     } else if (trainers.includes("Kenesu")) {
@@ -1020,31 +1019,30 @@ function renderBoxTable() {
     const tbody = document.getElementById('box-table-body');
     if (!tbody) return;
 
-    // 1. Find out who is currently selected in the dropdown
     const selectedTrainerElement = document.getElementById('boxTrainerSelector');
     const selectedTrainer = selectedTrainerElement ? selectedTrainerElement.value : 'Kenesu';
     
-    // 2. Grab their specific data from the master object we made in box_data.js
     const currentBoxData = (typeof ALL_TRAINER_BOXES !== 'undefined' && ALL_TRAINER_BOXES[selectedTrainer]) ? ALL_TRAINER_BOXES[selectedTrainer] : [];
 
-    // 3. Grab all filter values
-    const categoryFilter = document.getElementById('boxCategoryFilter') ? document.getElementById('boxCategoryFilter').value : 'All';
-    const rarityFilter = document.getElementById('boxRarityFilter') ? document.getElementById('boxRarityFilter').value : 'All';
-    const statFilter = document.getElementById('boxStatFilter') ? document.getElementById('boxStatFilter').value : 'All';
-    const searchQuery = document.getElementById('boxSearch') ? document.getElementById('boxSearch').value.toLowerCase() : '';
+    const categoryFilterElement = document.getElementById('boxCategoryFilter');
+    const rarityFilterElement = document.getElementById('boxRarityFilter');
+    const statFilterElement = document.getElementById('boxStatFilter');
+    const searchElement = document.getElementById('boxSearch');
 
-    // 4. Apply all active filters to the data
+    const categoryFilter = categoryFilterElement ? categoryFilterElement.value : 'All';
+    const rarityFilter = rarityFilterElement ? rarityFilterElement.value : 'All';
+    const statFilter = statFilterElement ? statFilterElement.value : 'All';
+    const searchQuery = searchElement ? searchElement.value.toLowerCase() : '';
+
     const filteredData = currentBoxData.filter(item => {
         const matchesCategory = categoryFilter === 'All' || item.cat === categoryFilter;
         const matchesRarity = rarityFilter === 'All' || item.rarity === rarityFilter;
-        // Ignore stat filtering if it's an Uma (since Umas don't have Speed/Stamina types)
         const matchesStat = statFilter === 'All' || item.stat === 'Uma' || item.stat.toLowerCase() === statFilter.toLowerCase();
         const matchesSearch = item.name.toLowerCase().includes(searchQuery) || item.stat.toLowerCase().includes(searchQuery);
         
         return matchesCategory && matchesRarity && matchesStat && matchesSearch;
     });
 
-    // Helper classes for styling
     const getRarityClass = (rarity) => {
         if (rarity === 'SSR' || rarity === '4★' || rarity === '5★') return 'rarity-ssr';
         if (rarity === 'SR' || rarity === '3★') return 'rarity-sr';
@@ -1059,7 +1057,7 @@ function renderBoxTable() {
         if (s === 'guts') return 'stat-guts';
         if (s === 'wisdom') return 'stat-wisdom';
         if (s === 'friend') return 'stat-friend';
-        return 'stat-uma'; // Default Uma color
+        return 'stat-uma'; 
     };
 
     tbody.innerHTML = filteredData.map(item => {
@@ -1083,14 +1081,123 @@ function renderBoxTable() {
 }
 
 
+// --- TEAM THEORYCRAFTER LOGIC ---
+function populateTheorycrafterDropdown() {
+    const selector = document.getElementById('tcrafTrainerSelector');
+    if (!selector || !currentCalculatedStats) return;
+
+    const trainers = currentCalculatedStats.trainerStats.map(t => t.name).sort();
+    const currentSelection = selector.value;
+    
+    selector.innerHTML = trainers.map(t => `<option value="${t}">${t}</option>`).join('');
+    
+    if (trainers.includes(currentSelection)) {
+        selector.value = currentSelection;
+    } else if (trainers.includes("Kenesu")) {
+        selector.value = "Kenesu";
+    } else if (trainers.length > 0) {
+        selector.value = trainers[0];
+    }
+    
+    generateTheorycraft();
+}
+
+function generateTheorycraft() {
+    const selector = document.getElementById('tcrafTrainerSelector');
+    const container = document.getElementById('tcraf-results');
+    if (!selector || !currentCalculatedStats || !container) return;
+
+    const selectedName = selector.value;
+    const tData = currentCalculatedStats.trainerStats.find(t => t.name === selectedName);
+    
+    if (!tData) {
+        container.innerHTML = `<div style="text-align:center; padding:20px; opacity:0.7;">No data found for this trainer.</div>`;
+        return;
+    }
+
+    const historyArr = Object.entries(tData.characterHistory).map(([key, val]) => ({ name: key, ...val }));
+    
+    // Preset 1: Comfort Zone (Most Picked - Top 3)
+    const comfortTeam = [...historyArr].sort((a, b) => b.picks - a.picks).slice(0, 3);
+    
+    // Preset 2: Maximum Efficiency (Highest Win Rate, tiebreaker picks - Top 3)
+    const sweatTeam = [...historyArr].filter(a => a.picks >= 1).sort((a, b) => {
+        const wrA = a.wins / a.picks;
+        const wrB = b.wins / b.picks;
+        if (wrB !== wrA) return wrB - wrA;
+        return b.picks - a.picks; // Tiebreaker
+    }).slice(0, 3);
+
+    // Preset 3: The Global Meta (Top 3 Dominance globally)
+    const metaTeam = [...currentCalculatedStats.umaStats].sort((a, b) => b.dom - a.dom).slice(0, 3);
+
+    // Helper to render the nice visual cards
+    const renderTeam = (title, description, umas, typeDesc) => {
+        let html = `
+        <div style="background: rgba(0,0,0,0.1); border: 1px solid var(--border-color); border-radius: 8px; padding: 20px; margin-bottom: 20px;">
+            <h3 style="margin: 0 0 5px 0; color: var(--accent-color); font-size: 1.1em;">${title}</h3>
+            <div style="font-size: 0.85em; opacity: 0.7; margin-bottom: 15px;">${description}</div>
+            <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: space-evenly;">`;
+        
+        umas.forEach(u => {
+            const icon = getIconHtml(u.name.split('(')[0].trim(), 'uma');
+            html += `
+            <div style="display: flex; flex-direction: column; align-items: center; width: 110px; text-align: center;">
+                ${icon}
+                <span style="font-size: 0.85em; font-weight: 600; margin-top: 8px; line-height: 1.2;">${u.name}</span>
+                <span style="font-size: 0.75em; color: var(--accent-color); margin-top: 4px; font-weight: bold;">${typeDesc(u)}</span>
+            </div>`;
+        });
+        
+        // Pad empty slots if they haven't played 3 distinct Umas
+        for(let i = umas.length; i < 3; i++) {
+             html += `
+             <div style="display: flex; flex-direction: column; align-items: center; width: 110px; text-align: center; opacity: 0.3;">
+                <div style="width: 64px; height: 64px; border-radius: 50%; background: var(--border-color); margin-bottom: 8px;"></div>
+                <span style="font-size: 0.85em; font-weight: 500;">Empty Slot</span>
+            </div>`;
+        }
+        
+        html += `</div></div>`;
+        return html;
+    };
+
+    let html = '';
+    
+    html += renderTeam(
+        "Comfort Zone", 
+        "This trainer's most frequently picked setup.", 
+        comfortTeam, 
+        (u) => `${u.picks} Picks`
+    );
+    
+    html += renderTeam(
+        "Maximum Efficiency", 
+        "This trainer's statistically highest win-rate setup.", 
+        sweatTeam, 
+        (u) => `${((u.wins / u.picks) * 100).toFixed(1)}% WR`
+    );
+    
+    html += renderTeam(
+        "Global Meta Setup", 
+        "The mathematical top 3 most dominant Umas across the entire playerbase.", 
+        metaTeam, 
+        (u) => `${u.dom}% Dominance`
+    );
+
+    container.innerHTML = html;
+}
+
 window.onload = function() {
     const savedTheme = localStorage.getItem('siteTheme');
     if (savedTheme) {
-        document.getElementById('themeSelector').value = savedTheme;
+        const themeSelector = document.getElementById('themeSelector');
+        if(themeSelector) themeSelector.value = savedTheme;
         document.body.setAttribute('data-theme', savedTheme);
     }
-    // Initialize with whatever is selected in the HTML dropdown
+    
     switchSeason();
-    populateBoxTrainerDropdown();
-    renderBoxTable();
+    if (typeof populateBoxTrainerDropdown === 'function') populateBoxTrainerDropdown();
+    if (typeof renderBoxTable === 'function') renderBoxTable();
+    if (typeof populateTheorycrafterDropdown === 'function') populateTheorycrafterDropdown(); 
 };
