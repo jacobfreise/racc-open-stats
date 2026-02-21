@@ -4,7 +4,7 @@ const POINTS_SYSTEM = [25, 18, 15, 12, 10, 8, 6, 4, 2, 1];
 let currentRawData = []; 
 let activeDataset = null; 
 let liveFirebaseData = [];
-let currentCalculatedStats = null; // Stored globally for Trainer Card generator
+let currentCalculatedStats = null; // Stored globally for Trainer Card & Theorycrafter generator
 
 // --- Helper: Generate Icon HTML ---
 function getIconHtml(name, type) {
@@ -355,7 +355,7 @@ function switchSeason() {
     }
 
     updateData();
-    renderStatsTable();
+    if (document.getElementById('points-table-body')) renderStatsTable();
 }
 
 // --- UI Logic: Tabs ---
@@ -366,7 +366,6 @@ function switchTab(tabId) {
     const targetSection = document.getElementById(tabId);
     if (targetSection) targetSection.classList.add('active');
 
-    // Make the tab button active safely
     const tabBtn = document.querySelector(`.tab[onclick="switchTab('${tabId}')"]`);
     if (tabBtn) tabBtn.classList.add('active');
     
@@ -500,10 +499,11 @@ function calculateStats(filteredData) {
         t.playedTourneys.add(row.RawLength);
 
         if (!t.characterHistory[row.UniqueName]) {
-            t.characterHistory[row.UniqueName] = { picks: 0, wins: 0 };
+            t.characterHistory[row.UniqueName] = { picks: 0, wins: 0, racesRun: 0 };
         }
         t.characterHistory[row.UniqueName].picks++;
         t.characterHistory[row.UniqueName].wins += row.Wins;
+        t.characterHistory[row.UniqueName].racesRun += row.RacesRun;
     });
 
     Object.values(trainerMap).forEach(t => {
@@ -569,7 +569,6 @@ function calculateStats(filteredData) {
         if (type === 'uma') {
             stats.tourneyStatsDisplay = `${tWinPct}% <span style="font-size:0.8em; color:var(--text-color); opacity:0.7;">(${item.tourneyWins}/${item.picks})</span>`;
             
-            // --- UNRELEASED UMA CHECKING ---
             let releaseIndex = 0;
             if (typeof UMA_RELEASE_MAP !== 'undefined' && UMA_RELEASE_MAP[item.name]) {
                 releaseIndex = typeof TOURNAMENT_ORDER !== 'undefined' ? TOURNAMENT_ORDER.indexOf(UMA_RELEASE_MAP[item.name]) : -1;
@@ -587,14 +586,12 @@ function calculateStats(filteredData) {
                 }
             });
 
-            // 1. Adjusted Standard Pick Rate
             let pickPctVal = "0.0";
             if (validEntriesForUma > 0) {
                 pickPctVal = ((item.picks / validEntriesForUma) * 100).toFixed(1);
             }
             stats.pickPct = pickPctVal; 
 
-            // 2. Adjusted Ban Rate
             let validBanTourneysAfterRelease = 0;
             if (activeDataset.tournamentBans) {
                 Object.keys(activeDataset.tournamentBans).forEach(tId => {
@@ -609,7 +606,6 @@ function calculateStats(filteredData) {
             const banRate = validBanTourneysAfterRelease > 0 ? (item.bans / validBanTourneysAfterRelease * 100).toFixed(1) : "0.0";
             stats.banStatsDisplay = `${banRate}% <span style="font-size:0.8em; color:var(--text-color); opacity:0.7;">(${item.bans}/${validBanTourneysAfterRelease})</span>`;
             
-            // 3. Adjusted Presence
             const validPresenceSet = new Set();
             [...item.pickedInTourneys, ...item.bannedInTourneys].forEach(tId => {
                 let tIndex = typeof TOURNAMENT_ORDER !== 'undefined' ? TOURNAMENT_ORDER.indexOf(tId) : -1;
@@ -620,7 +616,6 @@ function calculateStats(filteredData) {
             const presenceRate = validTournamentsForUma > 0 ? (validPresenceSet.size / validTournamentsForUma * 100).toFixed(1) : "0.0";
             stats.presenceDisplay = `${presenceRate}% <span style="font-size:0.8em; color:var(--text-color); opacity:0.7;">(${validPresenceSet.size}/${validTournamentsForUma})</span>`;
 
-            // 4. Adjusted True Pick Rate
             let bannedEntriesAfterRelease = 0;
             item.bannedInTourneys.forEach(tId => {
                 let tIndex = typeof TOURNAMENT_ORDER !== 'undefined' ? TOURNAMENT_ORDER.indexOf(tId) : -1;
@@ -755,7 +750,6 @@ function updateData() {
     
     currentCalculatedStats = stats;
 
-    // Sort Tables (Safe checks so it doesn't break on teambuilder.html)
     if (document.getElementById('umaTable')) {
         stats.umaStats.sort((a, b) => b.dom - a.dom);
         renderTable('umaTable', stats.umaStats, 
@@ -780,7 +774,18 @@ function updateData() {
     }
     
     if (typeof populateTrainerDropdown === 'function') populateTrainerDropdown(); 
-    if (typeof populateTheorycrafterDropdown === 'function') populateTheorycrafterDropdown(); 
+    
+    // Safety checks for new features so they don't break index.html
+    if (typeof populateBoxTrainerDropdown === 'function' && document.getElementById('boxTrainerSelector')) {
+        populateBoxTrainerDropdown();
+        renderBoxTable();
+    }
+    if (typeof populateTheorycrafterDropdown === 'function' && document.getElementById('tcrafTrainerSelector')) {
+        populateTheorycrafterDropdown(); 
+    }
+    if (typeof populateSimDropdowns === 'function' && document.getElementById('simTypeSelector')) {
+        populateSimDropdowns(); 
+    }
 }
 
 // --- Sorting, Theme, Init ---
@@ -1117,21 +1122,17 @@ function generateTheorycraft() {
 
     const historyArr = Object.entries(tData.characterHistory).map(([key, val]) => ({ name: key, ...val }));
     
-    // Preset 1: Comfort Zone (Most Picked - Top 3)
     const comfortTeam = [...historyArr].sort((a, b) => b.picks - a.picks).slice(0, 3);
     
-    // Preset 2: Maximum Efficiency (Highest Win Rate, tiebreaker picks - Top 3)
     const sweatTeam = [...historyArr].filter(a => a.picks >= 1).sort((a, b) => {
-        const wrA = a.wins / a.picks;
-        const wrB = b.wins / b.picks;
+        const wrA = a.racesRun > 0 ? a.wins / a.racesRun : 0;
+        const wrB = b.racesRun > 0 ? b.wins / b.racesRun : 0;
         if (wrB !== wrA) return wrB - wrA;
-        return b.picks - a.picks; // Tiebreaker
+        return b.picks - a.picks; 
     }).slice(0, 3);
 
-    // Preset 3: The Global Meta (Top 3 Dominance globally)
     const metaTeam = [...currentCalculatedStats.umaStats].sort((a, b) => b.dom - a.dom).slice(0, 3);
 
-    // Helper to render the nice visual cards
     const renderTeam = (title, description, umas, typeDesc) => {
         let html = `
         <div style="background: rgba(0,0,0,0.1); border: 1px solid var(--border-color); border-radius: 8px; padding: 20px; margin-bottom: 20px;">
@@ -1149,7 +1150,6 @@ function generateTheorycraft() {
             </div>`;
         });
         
-        // Pad empty slots if they haven't played 3 distinct Umas
         for(let i = umas.length; i < 3; i++) {
              html += `
              <div style="display: flex; flex-direction: column; align-items: center; width: 110px; text-align: center; opacity: 0.3;">
@@ -1164,29 +1164,125 @@ function generateTheorycraft() {
 
     let html = '';
     
-    html += renderTeam(
-        "Comfort Zone", 
-        "This trainer's most frequently picked setup.", 
-        comfortTeam, 
+    html += renderTeam("Comfort Zone", "This trainer's most frequently picked setup.", comfortTeam, 
         (u) => `${u.picks} Picks`
     );
     
-    html += renderTeam(
-        "Maximum Efficiency", 
-        "This trainer's statistically highest win-rate setup.", 
-        sweatTeam, 
-        (u) => `${((u.wins / u.picks) * 100).toFixed(1)}% WR`
+    html += renderTeam("Maximum Efficiency", "This trainer's statistically highest win-rate setup.", sweatTeam, 
+        (u) => `${u.racesRun > 0 ? ((u.wins / u.racesRun) * 100).toFixed(1) : "0.0"}% WR`
     );
     
-    html += renderTeam(
-        "Global Meta Setup", 
-        "The mathematical top 3 most dominant Umas across the entire playerbase.", 
-        metaTeam, 
+    html += renderTeam("Global Meta Setup", "The mathematical top 3 most dominant Umas across the entire playerbase.", metaTeam, 
         (u) => `${u.dom}% Dominance`
     );
 
     container.innerHTML = html;
 }
+
+// --- NEW: CUSTOM TEAM SIMULATOR ---
+function populateSimDropdowns() {
+    const typeEl = document.getElementById('simTypeSelector');
+    const s1 = document.getElementById('simSlot1');
+    const s2 = document.getElementById('simSlot2');
+    const s3 = document.getElementById('simSlot3');
+
+    if (!typeEl || !s1 || !s2 || !s3 || !currentCalculatedStats) return;
+
+    const type = typeEl.value;
+    let options = [];
+
+    if (type === 'trainer') {
+        options = currentCalculatedStats.trainerStats.map(t => t.name).sort();
+    } else {
+        options = currentCalculatedStats.umaStats.map(u => u.name).sort();
+    }
+
+    const html = `<option value="">-- Select --</option>` + options.map(o => `<option value="${o}">${o}</option>`).join('');
+    
+    const v1 = s1.value, v2 = s2.value, v3 = s3.value;
+
+    s1.innerHTML = html;
+    s2.innerHTML = html;
+    s3.innerHTML = html;
+
+    if (options.includes(v1)) s1.value = v1; else if(options.length > 0) s1.value = options[0];
+    if (options.includes(v2)) s2.value = v2; else if(options.length > 1) s2.value = options[1];
+    if (options.includes(v3)) s3.value = v3; else if(options.length > 2) s3.value = options[2];
+
+    runSimulation();
+}
+
+function runSimulation() {
+    const typeEl = document.getElementById('simTypeSelector');
+    const container = document.getElementById('sim-results');
+    const s1 = document.getElementById('simSlot1');
+    const s2 = document.getElementById('simSlot2');
+    const s3 = document.getElementById('simSlot3');
+
+    if (!typeEl || !container || !currentCalculatedStats || !s1) return;
+    
+    const type = typeEl.value;
+    const list = type === 'trainer' ? currentCalculatedStats.trainerStats : currentCalculatedStats.umaStats;
+    
+    const m1 = list.find(x => x.name === s1.value);
+    const m2 = list.find(x => x.name === s2.value);
+    const m3 = list.find(x => x.name === s3.value);
+
+    const members = [m1, m2, m3].filter(Boolean);
+
+    if (members.length === 0) {
+        container.innerHTML = `<div style="text-align:center; opacity:0.6;">Select members to simulate.</div>`;
+        return;
+    }
+
+    let totalWins = 0;
+    let totalRaces = 0;
+    let totalDom = 0;
+    let domCount = 0;
+
+    let cardsHtml = '';
+    
+    members.forEach(m => {
+        totalWins += m.wins || 0;
+        totalRaces += m.totalRacesRun || 0;
+        totalDom += parseFloat(m.dom) || 0;
+        domCount++;
+
+        const icon = getIconHtml(m.name.split('(')[0].trim(), type);
+        cardsHtml += `
+        <div style="display: flex; flex-direction: column; align-items: center; width: 120px; text-align: center; background: rgba(0,0,0,0.2); padding: 15px 10px; border-radius: 8px; border: 1px solid var(--border-color);">
+            ${icon}
+            <span style="font-size: 0.85em; font-weight: 600; margin-top: 8px; line-height: 1.2;">${m.name}</span>
+            <span style="font-size: 0.75em; color: var(--accent-color); margin-top: 4px;">${m.winRate}% WR</span>
+            <span style="font-size: 0.75em; opacity: 0.8;">${m.dom}% Dom</span>
+        </div>`;
+    });
+
+    const combinedWr = totalRaces > 0 ? ((totalWins / totalRaces) * 100).toFixed(1) : "0.0";
+    const avgDom = domCount > 0 ? (totalDom / domCount).toFixed(1) : "0.0";
+
+    let aggHtml = `
+    <div style="background: rgba(0,0,0,0.1); border: 1px solid var(--border-color); border-radius: 8px; padding: 20px; margin-bottom: 20px;">
+        <h3 style="margin: 0 0 15px 0; color: var(--accent-color); text-align: center;">Team Aggregate Performance</h3>
+        <div style="display: flex; gap: 15px; justify-content: space-evenly; margin-bottom: 20px; flex-wrap: wrap;">
+            ${cardsHtml}
+        </div>
+        <div style="display: flex; gap: 20px; justify-content: space-around; background: var(--bg-color); padding: 15px; border-radius: 8px; border: 1px solid var(--border-color);">
+            <div style="text-align: center;">
+                <div style="font-size: 0.8em; opacity: 0.7; text-transform: uppercase;">Combined Win Rate</div>
+                <div style="font-size: 1.4em; font-weight: bold; color: var(--accent-color);">${combinedWr}%</div>
+                <div style="font-size: 0.75em; opacity: 0.5;">(${totalWins} / ${totalRaces} Races)</div>
+            </div>
+            <div style="text-align: center;">
+                <div style="font-size: 0.8em; opacity: 0.7; text-transform: uppercase;">Average Dominance</div>
+                <div style="font-size: 1.4em; font-weight: bold; color: var(--accent-color);">${avgDom}%</div>
+            </div>
+        </div>
+    </div>`;
+
+    container.innerHTML = aggHtml;
+}
+
 
 window.onload = function() {
     const savedTheme = localStorage.getItem('siteTheme');
@@ -1197,7 +1293,4 @@ window.onload = function() {
     }
     
     switchSeason();
-    if (typeof populateBoxTrainerDropdown === 'function') populateBoxTrainerDropdown();
-    if (typeof renderBoxTable === 'function') renderBoxTable();
-    if (typeof populateTheorycrafterDropdown === 'function') populateTheorycrafterDropdown(); 
 };
