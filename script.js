@@ -344,12 +344,16 @@ function getChampionshipPoints(activeTournaments, filteredData) {
                     const opponentsBeaten = (lobbySize - 1) - rankIndex;
                     const key = `${tournamentName}_${player}`;
                     const umaName = lookupMap[key] || "Unknown";
+                    
+                    let ptsEarned = 0;
+                    if (rankIndex < POINTS_SYSTEM.length) { ptsEarned = POINTS_SYSTEM[rankIndex]; }
 
                     // Trainer stats accumulation
                     if (!stats.trainer[player]) {
-                        stats.trainer[player] = { points: 0, races: 0, beaten: 0, totalOpp: 0, positions: [], history: [] };
+                        stats.trainer[player] = { points: 0, races: 0, beaten: 0, totalOpp: 0, positions: [], history: [], tourneyPoints: {} };
                     }
-                    if (rankIndex < POINTS_SYSTEM.length) { stats.trainer[player].points += POINTS_SYSTEM[rankIndex]; }
+                    stats.trainer[player].points += ptsEarned;
+                    stats.trainer[player].tourneyPoints[tournamentName] = (stats.trainer[player].tourneyPoints[tournamentName] || 0) + ptsEarned;
                     stats.trainer[player].races += 1;
                     stats.trainer[player].beaten += opponentsBeaten;
                     stats.trainer[player].totalOpp += possibleOpponents;
@@ -359,9 +363,10 @@ function getChampionshipPoints(activeTournaments, filteredData) {
                     // Uma stats accumulation
                     if (umaName !== "Unknown") {
                         if (!stats.uma[umaName]) {
-                            stats.uma[umaName] = { points: 0, races: 0, beaten: 0, totalOpp: 0, positions: [], history: [] };
+                            stats.uma[umaName] = { points: 0, races: 0, beaten: 0, totalOpp: 0, positions: [], history: [], tourneyPoints: {} };
                         }
-                        if (rankIndex < POINTS_SYSTEM.length) { stats.uma[umaName].points += POINTS_SYSTEM[rankIndex]; }
+                        stats.uma[umaName].points += ptsEarned;
+                        stats.uma[umaName].tourneyPoints[tournamentName] = (stats.uma[umaName].tourneyPoints[tournamentName] || 0) + ptsEarned;
                         stats.uma[umaName].races += 1;
                         stats.uma[umaName].beaten += opponentsBeaten;
                         stats.uma[umaName].totalOpp += possibleOpponents;
@@ -443,7 +448,7 @@ function calculateStats(filteredData) {
         
         const pStats = type === 'trainer' ? pointsData.trainer[item.name] : pointsData.uma[item.name];
         let avgPos = "-";
-        let bestPos = "-";
+        let bestTourney = "-";
         let history = [];
 
         if (pStats) {
@@ -451,7 +456,15 @@ function calculateStats(filteredData) {
             if (pStats.positions && pStats.positions.length > 0) {
                 const sum = pStats.positions.reduce((a, b) => a + b, 0);
                 avgPos = (sum / pStats.positions.length).toFixed(2);
-                bestPos = Math.min(...pStats.positions);
+            }
+            if (pStats.tourneyPoints) {
+                let maxPts = -1;
+                for (const [tName, tPts] of Object.entries(pStats.tourneyPoints)) {
+                    if (tPts > maxPts) {
+                        maxPts = tPts;
+                        bestTourney = tName;
+                    }
+                }
             }
             if (pStats.history) history = pStats.history;
         }
@@ -466,7 +479,7 @@ function calculateStats(filteredData) {
             winRate: winRateVal,
             dom: dominanceVal,
             avgPos: avgPos,
-            bestPos: bestPos,
+            bestTourney: bestTourney,
             history: history,
             tourneyWinPct: tWinPct
         };
@@ -631,14 +644,14 @@ function updateData() {
     if (document.getElementById('umaTable')) {
         stats.umaStats.sort((a, b) => b.dom - a.dom);
         renderTable('umaTable', stats.umaStats, 
-            ['name', 'picks', 'pickPct', 'truePickPct', 'wins', 'winRate', 'dom', 'avgPos', 'bestPos', 'tourneyStatsDisplay', 'banStatsDisplay', 'presenceDisplay']
+            ['name', 'picks', 'pickPct', 'truePickPct', 'wins', 'winRate', 'dom', 'avgPos', 'bestTourney', 'tourneyStatsDisplay', 'banStatsDisplay', 'presenceDisplay']
         );
     }
 
     if (document.getElementById('trainerTable')) {
         stats.trainerStats.sort((a, b) => b.dom - a.dom);
         renderTable('trainerTable', stats.trainerStats, 
-            ['name', 'entries', 'wins', 'winRate', 'dom', 'avgPos', 'bestPos', 'tourneyStatsDisplay', 'favorite', 'ace']
+            ['name', 'entries', 'wins', 'winRate', 'dom', 'avgPos', 'bestTourney', 'tourneyStatsDisplay', 'favorite', 'ace']
         );
     }
 
@@ -800,7 +813,7 @@ function updateTrainerCard() {
     
     document.getElementById('tc-wr').innerText = `${tData.winRate}%`;
     document.getElementById('tc-avg-pos').innerText = tData.avgPos;
-    document.getElementById('tc-best-pos').innerText = tData.bestPos === "-" ? "-" : (tData.bestPos === 1 ? "1st 🏆" : tData.bestPos + getOrdinal(tData.bestPos));
+    document.getElementById('tc-best-tourney').innerText = tData.bestTourney === "-" ? "-" : tData.bestTourney;
     document.getElementById('tc-dom').innerText = `${tData.dom}%`;
     document.getElementById('tc-twins').innerText = tData.tournamentWins;
     document.getElementById('tc-races').innerText = tData.totalRacesRun;
