@@ -137,14 +137,17 @@
     </div>
 
     <div id="tier-lists" class="view-section active">
-        <div class="card">
-            <div class="tier-switch-wrapper">
-                <div class="tier-switch">
+        <div class="card" id="tierListCard" style="position: relative;">
+            <div class="tier-switch-wrapper" style="flex-wrap: wrap; gap: 15px; align-items: center; margin-bottom: 30px;">
+                <div class="tier-switch" style="margin: 0; flex: 1; min-width: 250px; max-width: 480px;">
                     <div class="glider" id="tierGlider"></div>
                     <button class="switch-option active" onclick="setTierView(0)">Win Rate %</button>
                     <button class="switch-option" onclick="setTierView(1)">Dominance %</button>
                     <button class="switch-option" onclick="setTierView(2)">Tourney Wins</button>
                 </div>
+                <button data-html2canvas-ignore="true" onclick="downloadTierList()" class="copy-btn" style="background: var(--accent-color); color: var(--card-bg); font-weight: bold; border: none; padding: 10px 18px; font-size: 0.85rem; height: fit-content;">
+                    📸 Download
+                </button>
             </div>
 
             <div class="tier-view active" id="view-wr">
@@ -394,4 +397,3 @@
 
 </body>
 </html>
-
