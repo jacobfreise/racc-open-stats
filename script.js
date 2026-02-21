@@ -245,13 +245,24 @@ function switchSeason() {
     if (!seasonEl) return;
     const season = seasonEl.value;
     
+    const s1 = typeof S1_DATA !== 'undefined' ? S1_DATA : { compactData: [], tournamentRaceResults: {}, tournamentWinners: {}, tournamentBans: {} };
+    const s2 = typeof S2_DATA !== 'undefined' ? S2_DATA : { compactData: [], tournamentRaceResults: {}, tournamentWinners: {}, tournamentBans: {} };
+
     if (season === 's1') {
-        activeDataset = typeof S1_DATA !== 'undefined' ? S1_DATA : { compactData: [], tournamentRaceResults: {} };
-    } else {
-        activeDataset = (typeof S2_DATA !== 'undefined') ? S2_DATA : { compactData: [], tournamentRaceResults: {} };
+        activeDataset = s1;
+    } else if (season === 's2') {
+        activeDataset = s2;
+    } else if (season === 'all') {
+        // Merge both datasets
+        activeDataset = {
+            compactData: [...(s1.compactData || []), ...(s2.compactData || [])],
+            tournamentRaceResults: { ...(s1.tournamentRaceResults || {}), ...(s2.tournamentRaceResults || {}) },
+            tournamentWinners: { ...(s1.tournamentWinners || {}), ...(s2.tournamentWinners || {}) },
+            tournamentBans: { ...(s1.tournamentBans || {}), ...(s2.tournamentBans || {}) }
+        };
     }
 
-    if (activeDataset.compactData) {
+    if (activeDataset && activeDataset.compactData) {
         const umaToPreload = [];
         const trainerToPreload = [];
 
@@ -702,7 +713,7 @@ function calculateIndividualStats() {
     const searchEl = document.getElementById('searchInput');
     const searchQuery = searchEl ? searchEl.value.toLowerCase() : "";
     
-    if (activeDataset.tournamentRaceResults) {
+    if (activeDataset && activeDataset.tournamentRaceResults) {
         for (const [tournamentName, stages] of Object.entries(activeDataset.tournamentRaceResults)) {
             for (const [stageName, races] of Object.entries(stages)) {
                 races.forEach((raceResult) => {
