@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classified Team Builder - Racc Open</title>
+    <link rel="icon" type="image/png" href="icon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { background-color: #0d0d12; }
+        .builder-container { max-width: 1000px; margin: 0 auto; padding: 20px; }
+        .secret-header { text-align: center; margin-top: 20px; color: var(--accent-color); font-family: monospace; letter-spacing: 2px;}
+        
+        .uma-slots { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 30px; }
+        .uma-slot { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; align-items: center; position: relative; }
+        .slot-header { font-weight: bold; color: var(--accent-color); margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem; }
+        .uma-select { width: 100%; padding: 12px; border-radius: 8px; background: var(--bg-color); color: var(--text-color); border: 1px solid var(--border-color); margin-bottom: 15px; font-family: inherit; font-weight: bold; cursor: pointer;}
+        
+        .uma-display { display: flex; flex-direction: column; align-items: center; gap: 15px; width: 100%; min-height: 180px; }
+        .uma-icon-large { width: 96px; height: 96px; border-radius: 12px; object-fit: cover; box-shadow: 0 4px 10px rgba(0,0,0,0.5); border: 2px solid var(--border-color); }
+        .uma-indiv-stats { width: 100%; display: flex; flex-direction: column; gap: 8px; font-size: 0.9rem; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; border: 1px solid #333;}
+        .stat-line { display: flex; justify-content: space-between; }
+        
+        .team-stats-panel { margin-top: 40px; background: var(--card-bg); padding: 30px; border-radius: 12px; border: 2px dashed var(--accent-color); box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+        .team-stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 20px; }
+        .t-stat-box { background: rgba(0,0,0,0.3); padding: 20px; border-radius: 10px; text-align: center; border: 1px solid var(--border-color); }
+        .t-stat-label { font-size: 0.85rem; color: #aaa; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+        .t-stat-value { font-size: 2.2rem; font-weight: bold; color: #fff; }
+        
+        .preset-buttons { display: flex; justify-content: center; gap: 15px; margin-top: 30px; flex-wrap: wrap; }
+        .btn-preset { padding: 12px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; border: none; font-family: inherit; transition: transform 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.3);}
+        .btn-preset:hover { transform: translateY(-2px); }
+        .btn-exodia { background: linear-gradient(45deg, #ff007f, #ff8c00); color: white; }
+        .btn-meta { background: linear-gradient(45deg, #8e2de2, #4a00e0); color: white; }
+        .btn-sleeper { background: linear-gradient(45deg, #00b4db, #0083b0); color: white; }
+        
+        .return-link { display: block; text-align: center; margin-top: 40px; color: #666; text-decoration: none; font-family: monospace; }
+        .return-link:hover { color: var(--text-color); }
+    </style>
+</head>
+<body data-theme="default">
+
+<div class="builder-container">
+    <h1 class="secret-header">CLASSIFIED // TEAM THEORYCRAFTER</h1>
+    <p style="text-align: center; color: #888; font-family: monospace;">Simulate team efficiency using historical Season 2 data.</p>
+    
+    <div class="preset-buttons">
+        <button class="btn-preset btn-exodia" onclick="loadPreset('exodia')">🔥 "No Bans" Exodia</button>
+        <button class="btn-preset btn-meta" onclick="loadPreset('meta')">⚔️ Standard Meta Core</button>
+        <button class="btn-preset btn-sleeper" onclick="loadPreset('sleeper')">🧠 0% Ban High IQ</button>
+    </div>
+
+    <div class="uma-slots">
+        <div class="uma-slot">
+            <div class="slot-header">Slot 1 (Ace)</div>
+            <select id="uma1" class="uma-select" onchange="updateSlot(1)"></select>
+            <div id="display1" class="uma-display" style="display: none;">
+                <img id="icon1" class="uma-icon-large" src="" onerror="this.style.display='none'">
+                <div class="uma-indiv-stats">
+                    <div class="stat-line"><span style="color:#aaa;">Win Rate:</span> <strong id="wr1">0%</strong></div>
+                    <div class="stat-line"><span style="color:#aaa;">Dominance:</span> <strong id="dom1">0%</strong></div>
+                    <div class="stat-line"><span style="color:#aaa;">Ban Risk:</span> <strong id="ban1">0%</strong></div>
+                </div>
+            </div>
+        </div>
+        <div class="uma-slot">
+            <div class="slot-header">Slot 2</div>
+            <select id="uma2" class="uma-select" onchange="updateSlot(2)"></select>
+            <div id="display2" class="uma-display" style="display: none;">
+                <img id="icon2" class="uma-icon-large" src="" onerror="this.style.display='none'">
+                <div class="uma-indiv-stats">
+                    <div class="stat-line"><span style="color:#aaa;">Win Rate:</span> <strong id="wr2">0%</strong></div>
+                    <div class="stat-line"><span style="color:#aaa;">Dominance:</span> <strong id="dom2">0%</strong></div>
+                    <div class="stat-line"><span style="color:#aaa;">Ban Risk:</span> <strong id="ban2">0%</strong></div>
+                </div>
+            </div>
+        </div>
+        <div class="uma-slot">
+            <div class="slot-header">Slot 3</div>
+            <select id="uma3" class="uma-select" onchange="updateSlot(3)"></select>
+            <div id="display3" class="uma-display" style="display: none;">
+                <img id="icon3" class="uma-icon-large" src="" onerror="this.style.display='none'">
+                <div class="uma-indiv-stats">
+                    <div class="stat-line"><span style="color:#aaa;">Win Rate:</span> <strong id="wr3">0%</strong></div>
+                    <div class="stat-line"><span style="color:#aaa;">Dominance:</span> <strong id="dom3">0%</strong></div>
+                    <div class="stat-line"><span style="color:#aaa;">Ban Risk:</span> <strong id="ban3">0%</strong></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="team-stats-panel">
+        <h2 style="margin-top:0; text-align:center; color: var(--accent-color); font-family: monospace;">> TEAM PROJECTIONS</h2>
+        <div class="team-stats-grid">
+            <div class="t-stat-box">
+                <div class="t-stat-label">Avg Team Dominance</div>
+                <div class="t-stat-value" id="team-dom" style="color: #00b4db;">0.0%</div>
+            </div>
+            <div class="t-stat-box">
+                <div class="t-stat-label">Combined Win Probability</div>
+                <div class="t-stat-value" id="team-wr" style="color: #ffd700;">0.0%</div>
+            </div>
+            <div class="t-stat-box">
+                <div class="t-stat-label">Average Ban Risk</div>
+                <div class="t-stat-value" id="team-ban" style="color: #ff4444;">0.0%</div>
+            </div>
+        </div>
+    </div>
+
+    <a href="index.html" class="return-link">< Return to Public Dashboard</a>
+</div>
+
+<script src="data_s2.js"></script>
+<script src="release_data.js"></script>
+
+<script>
+    let db = {};
+
+    function getImageUrl(name) {
+        const fileName = name.toLowerCase().replace(/['.]/g, '').replace(/\s+/g, '_');
+        const repoBaseUrl = 'darkred1145.github.io/racc-open-stats'; 
+        const localPath = `uma/${fileName}.png`;
+        const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+        return isLocal ? localPath : `https://wsrv.nl/?url=${repoBaseUrl}/${localPath}&w=96&output=webp`;
+    }
+
+    function initBuilder() {
+        // Process S2 Data independently so it doesn't break the main site
+        const rawData = S2_DATA.compactData;
+        const umaMap = {};
+        const activeTournaments = new Set();
+        
+        rawData.forEach(r => {
+            activeTournaments.add(r[4]);
+            let uName = r[1]; // Keep original name for dropdowns
+            if (!umaMap[uName]) {
+                umaMap[uName] = { name: uName, picks: 0, wins: 0, races: 0, beaten: 0, totalOpp: 0, bans: 0 };
+            }
+            umaMap[uName].picks++;
+            umaMap[uName].wins += r[2];
+            umaMap[uName].races += r[7];
+        });
+
+        // Dominance
+        if (S2_DATA.tournamentRaceResults) {
+            for (const [tName, stages] of Object.entries(S2_DATA.tournamentRaceResults)) {
+                for (const [sName, races] of Object.entries(stages)) {
+                    races.forEach(raceResult => {
+                        const lobbySize = raceResult.length;
+                        raceResult.forEach((player, rankIndex) => {
+                            if (player.includes("Player") || player === "DQ") return;
+                            const match = rawData.find(d => d[0] === player && d[4] === tName);
+                            if(match && umaMap[match[1]]) {
+                                umaMap[match[1]].beaten += (lobbySize - 1) - rankIndex;
+                                umaMap[match[1]].totalOpp += (lobbySize - 1);
+                            }
+                        });
+                    });
+                }
+            }
+        }
+
+        // Bans
+        if (S2_DATA.tournamentBans) {
+            Object.entries(S2_DATA.tournamentBans).forEach(([tId, banList]) => {
+                banList.forEach(uName => {
+                    if(umaMap[uName]) umaMap[uName].bans++;
+                });
+            });
+        }
+
+        // Calculate Percentages
+        Object.values(umaMap).forEach(u => {
+            u.winRate = u.races > 0 ? (u.wins / u.races) * 100 : 0;
+            u.dom = u.totalOpp > 0 ? (u.beaten / u.totalOpp) * 100 : 0;
+            
+            let releaseIndex = (typeof UMA_RELEASE_MAP !== 'undefined' && UMA_RELEASE_MAP[u.name]) ? TOURNAMENT_ORDER.indexOf(UMA_RELEASE_MAP[u.name]) : 0;
+            if(releaseIndex === -1) releaseIndex = 0;
+
+            let validTourneys = 0;
+            activeTournaments.forEach(tId => {
+                let tIndex = TOURNAMENT_ORDER.indexOf(tId);
+                if (tIndex === -1 || tIndex >= releaseIndex) validTourneys++;
+            });
+
+            u.banRate = validTourneys > 0 ? (u.bans / validTourneys) * 100 : 0;
+            db[u.name] = u;
+        });
+
+        const sortedUmas = Object.keys(db).sort();
+        const options = `<option value="">-- Select Character --</option>` + sortedUmas.map(u => `<option value="${u}">${u}</option>`).join('');
+        
+        [1, 2, 3].forEach(i => document.getElementById(`uma${i}`).innerHTML = options);
+    }
+
+    function updateSlot(slotNum) {
+        const selected = document.getElementById(`uma${slotNum}`).value;
+        const displayDiv = document.getElementById(`display${slotNum}`);
+        
+        if (!selected) {
+            displayDiv.style.display = 'none';
+            calculateTeam();
+            return;
+        }
+
+        const data = db[selected];
+        document.getElementById(`icon${slotNum}`).src = getImageUrl(selected);
+        document.getElementById(`icon${slotNum}`).style.display = 'block';
+        
+        document.getElementById(`wr${slotNum}`).innerText = data.winRate.toFixed(1) + "%";
+        document.getElementById(`dom${slotNum}`).innerText = data.dom.toFixed(1) + "%";
+        document.getElementById(`ban${slotNum}`).innerText = data.banRate.toFixed(1) + "%";
+        
+        displayDiv.style.display = 'flex';
+        calculateTeam();
+    }
+
+    function calculateTeam() {
+        const u1 = db[document.getElementById('uma1').value];
+        const u2 = db[document.getElementById('uma2').value];
+        const u3 = db[document.getElementById('uma3').value];
+
+        const selected = [u1, u2, u3].filter(u => u !== undefined);
+        if (selected.length === 0) {
+            document.getElementById('team-dom').innerText = "0.0%";
+            document.getElementById('team-wr').innerText = "0.0%";
+            document.getElementById('team-ban').innerText = "0.0%";
+            return;
+        }
+
+        const avgDom = selected.reduce((sum, u) => sum + u.dom, 0) / selected.length;
+        const avgBan = selected.reduce((sum, u) => sum + u.banRate, 0) / selected.length;
+        // Simple Additive Win Prob
+        const totalWr = selected.reduce((sum, u) => sum + u.winRate, 0);
+
+        document.getElementById('team-dom').innerText = avgDom.toFixed(1) + "%";
+        document.getElementById('team-wr').innerText = totalWr.toFixed(1) + "%";
+        document.getElementById('team-ban').innerText = avgBan.toFixed(1) + "%";
+    }
+
+    function loadPreset(type) {
+        if (type === 'exodia') {
+            document.getElementById('uma1').value = "Seiun Sky (Original)";
+            document.getElementById('uma2').value = "Oguri Cap (Christmas)";
+            document.getElementById('uma3').value = "Maruzensky (Summer)";
+        } else if (type === 'meta') {
+            document.getElementById('uma1').value = "Mejiro McQueen (Original)";
+            document.getElementById('uma2').value = "Smart Falcon (Original)";
+            document.getElementById('uma3').value = "Mihono Bourbon (Valentine)";
+        } else if (type === 'sleeper') {
+            document.getElementById('uma1').value = "Hishi Akebono (Original)";
+            document.getElementById('uma2').value = "Hishi Amazon (Original)";
+            document.getElementById('uma3').value = "T.M. Opera O (Original)";
+        }
+        updateSlot(1); updateSlot(2); updateSlot(3);
+    }
+
+    window.onload = initBuilder;
+</script>
+</body>
+</html>
