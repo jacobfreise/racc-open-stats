@@ -285,7 +285,25 @@ const S2_DATA = {
         ["Jedmumu", "T.M. Opera O (New Year)", 0, "2000m Turf (L)", "S2-17", "T.M. Opera O", "New Year", 10],
         ["KN", "Mihono Bourbon (Valentine)", 1, "2000m Turf (L)", "S2-17", "Mihono Bourbon", "Valentine", 10],
         ["Raccoon", "Manhattan Cafe (Original)", 0, "2000m Turf (L)", "S2-17", "Manhattan Cafe", "Original", 5],
-        ["Frozt", "Mihono Bourbon (Valentine)", 0, "2000m Turf (L)", "S2-17", "Mihono Bourbon", "Valentine", 10]
+        ["Frozt", "Mihono Bourbon (Valentine)", 0, "2000m Turf (L)", "S2-17", "Mihono Bourbon", "Valentine", 10],
+        ["JoeWheeler", "Narita Taishin (Original)", 6, "2600m Turf (R)", "S2-18", "Narita Taishin", "Original", 10],
+        ["Mixsy", "Daiwa Scarlet (Original)", 0, "2600m Turf (R)", "S2-18", "Daiwa Scarlet", "Original", 10],
+        ["Roidee", "Mejiro McQueen (Original)", 4, "2600m Turf (R)", "S2-18", "Mejiro McQueen", "Original", 10],
+        ["Pines", "Mayano Top Gun (Wedding)", 0, "2600m Turf (R)", "S2-18", "Mayano Top Gun", "Wedding", 10],
+        ["Kenesu", "Oguri Cap (Christmas)", 0, "2600m Turf (R)", "S2-18", "Oguri Cap", "Christmas", 5],
+        ["Boop", "Narita Taishin (Original)", 0, "2600m Turf (R)", "S2-18", "Narita Taishin", "Original", 10],
+        ["Phantasm", "Manhattan Cafe (Original)", 0, "2600m Turf (R)", "S2-18", "Manhattan Cafe", "Original", 10],
+        ["Raccoon", "Manhattan Cafe (Original)", 0, "2600m Turf (R)", "S2-18", "Manhattan Cafe", "Original", 5],
+        ["Cefiro", "Special Week (Original)", 0, "2600m Turf (R)", "S2-18", "Special Week", "Original", 5],
+        ["Jedmumu", "T.M. Opera O (New Year)", 4, "2600m Turf (R)", "S2-18", "T.M. Opera O", "New Year", 5],
+        ["Draguin", "Oguri Cap (Christmas)", 1, "2600m Turf (R)", "S2-18", "Oguri Cap", "Christmas", 10],
+        ["HoriYon", "Oguri Cap (Christmas)", 0, "2600m Turf (R)", "S2-18", "Oguri Cap", "Christmas", 5],
+        ["Spyder", "Special Week (Summer)", 0, "2600m Turf (R)", "S2-18", "Special Week", "Summer", 5],
+        ["Rihito", "Mayano Top Gun (Original)", 0, "2600m Turf (R)", "S2-18", "Mayano Top Gun", "Original", 5],
+        ["Bunsen", "Narita Taishin (Original)", 0, "2600m Turf (R)", "S2-18", "Narita Taishin", "Original", 5],
+        ["NiSE", "Narita Taishin (Original)", 0, "2600m Turf (R)", "S2-18", "Narita Taishin", "Original", 10],
+        ["FuHua", "Seiun Sky (Original)", 0, "2600m Turf (R)", "S2-18", "Seiun Sky", "Original", 10],
+        ["Synocra", "Silence Suzuka (Original)", 0, "2600m Turf (R)", "S2-18", "Silence Suzuka", "Original", 5]
     ],
     
     tournamentWinners: {
@@ -306,6 +324,7 @@ const S2_DATA = {
         "S2-15": ["Roidee", "Kenesu", "Bresto"],
         "S2-16": ["FuHua", "LeBricc", "Roidee"],
         "S2-17": ["Spyder", "Pines", "HoriYon"],
+        "S2-18": ["Roidee", "Boop", "Pines"],
     },
     
     tournamentBans: {
@@ -425,6 +444,12 @@ const S2_DATA = {
             "Maruzensky (Original)",
             "Silence Suzuka (Original)",
             "Oguri Cap (Christmas)"
+        ],
+        "S2-18": [
+            "Grass Wonder (Fantasy)",
+            "El Condor Pasa (Original)",
+            "Tamamo Cross (Original)",
+            "Gold Ship (Original)"
         ],
     },
     
@@ -735,6 +760,29 @@ const S2_DATA = {
                 ["Madara", "Draguin", "Pines", "Roidee", "Spyder", "KN", "HoriYon", "NiSE", "Jedmumu", "Bresto", "Frozt", "Nymaera"],
                 ["Spyder", "NiSE", "Jedmumu", "Draguin", "KN", "Pines", "Bresto", "Nymaera", "HoriYon", "Roidee", "Madara", "Frozt"]
             ]
+        },
+        "S2-18": {
+            "Group A": [
+                ["JoeWheeler", "Mixsy", "Roidee", "Pines", "Kenesu", "Boop", "Phantasm", "Raccoon", "Cefiro"],
+                ["JoeWheeler", "Roidee", "Boop", "Mixsy", "Kenesu", "Phantasm", "Cefiro", "Pines", "Raccoon"],
+                ["Roidee", "JoeWheeler", "Mixsy", "Cefiro", "Boop", "Pines", "Kenesu", "Phantasm", "Raccoon"],
+                ["JoeWheeler", "Roidee", "Cefiro", "Phantasm", "Mixsy", "Kenesu", "Boop", "Raccoon", "Pines"],
+                ["JoeWheeler", "Mixsy", "Boop", "Roidee", "Kenesu", "Pines", "Cefiro", "Raccoon", "Phantasm"]
+            ],
+            "Group B": [
+                ["Jedmumu", "Draguin", "HoriYon", "Spyder", "Rihito", "Bunsen", "NiSE", "FuHua", "Synocra"],
+                ["Jedmumu", "NiSE", "HoriYon", "Spyder", "Rihito", "Bunsen", "FuHua", "Draguin", "Synocra"],
+                ["Jedmumu", "Draguin", "NiSE", "Spyder", "Rihito", "FuHua", "HoriYon", "Bunsen", "Synocra"],
+                ["Jedmumu", "FuHua", "HoriYon", "NiSE", "Draguin", "Rihito", "Bunsen", "Spyder", "Synocra"],
+                ["Draguin", "HoriYon", "NiSE", "FuHua", "Rihito", "Bunsen", "Jedmumu", "Spyder", "Synocra"]
+            ],
+            "Finals": [
+                ["Roidee", "JoeWheeler", "NiSE", "Draguin", "FuHua", "Boop", "Pines", "Mixsy", "Phantasm"],
+                ["Roidee", "JoeWheeler", "NiSE", "Mixsy", "Draguin", "Boop", "Phantasm", "Pines", "FuHua"],
+                ["Roidee", "Boop", "Draguin", "JoeWheeler", "NiSE", "FuHua", "Pines", "Mixsy", "Phantasm"],
+                ["JoeWheeler", "Roidee", "Draguin", "NiSE", "Mixsy", "Boop", "Pines", "FuHua", "Phantasm"],
+                ["JoeWheeler", "Roidee", "NiSE", "Draguin", "Mixsy", "Boop", "Pines", "FuHua", "Phantasm"]
+            ]
         }
     }
 };
@@ -742,6 +790,7 @@ const S2_DATA = {
 if (typeof module !== 'undefined') {
     module.exports = { S2_DATA };
 }
+
 
 
 
