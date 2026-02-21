@@ -116,7 +116,7 @@ function renderLiveTournaments() {
                 </div>
                 
                 <button onclick="copyTournamentResults('${t.id}')" class="copy-btn" title="Copy Results to Clipboard">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                         <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
                     </svg>
@@ -132,11 +132,11 @@ function renderLiveTournaments() {
 
         // --- 2. LIVE BANS ---
         if (t.bans && t.bans.length > 0) {
-            const banHtml = t.bans.map(b => `<span class="variant-tag" style="border: 1px solid var(--border-color); font-size: 0.9em; padding: 4px 10px;">🚫 ${b}</span>`).join('');
+            const banHtml = t.bans.map(b => `<span class="variant-tag" style="border: 1px solid var(--border-color); font-size: 0.85em; padding: 4px 8px;">🚫 ${b}</span>`).join('');
             html += `
-            <div style="margin-bottom: 25px;">
-                <strong style="color: var(--accent-color); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em;">Banned Umas</strong>
-                <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px;">${banHtml}</div>
+            <div style="margin-bottom: 20px;">
+                <strong style="color: var(--accent-color); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em;">Banned Umas</strong>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px;">${banHtml}</div>
             </div>`;
         }
 
@@ -154,8 +154,8 @@ function renderLiveTournaments() {
                 <table class="live-table">
                     <thead>
                         <tr>
-                            <th style="width:50px;">#</th>
-                            <th style="width:80px;">Group</th>
+                            <th style="width:40px;">#</th>
+                            <th style="width:65px;">Group</th>
                             <th>Race Results</th>
                         </tr>
                     </thead>
@@ -598,7 +598,7 @@ function renderTierList(containerId, data, countKey, minReq, sortKey) {
             </div>`;
     });
 
-    if (html === '') html = '<div style="padding:20px; color:var(--text-color); opacity:0.6; text-align:center;">No data fits these criteria.</div>';
+    if (html === '') html = '<div style="padding:15px; color:var(--text-color); opacity:0.6; text-align:center;">No data fits these criteria.</div>';
     container.innerHTML = html;
 }
 
@@ -875,7 +875,7 @@ function generateTheorycraft() {
     const selectedName = selector.value;
     const tData = currentCalculatedStats.trainerStats.find(t => t.name === selectedName);
     
-    if (!tData) { container.innerHTML = `<div style="text-align:center; padding:20px; opacity:0.7;">No data found for this trainer.</div>`; return; }
+    if (!tData) { container.innerHTML = `<div style="text-align:center; padding:15px; opacity:0.7;">No data found for this trainer.</div>`; return; }
 
     const historyArr = Object.entries(tData.characterHistory).map(([key, val]) => ({ name: key, ...val }));
     const comfortTeam = [...historyArr].sort((a, b) => b.picks - a.picks).slice(0, 3);
@@ -889,23 +889,23 @@ function generateTheorycraft() {
 
     const renderTeam = (title, description, umas, typeDesc) => {
         let html = `
-        <div style="background: rgba(0,0,0,0.1); border: 1px solid var(--border-color); border-radius: 8px; padding: 20px; margin-bottom: 20px;">
-            <h3 style="margin: 0 0 5px 0; color: var(--accent-color); font-size: 1.1em;">${title}</h3>
-            <div style="font-size: 0.85em; opacity: 0.7; margin-bottom: 15px;">${description}</div>
-            <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: space-evenly;">`;
+        <div style="background: rgba(0,0,0,0.1); border: 1px solid var(--border-color); border-radius: 8px; padding: 15px; margin-bottom: 15px;">
+            <h3 style="margin: 0 0 5px 0; color: var(--accent-color); font-size: 1.05em;">${title}</h3>
+            <div style="font-size: 0.8rem; opacity: 0.7; margin-bottom: 12px;">${description}</div>
+            <div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: space-evenly;">`;
         
         umas.forEach(u => {
             const icon = getIconHtml(u.name.split('(')[0].trim(), 'uma');
-            html += `<div style="display: flex; flex-direction: column; align-items: center; width: 110px; text-align: center;">
-                ${icon}<span style="font-size: 0.85em; font-weight: 600; margin-top: 8px; line-height: 1.2;">${u.name}</span>
-                <span style="font-size: 0.75em; color: var(--accent-color); margin-top: 4px; font-weight: bold;">${typeDesc(u)}</span>
+            html += `<div style="display: flex; flex-direction: column; align-items: center; width: 90px; text-align: center;">
+                ${icon}<span style="font-size: 0.8rem; font-weight: 600; margin-top: 6px; line-height: 1.2;">${u.name}</span>
+                <span style="font-size: 0.7rem; color: var(--accent-color); margin-top: 4px; font-weight: bold;">${typeDesc(u)}</span>
             </div>`;
         });
         
         for(let i = umas.length; i < 3; i++) {
-             html += `<div style="display: flex; flex-direction: column; align-items: center; width: 110px; text-align: center; opacity: 0.3;">
-                <div style="width: 64px; height: 64px; border-radius: 50%; background: var(--border-color); margin-bottom: 8px;"></div>
-                <span style="font-size: 0.85em; font-weight: 500;">Empty Slot</span>
+             html += `<div style="display: flex; flex-direction: column; align-items: center; width: 90px; text-align: center; opacity: 0.3;">
+                <div style="width: 50px; height: 50px; border-radius: 50%; background: var(--border-color); margin-bottom: 6px;"></div>
+                <span style="font-size: 0.8rem; font-weight: 500;">Empty Slot</span>
             </div>`;
         }
         return html + `</div></div>`;
@@ -956,10 +956,10 @@ function runSimulation() {
     members.forEach(m => {
         totalWins += m.wins || 0; totalRaces += m.totalRacesRun || 0; totalDom += parseFloat(m.dom) || 0; domCount++;
         const icon = getIconHtml(m.name.split('(')[0].trim(), type);
-        cardsHtml += `<div style="display: flex; flex-direction: column; align-items: center; width: 120px; text-align: center; background: rgba(0,0,0,0.2); padding: 15px 10px; border-radius: 8px; border: 1px solid var(--border-color);">
-            ${icon}<span style="font-size: 0.85em; font-weight: 600; margin-top: 8px; line-height: 1.2;">${m.name}</span>
-            <span style="font-size: 0.75em; color: var(--accent-color); margin-top: 4px;">${m.winRate}% WR</span>
-            <span style="font-size: 0.75em; opacity: 0.8;">${m.dom}% Dom</span>
+        cardsHtml += `<div style="display: flex; flex-direction: column; align-items: center; width: 95px; text-align: center; background: rgba(0,0,0,0.2); padding: 12px 8px; border-radius: 8px; border: 1px solid var(--border-color);">
+            ${icon}<span style="font-size: 0.8rem; font-weight: 600; margin-top: 6px; line-height: 1.2;">${m.name}</span>
+            <span style="font-size: 0.7rem; color: var(--accent-color); margin-top: 4px;">${m.winRate}% WR</span>
+            <span style="font-size: 0.7rem; opacity: 0.8;">${m.dom}% Dom</span>
         </div>`;
     });
 
@@ -967,18 +967,18 @@ function runSimulation() {
     const avgDom = domCount > 0 ? (totalDom / domCount).toFixed(1) : "0.0";
 
     container.innerHTML = `
-    <div style="background: rgba(0,0,0,0.1); border: 1px solid var(--border-color); border-radius: 8px; padding: 20px; margin-bottom: 20px;">
-        <h3 style="margin: 0 0 15px 0; color: var(--accent-color); text-align: center;">Team Aggregate Performance</h3>
-        <div style="display: flex; gap: 15px; justify-content: space-evenly; margin-bottom: 20px; flex-wrap: wrap;">${cardsHtml}</div>
-        <div style="display: flex; gap: 20px; justify-content: space-around; background: var(--bg-color); padding: 15px; border-radius: 8px; border: 1px solid var(--border-color);">
+    <div style="background: rgba(0,0,0,0.1); border: 1px solid var(--border-color); border-radius: 8px; padding: 15px; margin-bottom: 15px;">
+        <h3 style="margin: 0 0 12px 0; color: var(--accent-color); text-align: center;">Team Aggregate Performance</h3>
+        <div style="display: flex; gap: 12px; justify-content: space-evenly; margin-bottom: 15px; flex-wrap: wrap;">${cardsHtml}</div>
+        <div style="display: flex; gap: 15px; justify-content: space-around; background: var(--bg-color); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color);">
             <div style="text-align: center;">
-                <div style="font-size: 0.8em; opacity: 0.7; text-transform: uppercase;">Combined Win Rate</div>
-                <div style="font-size: 1.4em; font-weight: bold; color: var(--accent-color);">${combinedWr}%</div>
-                <div style="font-size: 0.75em; opacity: 0.5;">(${totalWins} / ${totalRaces} Races)</div>
+                <div style="font-size: 0.75em; opacity: 0.7; text-transform: uppercase;">Combined Win Rate</div>
+                <div style="font-size: 1.2em; font-weight: bold; color: var(--accent-color);">${combinedWr}%</div>
+                <div style="font-size: 0.7em; opacity: 0.5;">(${totalWins} / ${totalRaces} Races)</div>
             </div>
             <div style="text-align: center;">
-                <div style="font-size: 0.8em; opacity: 0.7; text-transform: uppercase;">Average Dominance</div>
-                <div style="font-size: 1.4em; font-weight: bold; color: var(--accent-color);">${avgDom}%</div>
+                <div style="font-size: 0.75em; opacity: 0.7; text-transform: uppercase;">Average Dominance</div>
+                <div style="font-size: 1.2em; font-weight: bold; color: var(--accent-color);">${avgDom}%</div>
             </div>
         </div>
     </div>`;
