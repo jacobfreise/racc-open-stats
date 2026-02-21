@@ -875,6 +875,36 @@ function downloadTrainerCard() {
     });
 }
 
+// --- NEW TIER LIST DOWNLOAD LOGIC ---
+function downloadTierList() {
+    const cardElement = document.getElementById('tierListCard');
+    if (!cardElement) return;
+    
+    const btn = document.querySelector('button[onclick="downloadTierList()"]');
+    const originalText = btn.innerHTML;
+    
+    btn.innerHTML = "⏳ Generating..."; btn.style.opacity = "0.7"; btn.disabled = true;
+    
+    html2canvas(cardElement, { useCORS: true, backgroundColor: null, scale: 2, logging: false }).then(canvas => {
+        const link = document.createElement('a');
+        
+        // Find which view is active to appropriately name the file
+        let viewName = "WinRate";
+        if (document.getElementById('view-dom') && document.getElementById('view-dom').classList.contains('active')) viewName = "Dominance";
+        if (document.getElementById('view-champ') && document.getElementById('view-champ').classList.contains('active')) viewName = "TourneyWins";
+        
+        link.download = `Racc_Open_TierList_${viewName}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+        
+        btn.innerHTML = originalText; btn.style.opacity = "1"; btn.disabled = false;
+    }).catch(err => {
+        console.error("Tier list generation failed:", err);
+        alert("Failed to generate the Tier List. See console for details.");
+        btn.innerHTML = originalText; btn.style.opacity = "1"; btn.disabled = false;
+    });
+}
+
 // --- TEAM THEORYCRAFTER LOGIC ---
 function populateTheorycrafterDropdown() {
     const selector = document.getElementById('tcrafTrainerSelector');
