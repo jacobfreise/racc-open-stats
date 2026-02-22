@@ -106,7 +106,6 @@ function renderLiveTournaments() {
 
         html += `<div class="live-tourney-card">`;
         
-        // --- 1. HEADER ---
         let statusClass = t.status === 'active' ? 'status-active' : 'status-completed';
         html += `
             <div class="live-header">
@@ -130,7 +129,6 @@ function renderLiveTournaments() {
             </div>
         `;
 
-        // --- 2. LIVE BANS ---
         if (t.bans && t.bans.length > 0) {
             const banHtml = t.bans.map(b => `<span class="variant-tag" style="border: 1px solid var(--border-color); font-size: 0.85em; padding: 4px 8px;">🚫 ${b}</span>`).join('');
             html += `
@@ -140,7 +138,6 @@ function renderLiveTournaments() {
             </div>`;
         }
 
-        // --- 3. INDIVIDUAL RACE RESULTS ---
         if (t.races && t.races.length > 0) {
             const groupOrder = { 'A': 1, 'B': 2, 'C': 3, 'Finals': 4 };
             const sortedRaces = [...t.races].sort((a, b) => {
@@ -253,7 +250,6 @@ function switchSeason() {
     } else if (season === 's2') {
         activeDataset = s2;
     } else if (season === 'all') {
-        // Merge both datasets
         activeDataset = {
             compactData: [...(s1.compactData || []), ...(s2.compactData || [])],
             tournamentRaceResults: { ...(s1.tournamentRaceResults || {}), ...(s2.tournamentRaceResults || {}) },
@@ -361,7 +357,11 @@ function getChampionshipPoints(activeTournaments, filteredData) {
 
                     // Trainer stats accumulation
                     if (!stats.trainer[player]) {
-                        stats.trainer[player] = { points: 0, races: 0, beaten: 0, totalOpp: 0, positions: [], history: [], tourneyPoints: {} };
+                        stats.trainer[player] = { 
+                            points: 0, races: 0, beaten: 0, totalOpp: 0, positions: [], 
+                            history: [], tourneyPoints: {},
+                            umaStats: {}, tourneyStats: {}
+                        };
                     }
                     stats.trainer[player].points += ptsEarned;
                     stats.trainer[player].tourneyPoints[tournamentName] = (stats.trainer[player].tourneyPoints[tournamentName] || 0) + ptsEarned;
@@ -371,7 +371,26 @@ function getChampionshipPoints(activeTournaments, filteredData) {
                     stats.trainer[player].positions.push(rank);
                     stats.trainer[player].history.push({ tournament: tournamentName, group: stageName, rank: rank, uma: umaName });
 
-                    // Uma stats accumulation
+                    // Detailed Uma Stats Per Trainer
+                    if (!stats.trainer[player].umaStats[umaName]) {
+                        stats.trainer[player].umaStats[umaName] = { points: 0, races: 0, beaten: 0, totalOpp: 0, positions: [] };
+                    }
+                    stats.trainer[player].umaStats[umaName].points += ptsEarned;
+                    stats.trainer[player].umaStats[umaName].races += 1;
+                    stats.trainer[player].umaStats[umaName].beaten += opponentsBeaten;
+                    stats.trainer[player].umaStats[umaName].totalOpp += possibleOpponents;
+                    stats.trainer[player].umaStats[umaName].positions.push(rank);
+
+                    // Detailed Tourney Stats Per Trainer
+                    if (!stats.trainer[player].tourneyStats[tournamentName]) {
+                        stats.trainer[player].tourneyStats[tournamentName] = { points: 0, beaten: 0, totalOpp: 0, umas: new Set() };
+                    }
+                    stats.trainer[player].tourneyStats[tournamentName].points += ptsEarned;
+                    stats.trainer[player].tourneyStats[tournamentName].beaten += opponentsBeaten;
+                    stats.trainer[player].tourneyStats[tournamentName].totalOpp += possibleOpponents;
+                    stats.trainer[player].tourneyStats[tournamentName].umas.add(umaName);
+
+                    // Uma global stats accumulation
                     if (umaName !== "Unknown") {
                         if (!stats.uma[umaName]) {
                             stats.uma[umaName] = { points: 0, races: 0, beaten: 0, totalOpp: 0, positions: [], history: [], tourneyPoints: {} };
@@ -460,7 +479,6 @@ function calculateStats(filteredData) {
         const pStats = type === 'trainer' ? pointsData.trainer[item.name] : pointsData.uma[item.name];
         let avgPos = "-";
         let bestTourney = "-";
-        let history = [];
 
         if (pStats) {
             if (pStats.totalOpp > 0) dominanceVal = ((pStats.beaten / pStats.totalOpp) * 100).toFixed(1);
@@ -471,13 +489,9 @@ function calculateStats(filteredData) {
             if (pStats.tourneyPoints) {
                 let maxPts = -1;
                 for (const [tName, tPts] of Object.entries(pStats.tourneyPoints)) {
-                    if (tPts > maxPts) {
-                        maxPts = tPts;
-                        bestTourney = tName;
-                    }
+                    if (tPts > maxPts) { maxPts = tPts; bestTourney = tName; }
                 }
             }
-            if (pStats.history) history = pStats.history;
         }
 
         let tWinPct = "0.0";
@@ -491,8 +505,9 @@ function calculateStats(filteredData) {
             dom: dominanceVal,
             avgPos: avgPos,
             bestTourney: bestTourney,
-            history: history,
-            tourneyWinPct: tWinPct
+            tourneyWinPct: tWinPct,
+            detailedUmaStats: pStats ? pStats.umaStats : {},
+            detailedTourneyStats: pStats ? pStats.tourneyStats : {}
         };
 
         if (type === 'uma') {
@@ -819,35 +834,71 @@ function updateTrainerCard() {
     const tData = currentCalculatedStats.trainerStats.find(t => t.name === selectedName);
     if (!tData) return;
 
+    // Head Data
     document.getElementById('tc-name').innerText = tData.name;
     document.getElementById('tc-avatar').innerHTML = getIconHtml(tData.name, 'trainer');
     
+    // Grid Data
     document.getElementById('tc-wr').innerText = `${tData.winRate}%`;
     document.getElementById('tc-avg-pos').innerText = tData.avgPos;
-    document.getElementById('tc-best-tourney').innerText = tData.bestTourney === "-" ? "-" : tData.bestTourney;
     document.getElementById('tc-dom').innerText = `${tData.dom}%`;
     document.getElementById('tc-twins').innerText = tData.tournamentWins;
-    document.getElementById('tc-races').innerText = tData.totalRacesRun;
 
+    // Favorites
     document.getElementById('tc-ace').innerHTML = tData.ace;
     document.getElementById('tc-fav').innerHTML = tData.favorite;
 
-    const historyContainer = document.getElementById('tc-history-list');
-    if (tData.history && tData.history.length > 0) {
-        const recent = [...tData.history].reverse().slice(0, 5);
-        historyContainer.innerHTML = recent.map(h => {
-            let rClass = '';
-            if (h.rank === 1) rClass = 'tc-rank-1';
-            else if (h.rank === 2) rClass = 'tc-rank-2';
-            else if (h.rank === 3) rClass = 'tc-rank-3';
-            return `<div class="tc-history-item">
-                <span>${h.tournament} (${h.group})</span>
-                <span>${h.uma}</span>
-                <span class="${rClass}">${h.rank}${getOrdinal(h.rank)}</span>
-            </div>`;
-        }).join('');
+    // --- UMAS LIST (Best to Worst Avg Score & Dom%) ---
+    const umasObj = tData.detailedUmaStats || {};
+    const umasList = Object.entries(umasObj).map(([name, data]) => {
+        const avgPos = data.positions.length > 0 ? (data.positions.reduce((a,b)=>a+b,0) / data.positions.length) : 0;
+        const avgPts = data.races > 0 ? (data.points / data.races) : 0;
+        const dom = data.totalOpp > 0 ? (data.beaten / data.totalOpp * 100) : 0;
+        return { name, avgPos, avgPts, dom };
+    });
+    
+    // Sort highest avg pts, then dom%
+    umasList.sort((a, b) => b.avgPts - a.avgPts || b.dom - a.dom);
+    const topUmas = umasList.slice(0, 5);
+    
+    const umasContainer = document.getElementById('tc-umas-list');
+    if (topUmas.length > 0) {
+        umasContainer.innerHTML = topUmas.map(u => `
+            <div class="tc-list-item">
+                <span style="flex: 2; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 5px;" title="${u.name}">${u.name}</span>
+                <span style="flex: 1; text-align: center;">${u.avgPos.toFixed(1)}</span>
+                <span style="flex: 1; text-align: center; color: var(--accent-color); font-weight: bold;">${u.avgPts.toFixed(1)}</span>
+                <span style="flex: 1; text-align: right; opacity: 0.8;">${u.dom.toFixed(1)}%</span>
+            </div>
+        `).join('');
     } else {
-        historyContainer.innerHTML = `<div style="opacity:0.5; font-style:italic;">No recent races found.</div>`;
+        umasContainer.innerHTML = `<div style="opacity:0.5; font-style:italic; padding-top:10px;">No data available.</div>`;
+    }
+
+    // --- TOURNEYS LIST (Best to Worst Total Score & Dom%) ---
+    const tourneyObj = tData.detailedTourneyStats || {};
+    const tourneyList = Object.entries(tourneyObj).map(([name, data]) => {
+        const dom = data.totalOpp > 0 ? (data.beaten / data.totalOpp * 100) : 0;
+        const umaStr = Array.from(data.umas).join(', ');
+        return { name, umaStr, pts: data.points, dom };
+    });
+    
+    // Sort highest total pts, then dom%
+    tourneyList.sort((a, b) => b.pts - a.pts || b.dom - a.dom);
+    const topTourneys = tourneyList.slice(0, 5);
+
+    const tourneysContainer = document.getElementById('tc-tourneys-list');
+    if (topTourneys.length > 0) {
+        tourneysContainer.innerHTML = topTourneys.map(t => `
+            <div class="tc-list-item">
+                <span style="flex: 1.5; font-weight: 600;">${t.name}</span>
+                <span style="flex: 1.5; opacity: 0.8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 5px;" title="${t.umaStr}">${t.umaStr}</span>
+                <span style="flex: 1; text-align: center; color: var(--accent-color); font-weight: bold;">${t.pts}</span>
+                <span style="flex: 1; text-align: right; opacity: 0.8;">${t.dom.toFixed(1)}%</span>
+            </div>
+        `).join('');
+    } else {
+        tourneysContainer.innerHTML = `<div style="opacity:0.5; font-style:italic; padding-top:10px;">No data available.</div>`;
     }
 }
 
@@ -875,7 +926,6 @@ function downloadTrainerCard() {
     });
 }
 
-// --- NEW TIER LIST DOWNLOAD LOGIC ---
 function downloadTierList() {
     const cardElement = document.getElementById('tierListCard');
     if (!cardElement) return;
@@ -888,7 +938,6 @@ function downloadTierList() {
     html2canvas(cardElement, { useCORS: true, backgroundColor: null, scale: 2, logging: false }).then(canvas => {
         const link = document.createElement('a');
         
-        // Find which view is active to appropriately name the file
         let viewName = "WinRate";
         if (document.getElementById('view-dom') && document.getElementById('view-dom').classList.contains('active')) viewName = "Dominance";
         if (document.getElementById('view-champ') && document.getElementById('view-champ').classList.contains('active')) viewName = "TourneyWins";
