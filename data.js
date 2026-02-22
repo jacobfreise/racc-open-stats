@@ -427,55 +427,55 @@ compactData: [
   ["Jedmumu", "Tokai Teio (Anime Collab)", 0, "2300m Turf (L)", "Open 30", "Tokai Teio", "Anime Collab", 5],
   ["Pines", "Mihono Bourbon (Original)", 0, "2300m Turf (L)", "Open 30", "Mihono Bourbon", "Original", 5],
   ["Bunsen", "Silence Suzuka (Original)", 0, "2300m Turf (L)", "Open 30", "Silence Suzuka", "Original", 5],
-  ["Sumpfranze", "Mihono Bourbon (Original)", 2, "1800m Turf (R)", "Unofficial 1", "Mihono Bourbon", "Original", 10],
-  ["Kenesu", "Vodka (Original)", 1, "1800m Turf (R)", "Unofficial 1", "Vodka", "Original", 10],
-  ["Boop", "Mejiro Dober (Original)", 2, "1800m Turf (R)", "Unofficial 1", "Mejiro Dober", "Original", 10],
-  ["Mixsy", "Grass Wonder (Original)", 4, "1800m Turf (R)", "Unofficial 1", "Grass Wonder", "Original", 10],
-  ["Roidee", "Special Week (Original)", 2, "1800m Turf (R)", "Unofficial 1", "Special Week", "Original", 10],
-  ["Draguin", "Mejiro Dober (Original)", 1, "1800m Turf (R)", "Unofficial 1", "Mejiro Dober", "Original", 10],
-  ["Teki", "Vodka (Original)", 0, "1800m Turf (R)", "Unofficial 1", "Vodka", "Original", 10],
-  ["Pines", "Fuji Kiseki (Original)", 0, "1800m Turf (R)", "Unofficial 1", "Fuji Kiseki", "Original", 10],
-  ["DQ", "Taiki Shuttle (Original)", 0, "1800m Turf (R)", "Unofficial 1", "Taiki Shuttle", "Original", 5],
-  ["Zixen", "Taiki Shuttle (Original)", 0, "1800m Turf (R)", "Unofficial 1", "Taiki Shuttle", "Original", 5],
-  ["Synocra", "Sakura Bakushin O (Original)", 0, "1800m Turf (R)", "Unofficial 1", "Sakura Bakushin O", "Original", 5],
-  ["Raccoon", "Mayano Top Gun (Wedding)", 0, "1800m Turf (R)", "Unofficial 1", "Mayano Top Gun", "Wedding", 5],
-  ["MetaHayato", "Mejiro Dober (Original)", 0, "1800m Turf (R)", "Unofficial 1", "Mejiro Dober", "Original", 5],
-  ["Cefiro", "Mejiro Dober (Original)", 1, "1800m Turf (R)", "Unofficial 1", "Mejiro Dober", "Original", 5],
-  ["HoriYon", "Grass Wonder (Original)", 0, "1800m Turf (R)", "Unofficial 1", "Grass Wonder", "Original", 5],
-  ["JoeWheeler", "Mejiro Ryan (Original)", 0, "1800m Turf (R)", "Unofficial 1", "Mejiro Ryan", "Original", 5],
-  ["Jedmumu", "Fuji Kiseki (Original)", 0, "1800m Turf (R)", "Unofficial 1", "Fuji Kiseki", "Original", 5],
-  ["FuHua", "Hishi Akebono (Original)", 0, "1800m Turf (R)", "Unofficial 1", "Hishi Akebono", "Original", 5],
-  ["Spyder", "Mihono Bourbon (Original)", 0, "1800m Turf (R)", "Unofficial 1", "Mihono Bourbon", "Original", 5],
-  ["FuHua", "Hishi Amazon (Original)", 2, "2000m Turf (L)", "Open 31", "Hishi Amazon", "Original", 5],
-  ["Roidee", "Taiki Shuttle (Original)", 1, "2000m Turf (L)", "Open 31", "Taiki Shuttle", "Original", 5],
-  ["Pines", "Mejiro McQueen (Original)", 0, "2000m Turf (L)", "Open 31", "Mejiro McQueen", "Original", 5],
-  ["Raccoon", "Manhattan Cafe (Original)", 1, "2000m Turf (L)", "Open 31", "Manhattan Cafe", "Original", 5],
-  ["Boop", "Super Creek (Halloween)", 1, "2000m Turf (L)", "Open 31", "Super Creek", "Halloween", 5],
-  ["Bunsen", "Oguri Cap (Original)", 0, "2000m Turf (L)", "Open 31", "Oguri Cap", "Original", 5],
-  ["Sumpfranze", "Super Creek (Halloween)", 0, "2000m Turf (L)", "Open 31", "Super Creek", "Halloween", 5],
-  ["Mixsy", "Tokai Teio (Original)", 0, "2000m Turf (L)", "Open 31", "Tokai Teio", "Original", 5],
-  ["Kenesu", "Oguri Cap (Original)", 0, "2000m Turf (L)", "Open 31", "Oguri Cap", "Original", 5],
-  ["KN", "Mejiro Dober (Original)", 0, "2000m Turf (L)", "Open 31", "Mejiro Dober", "Original", 5],
-  ["HoriYon", "Oguri Cap (Original)", 0, "2000m Turf (L)", "Open 31", "Oguri Cap", "Original", 5],
-  ["Minty", "Tokai Teio (Anime Collab)", 0, "2000m Turf (L)", "Open 31", "Tokai Teio", "Anime Collab", 5],
-  ["Roidee", "Grass Wonder (Original)", 5, "1800m Turf (R)", "Open 32", "Grass Wonder", "Original", 10],
-  ["Pines", "Daiwa Scarlet (Original)", 0, "1800m Turf (R)", "Open 32", "Daiwa Scarlet", "Original", 10],
-  ["Cefiro", "Tokai Teio (Anime Collab)", 2, "1800m Turf (R)", "Open 32", "Tokai Teio", "Anime Collab", 10],
-  ["FuHua", "Hishi Akebono (Original)", 1, "1800m Turf (R)", "Open 32", "Hishi Akebono", "Original", 10],
-  ["Bunsen", "Daiwa Scarlet (Original)", 0, "1800m Turf (R)", "Open 32", "Daiwa Scarlet", "Original", 10],
-  ["Keejo", "Gold Ship (Original)", 3, "1800m Turf (R)", "Open 32", "Gold Ship", "Original", 10],
-  ["Jedmumu", "Tokai Teio (Anime Collab)", 1, "1800m Turf (R)", "Open 32", "Tokai Teio", "Anime Collab", 10],
-  ["Kenesu", "Nice Nature (Original)", 0, "1800m Turf (R)", "Open 32", "Nice Nature", "Original", 10],
-  ["Sumpfranze", "Vodka (Original)", 2, "1800m Turf (R)", "Open 32", "Vodka", "Original", 10],
-  ["Draguin", "Oguri Cap (Original)", 1, "1800m Turf (R)", "Open 32", "Oguri Cap", "Original", 5],
-  ["Dedratermi", "Special Week (Original)", 0, "1800m Turf (R)", "Open 32", "Special Week", "Original", 5],
-  ["Synocra", "Grass Wonder (Original)", 0, "1800m Turf (R)", "Open 32", "Grass Wonder", "Original", 5],
-  ["Raccoon", "Sakura Bakushin O (Original)", 0, "1800m Turf (R)", "Open 32", "Sakura Bakushin O", "Original", 5],
-  ["HoriYon", "Oguri Cap (Original)", 0, "1800m Turf (R)", "Open 32", "Oguri Cap", "Original", 5],
-  ["Mixsy", "Grass Wonder (Original)", 0, "1800m Turf (R)", "Open 32", "Grass Wonder", "Original", 5],
-  ["Frozt", "Daiwa Scarlet (Original)", 0, "1800m Turf (R)", "Open 32", "Daiwa Scarlet", "Original", 5],
-  ["Boop", "Mihono Bourbon (Original)", 0, "1800m Turf (R)", "Open 32", "Mihono Bourbon", "Original", 5],
-  ["MetaHayato", "Mejiro Ryan (Original)", 0, "1800m Turf (R)", "Open 32", "Mejiro Ryan", "Original", 5]
+  ["Sumpfranze", "Mihono Bourbon (Original)", 2, "1800m Turf (R)", "Open 31", "Mihono Bourbon", "Original", 10],
+  ["Kenesu", "Vodka (Original)", 1, "1800m Turf (R)", "Open 31", "Vodka", "Original", 10],
+  ["Boop", "Mejiro Dober (Original)", 2, "1800m Turf (R)", "Open 31", "Mejiro Dober", "Original", 10],
+  ["Mixsy", "Grass Wonder (Original)", 4, "1800m Turf (R)", "Open 31", "Grass Wonder", "Original", 10],
+  ["Roidee", "Special Week (Original)", 2, "1800m Turf (R)", "Open 31", "Special Week", "Original", 10],
+  ["Draguin", "Mejiro Dober (Original)", 1, "1800m Turf (R)", "Open 31", "Mejiro Dober", "Original", 10],
+  ["Teki", "Vodka (Original)", 0, "1800m Turf (R)", "Open 31", "Vodka", "Original", 10],
+  ["Pines", "Fuji Kiseki (Original)", 0, "1800m Turf (R)", "Open 31", "Fuji Kiseki", "Original", 10],
+  ["DQ", "Taiki Shuttle (Original)", 0, "1800m Turf (R)", "Open 31", "Taiki Shuttle", "Original", 5],
+  ["Zixen", "Taiki Shuttle (Original)", 0, "1800m Turf (R)", "Open 31", "Taiki Shuttle", "Original", 5],
+  ["Synocra", "Sakura Bakushin O (Original)", 0, "1800m Turf (R)", "Open 31", "Sakura Bakushin O", "Original", 5],
+  ["Raccoon", "Mayano Top Gun (Wedding)", 0, "1800m Turf (R)", "Open 31", "Mayano Top Gun", "Wedding", 5],
+  ["MetaHayato", "Mejiro Dober (Original)", 0, "1800m Turf (R)", "Open 31", "Mejiro Dober", "Original", 5],
+  ["Cefiro", "Mejiro Dober (Original)", 1, "1800m Turf (R)", "Open 31", "Mejiro Dober", "Original", 5],
+  ["HoriYon", "Grass Wonder (Original)", 0, "1800m Turf (R)", "Open 31", "Grass Wonder", "Original", 5],
+  ["JoeWheeler", "Mejiro Ryan (Original)", 0, "1800m Turf (R)", "Open 31", "Mejiro Ryan", "Original", 5],
+  ["Jedmumu", "Fuji Kiseki (Original)", 0, "1800m Turf (R)", "Open 31", "Fuji Kiseki", "Original", 5],
+  ["FuHua", "Hishi Akebono (Original)", 0, "1800m Turf (R)", "Open 31", "Hishi Akebono", "Original", 5],
+  ["Spyder", "Mihono Bourbon (Original)", 0, "1800m Turf (R)", "Open 31", "Mihono Bourbon", "Original", 5],
+  ["FuHua", "Hishi Amazon (Original)", 2, "2000m Turf (L)", "Open 32", "Hishi Amazon", "Original", 5],
+  ["Roidee", "Taiki Shuttle (Original)", 1, "2000m Turf (L)", "Open 32", "Taiki Shuttle", "Original", 5],
+  ["Pines", "Mejiro McQueen (Original)", 0, "2000m Turf (L)", "Open 32", "Mejiro McQueen", "Original", 5],
+  ["Raccoon", "Manhattan Cafe (Original)", 1, "2000m Turf (L)", "Open 32", "Manhattan Cafe", "Original", 5],
+  ["Boop", "Super Creek (Halloween)", 1, "2000m Turf (L)", "Open 32", "Super Creek", "Halloween", 5],
+  ["Bunsen", "Oguri Cap (Original)", 0, "2000m Turf (L)", "Open 32", "Oguri Cap", "Original", 5],
+  ["Sumpfranze", "Super Creek (Halloween)", 0, "2000m Turf (L)", "Open 32", "Super Creek", "Halloween", 5],
+  ["Mixsy", "Tokai Teio (Original)", 0, "2000m Turf (L)", "Open 32", "Tokai Teio", "Original", 5],
+  ["Kenesu", "Oguri Cap (Original)", 0, "2000m Turf (L)", "Open 32", "Oguri Cap", "Original", 5],
+  ["KN", "Mejiro Dober (Original)", 0, "2000m Turf (L)", "Open 32", "Mejiro Dober", "Original", 5],
+  ["HoriYon", "Oguri Cap (Original)", 0, "2000m Turf (L)", "Open 32", "Oguri Cap", "Original", 5],
+  ["Minty", "Tokai Teio (Anime Collab)", 0, "2000m Turf (L)", "Open 32", "Tokai Teio", "Anime Collab", 5],
+  ["Roidee", "Grass Wonder (Original)", 5, "1800m Turf (R)", "Open 33", "Grass Wonder", "Original", 10],
+  ["Pines", "Daiwa Scarlet (Original)", 0, "1800m Turf (R)", "Open 33", "Daiwa Scarlet", "Original", 10],
+  ["Cefiro", "Tokai Teio (Anime Collab)", 2, "1800m Turf (R)", "Open 33", "Tokai Teio", "Anime Collab", 10],
+  ["FuHua", "Hishi Akebono (Original)", 1, "1800m Turf (R)", "Open 33", "Hishi Akebono", "Original", 10],
+  ["Bunsen", "Daiwa Scarlet (Original)", 0, "1800m Turf (R)", "Open 33", "Daiwa Scarlet", "Original", 10],
+  ["Keejo", "Gold Ship (Original)", 3, "1800m Turf (R)", "Open 33", "Gold Ship", "Original", 10],
+  ["Jedmumu", "Tokai Teio (Anime Collab)", 1, "1800m Turf (R)", "Open 33", "Tokai Teio", "Anime Collab", 10],
+  ["Kenesu", "Nice Nature (Original)", 0, "1800m Turf (R)", "Open 33", "Nice Nature", "Original", 10],
+  ["Sumpfranze", "Vodka (Original)", 2, "1800m Turf (R)", "Open 33", "Vodka", "Original", 10],
+  ["Draguin", "Oguri Cap (Original)", 1, "1800m Turf (R)", "Open 33", "Oguri Cap", "Original", 5],
+  ["Dedratermi", "Special Week (Original)", 0, "1800m Turf (R)", "Open 33", "Special Week", "Original", 5],
+  ["Synocra", "Grass Wonder (Original)", 0, "1800m Turf (R)", "Open 33", "Grass Wonder", "Original", 5],
+  ["Raccoon", "Sakura Bakushin O (Original)", 0, "1800m Turf (R)", "Open 33", "Sakura Bakushin O", "Original", 5],
+  ["HoriYon", "Oguri Cap (Original)", 0, "1800m Turf (R)", "Open 33", "Oguri Cap", "Original", 5],
+  ["Mixsy", "Grass Wonder (Original)", 0, "1800m Turf (R)", "Open 33", "Grass Wonder", "Original", 5],
+  ["Frozt", "Daiwa Scarlet (Original)", 0, "1800m Turf (R)", "Open 33", "Daiwa Scarlet", "Original", 5],
+  ["Boop", "Mihono Bourbon (Original)", 0, "1800m Turf (R)", "Open 33", "Mihono Bourbon", "Original", 5],
+  ["MetaHayato", "Mejiro Ryan (Original)", 0, "1800m Turf (R)", "Open 33", "Mejiro Ryan", "Original", 5]
 ],
 
 	tournamentWinners: {
@@ -508,9 +508,9 @@ compactData: [
 		"Open 28": ["Frozt", "FuHua", "Bunsen"],
 		"Open 29": ["Boop", "FuHua", "MetaHayato"],
 		"Open 30": ["MetaHayato", "Spyder", "FuHua"],
-		"Unofficial 1": ["Sumpfranze", "Kenesu", "Boop"],
-		"Open 31": ["FuHua", "Roidee", "Pines"],
-		"Open 32": ["Pines", "Cefiro", "Keejo"],
+		"Open 31": ["Sumpfranze", "Kenesu", "Boop"],
+		"Open 32": ["FuHua", "Roidee", "Pines"],
+		"Open 33": ["Pines", "Cefiro", "Keejo"],
 	},
 	tournamentBans: {
 		"Open 7": [
@@ -651,20 +651,20 @@ compactData: [
 			"Seiun Sky (Original)",
 			"Maruzensky (Original)"
 		],
-		"Unofficial 1": [
+		"Open 31": [
 			"Maruzensky (Summer)",
 			"Silence Suzuka (Original)",
 			"Seiun Sky (Original)",
 			"Oguri Cap (Original)"
 		],
-		"Open 31": [
+		"Open 32": [
 			"Gold Ship (Original)",
 			"Seiun Sky (Original)",
 			"Silence Suzuka (Original)",
 			"Narita Taishin (Original)",
 			"El Condor Pasa (Original)"
 		],
-		"Open 32": [
+		"Open 33": [
 			"Mejiro Dober (Original)",
 			"Seiun Sky (Original)",
 			"Maruzensky (Summer)",
@@ -1417,8 +1417,8 @@ compactData: [
 			]
 		},
 
-		// Unofficial 1
-		"Unofficial 1": {
+		// Open 31
+		"Open 31": {
 			"Group A": [
 				// Race 1
 				["Mixsy", "Zixen", "Synocra", "Teki", "Draguin", "Roidee", "Pines", "Raccoon", "MetaHayato"],
@@ -1457,8 +1457,8 @@ compactData: [
 			]
 		},
 
-		// Open 31
-		"Open 31": {
+		// Open 32
+		"Open 32": {
 			"Finals": [
 				// Race 1
 				["FuHua", "Mixsy", "Bunsen", "Sumpfranze", "Roidee", "Pines", "Kenesu", "KN", "Raccoon", "Boop", "HoriYon", "Minty"],
@@ -1473,8 +1473,8 @@ compactData: [
 			]
 		},
 
-		// Open 32
-		"Open 32": {
+		// Open 33
+		"Open 33": {
 			"Group A": [
 				// Race 1
 				["Keejo", "Cefiro", "Dedratermi", "Synocra", "Raccoon", "Draguin", "Pines", "HoriYon", "Mixsy"],
@@ -1519,3 +1519,4 @@ if (typeof module !== 'undefined') {
   module.exports = { S1_DATA };
 
 }
+
