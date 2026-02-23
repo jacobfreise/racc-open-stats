@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Racc Open - Live Draft</title>
+    <link rel="icon" type="image/png" href="icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body data-theme="succubus">
+
+<div class="container" style="max-width: 1400px;">
+    <header class="app-header" style="margin-bottom: 20px;">
+        <h1>Racc Open <span class="highlight">Live Draft</span></h1>
+        <p style="opacity: 0.7; font-weight: 500;">Snake Draft • Track Specific Stats • Global Exclusive</p>
+    </header>
+
+    <a href="index.html" class="back-link" style="display: inline-block; margin-bottom: 20px; color: var(--accent-color); text-decoration: none; font-weight: 600;">← Back to Main Dashboard</a>
+
+    <div id="draftTimer" class="draft-timer" style="display: none;">
+        <div id="timerDisplay">60</div>
+        <div class="timer-controls">
+            <button onclick="toggleTimer()" id="timerToggleBtn">⏸ Pause</button>
+            <button onclick="resetTimer()">🔄 Reset</button>
+        </div>
+    </div>
+
+    <div class="draft-container card">
+        
+        <div id="step-1" class="draft-step active">
+            <h2 class="section-title" style="font-size: 1.5rem;">Step 1: Track Configuration</h2>
+            <p>Select the track type. Player and Uma stats will be calculated specifically for this track.</p>
+            
+            <div class="controls" style="box-shadow: none; border: 1px solid var(--border-color); background: rgba(0,0,0,0.2);">
+                <div class="control-group" style="flex: 1;">
+                    <label>Surface</label>
+                    <div class="select-wrapper">
+                        <select id="draftSurface">
+                            <option value="All">All Surfaces</option>
+                            <option value="Turf">Turf</option>
+                            <option value="Dirt">Dirt</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group" style="flex: 1;">
+                    <label>Distance</label>
+                    <div class="select-wrapper">
+                        <select id="draftDistance">
+                            <option value="All">All Distances</option>
+                            <option value="Short">Short (≤1400m)</option>
+                            <option value="Mile">Mile (1401-1800m)</option>
+                            <option value="Medium">Medium (1801-2400m)</option>
+                            <option value="Long">Long (>2400m)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="section-title" style="font-size: 1.5rem; margin-top: 30px;">Step 2: Roster Input</h2>
+            <p>Add participating trainers (3 to 24 players). Must be a multiple of 3.</p>
+            
+            <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                <input type="text" id="playerAutocomplete" list="trainerList" placeholder="Type a trainer name and press Enter..." style="flex: 1; padding: 12px; background: var(--bg-color); color: var(--text-color); border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem;">
+                <button onclick="addPlayerFromInput()" class="copy-btn" style="background: var(--accent-color); color: var(--card-bg); font-weight: bold;">Add</button>
+            </div>
+            <datalist id="trainerList"></datalist>
+
+            <div id="rosterChips" class="roster-chips"></div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+                <span id="playerCount" style="font-weight: bold; color: var(--accent-color);">0 / 24 Players</span>
+                <button class="copy-btn" onclick="goToCaptains()" style="background: var(--accent-color); color: var(--card-bg); font-weight: bold; font-size: 1.1rem; padding: 12px 24px;">Next: Assign Captains →</button>
+            </div>
+        </div>
+
+        <div id="step-2" class="draft-step">
+            <h2 class="section-title" style="font-size: 1.5rem;">Step 3: Assign Leaders</h2>
+            <p>Select exactly <span id="reqCaptainsCount" style="color: var(--accent-color); font-weight: bold;">0</span> trainers to act as Team Leaders.</p>
+            <div id="captainGrid" class="captain-grid"></div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 25px;">
+                <button class="copy-btn" onclick="goToStep(1)">← Back</button>
+                <button class="copy-btn" onclick="startPlayerDraft()" style="background: var(--accent-color); color: var(--card-bg); font-weight: bold; font-size: 1.1rem; padding: 12px 24px;">Start Player Draft →</button>
+            </div>
+        </div>
+
+        <div id="step-3" class="draft-step">
+            <div class="turn-banner">
+                <span style="opacity: 0.8; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em;">Now Drafting Player:</span>
+                <h2 id="currentPlayerTurn" style="margin: 0; font-size: 2rem; color: var(--accent-color);">Team X's Turn</h2>
+            </div>
+            
+            <h3 style="margin-bottom: 10px;">Available Players (Track Stats applied)</h3>
+            <div id="draftPoolGrid" class="draft-pool-grid"></div>
+
+            <h3 style="margin-top: 30px; margin-bottom: 10px;">The Teams</h3>
+            <div id="teamsDisplayGrid" class="teams-display-grid"></div>
+        </div>
+
+        <div id="step-4" class="draft-step">
+            <div class="turn-banner">
+                <span style="opacity: 0.8; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em;">Now Drafting Uma:</span>
+                <h2 id="currentUmaTurn" style="margin: 0; font-size: 2rem; color: var(--accent-color);">Team X's Turn</h2>
+                <div id="draftingForSubtext" style="font-size: 1rem; opacity: 0.8; margin-top: 5px;">Selecting for: Player Y</div>
+            </div>
+
+            <div class="split-view">
+                <div class="left-pane" style="flex: 2;">
+                    <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                        <input type="text" id="umaSearch" onkeyup="filterUmas()" placeholder="Search Uma..." style="flex: 1; padding: 12px; background: var(--bg-color); color: var(--text-color); border: 1px solid var(--border-color); border-radius: 8px;">
+                        <button onclick="addCustomUma()" class="copy-btn" style="border: 1px solid var(--accent-color); color: var(--accent-color);">➕ Custom Uma</button>
+                    </div>
+                    <div id="draftUmaGrid" class="uma-selection-grid" style="max-height: 600px; overflow-y: auto;"></div>
+                </div>
+                <div class="right-pane" style="flex: 1;">
+                    <h3 style="margin-top: 0;">Live Rosters</h3>
+                    <div id="liveRosterDisplay" style="display: flex; flex-direction: column; gap: 15px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="step-5" class="draft-step">
+            <div style="text-align: center; margin-bottom: 40px;">
+                <h2 style="font-size: 2.5rem; color: var(--accent-color); margin-bottom: 10px;">Draft Complete!</h2>
+                <p style="opacity: 0.7;">The teams are locked in and ready for the Racc Open.</p>
+                <button class="copy-btn" onclick="copyFinalRosters()" style="background: var(--accent-color); color: var(--card-bg); font-weight: bold; font-size: 1.1rem; padding: 12px 24px; margin: 20px auto 0 auto;">
+                    📋 Copy Rosters for Discord
+                </button>
+            </div>
+            
+            <div id="penaltyDisplay" style="margin-bottom: 30px; color: #ff6b6b; font-weight: bold; text-align: center;"></div>
+
+            <div id="finalTeamsGrid" class="teams-display-grid"></div>
+        </div>
+
+    </div>
+</div>
+
+<script src="data.js"></script>
+<script src="data_s2.js"></script>
+<script src="release_data.js"></script>
+<script>
+    // --- STATE MANAGEMENT ---
+    let players = [];
+    let captains = [];
+    let teams = []; 
+    let penalties = []; // { teamId, amount, reason }
+    
+    let playerDraftOrder = []; let playerDraftIndex = 0;
+    let umaDraftOrder = []; let umaDraftIndex = 0;
+
+    let availableUmas = [];
+    let allHistoricalTrainers = [];
+    
+    // Stats Dictionaries mapped by specific track config
+    let trainerStats = {}; 
+    let umaStats = {};
+
+    // Timer state
+    let timerInterval = null;
+    let timeLeft = 0;
+    let timerRunning = false;
+    let currentPhase = ''; // 'player' or 'uma'
+
+    // --- SETUP: Data Aggregation & Contextual Stats ---
+    window.onload = () => {
+        extractHistoricalData();
+    };
+
+    function getDistanceCat(surfaceString) {
+        const match = surfaceString.match(/(\d+)m/);
+        if (!match) return "Unknown";
+        const dist = parseInt(match[1]);
+        if (dist <= 1400) return "Short";
+        if (dist <= 1800) return "Mile";
+        if (dist <= 2400) return "Medium";
+        return "Long";
+    }
+
+    function extractHistoricalData() {
+        const combinedData = [];
+        if (typeof S1_DATA !== 'undefined' && S1_DATA.compactData) combinedData.push(...S1_DATA.compactData);
+        if (typeof S2_DATA !== 'undefined' && S2_DATA.compactData) combinedData.push(...S2_DATA.compactData);
+
+        const tSet = new Set();
+        const uSet = new Set();
+        
+        // Add known umas from release data to ensure base coverage
+        if (typeof UMA_RELEASE_MAP !== 'undefined') {
+            Object.keys(UMA_RELEASE_MAP).forEach(u => uSet.add(u));
+        }
+
+        combinedData.forEach(row => {
+            tSet.add(row[0]);
+            uSet.add(row[1]);
+        });
+
+        allHistoricalTrainers = Array.from(tSet).sort();
+        availableUmas = Array.from(uSet).sort();
+
+        // Populate Trainer Autocomplete
+        document.getElementById('trainerList').innerHTML = allHistoricalTrainers.map(t => `<option value="${t}">`).join('');
+    }
+
+    // Calculates stats just for the selected track surface/distance
+    function generateContextualStats() {
+        const surface = document.getElementById('draftSurface').value;
+        const distance = document.getElementById('draftDistance').value;
+
+        const combinedData = [];
+        if (typeof S1_DATA !== 'undefined' && S1_DATA.compactData) combinedData.push(...S1_DATA.compactData);
+        if (typeof S2_DATA !== 'undefined' && S2_DATA.compactData) combinedData.push(...S2_DATA.compactData);
+
+        trainerStats = {};
+        umaStats = {};
+
+        // Simplified stat generator for Draft (Wins & Races Run -> WR)
+        combinedData.forEach(row => {
+            const rowSurf = row[3];
+            const rowDist = getDistanceCat(row[3]);
+            
+            if (surface !== 'All' && !rowSurf.includes(surface)) return;
+            if (distance !== 'All' && rowDist !== distance) return;
+
+            const tName = row[0];
+            const uName = row[1];
+            const wins = row[2];
+            const races = row[7];
+
+            if(!trainerStats[tName]) trainerStats[tName] = { wins: 0, races: 0 };
+            trainerStats[tName].wins += wins;
+            trainerStats[tName].races += races;
+
+            if(!umaStats[uName]) umaStats[uName] = { wins: 0, races: 0 };
+            umaStats[uName].wins += wins;
+            umaStats[uName].races += races;
+        });
+    }
+
+    function getStatStr(name, type) {
+        const dict = type === 'trainer' ? trainerStats : umaStats;
+        const d = dict[name];
+        if(!d || d.races === 0) return "No Data";
+        return `${((d.wins / d.races)*100).toFixed(1)}% WR`;
+    }
+
+    // --- HELPER FUNCTIONS ---
+    function getIconHtml(name) {
+        if (!name || name === "Unknown") return "";
+        let baseName = name;
+        if (name.includes('(')) baseName = name.split('(')[0].trim();
+        
+        const fileName = baseName.toLowerCase().replace(/['.]/g, '').replace(/\s+/g, '_');      
+        const repoBaseUrl = 'darkred1145.github.io/racc-open-stats'; 
+        const localPath = `uma/${fileName}.png`;
+        const cdnPath = `https://wsrv.nl/?url=${repoBaseUrl}/${localPath}&w=96&output=webp`;
+        const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+        const finalSrc = isLocal ? localPath : cdnPath;
+        const fallbackLogic = "if (this.src.includes('.png')) { this.src = this.src.replace('.png', '.jpg'); } else if (this.src.includes('.jpg')) { this.src = this.src.replace('.jpg', '.gif'); } else { this.style.display='none'; }";
+
+        return `<img src="${finalSrc}" class="draft-icon" loading="lazy" decoding="async" onerror="${fallbackLogic}" alt="">`;
+    }
+
+    function goToStep(step) {
+        document.querySelectorAll('.draft-step').forEach(el => el.classList.remove('active'));
+        document.getElementById(`step-${step}`).classList.add('active');
+        if (step >= 3 && step <= 4) document.getElementById('draftTimer').style.display = 'block';
+        else { document.getElementById('draftTimer').style.display = 'none'; stopTimer(); }
+    }
+
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    // --- TIMER LOGIC ---
+    function startPhaseTimer(seconds, phase) {
+        stopTimer();
+        timeLeft = seconds;
+        currentPhase = phase;
+        document.getElementById('timerDisplay').innerText = timeLeft;
+        document.getElementById('timerDisplay').style.color = 'var(--text-color)';
+        timerRunning = true;
+        document.getElementById('timerToggleBtn').innerText = "⏸ Pause";
+        timerInterval = setInterval(() => {
+            if(!timerRunning) return;
+            timeLeft--;
+            document.getElementById('timerDisplay').innerText = timeLeft;
+            if(timeLeft <= 10) document.getElementById('timerDisplay').style.color = '#ff6b6b';
+            
+            if(timeLeft <= 0) {
+                stopTimer();
+                handleTimeout();
+            }
+        }, 1000);
+    }
+
+    function stopTimer() { clearInterval(timerInterval); timerRunning = false; }
+    function toggleTimer() {
+        timerRunning = !timerRunning;
+        document.getElementById('timerToggleBtn').innerText = timerRunning ? "⏸ Pause" : "▶ Resume";
+    }
+    function resetTimer() {
+        startPhaseTimer(60, currentPhase); // 60s default for all steps now
+    }
+
+    function handleTimeout() {
+        let activeTeamId;
+        if(currentPhase === 'player') activeTeamId = playerDraftOrder[playerDraftIndex];
+        else if(currentPhase === 'uma') activeTeamId = umaDraftOrder[umaDraftIndex];
+
+        const team = teams.find(t => t.id === activeTeamId);
+        const apply = confirm(`🚨 TIME'S UP for Team ${team.captain}!\n\nApply a -5 Point Penalty?`);
+        
+        if (apply) {
+            penalties.push({ teamId: team.id, captain: team.captain, amount: -5, phase: currentPhase });
+        }
+    }
+
+    // --- STEP 1: INPUT ---
+    document.getElementById('playerAutocomplete').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') addPlayerFromInput();
+    });
+
+    function addPlayerFromInput() {
+        const input = document.getElementById('playerAutocomplete');
+        const name = input.value.trim();
+        if(!name) return;
+        if(players.includes(name)) return alert("Player already added.");
+        if(players.length >= 24) return alert("Maximum 24 players reached.");
+        
+        players.push(name);
+        input.value = '';
+        renderRosterChips();
+    }
+
+    function removePlayer(name) {
+        players = players.filter(p => p !== name);
+        renderRosterChips();
+    }
+
+    function renderRosterChips() {
+        const count = players.length;
+        const el = document.getElementById('playerCount');
+        el.innerText = `${count} / 24 Players`;
+        if (count >= 3 && count % 3 === 0) el.style.color = 'var(--accent-color)';
+        else el.style.color = 'orange';
+
+        document.getElementById('rosterChips').innerHTML = players.map(p => `
+            <div class="roster-chip">
+                ${p} <span onclick="removePlayer('${p}')">✖</span>
+            </div>
+        `).join('');
+    }
+
+    function goToCaptains() {
+        if (players.length < 3) return alert("Minimum 3 players required.");
+        if (players.length % 3 !== 0) return alert(`Player count must be a multiple of 3. You have ${players.length}.`);
+
+        generateContextualStats(); // Calculate track specific stats now that config is locked
+
+        const reqCaptains = players.length / 3;
+        document.getElementById('reqCaptainsCount').innerText = reqCaptains;
+
+        const grid = document.getElementById('captainGrid');
+        grid.innerHTML = players.map(p => `
+            <label class="captain-checkbox">
+                <input type="checkbox" value="${p}" onchange="checkCaptains()">
+                <div>
+                    <div>${p}</div>
+                    <div style="font-size:0.75rem; opacity:0.6;">${getStatStr(p, 'trainer')}</div>
+                </div>
+            </label>
+        `).join('');
+
+        goToStep(2);
+    }
+
+    // --- STEP 2: CAPTAINS ---
+    function checkCaptains() {
+        const req = players.length / 3;
+        const checked = document.querySelectorAll('.captain-checkbox input:checked');
+        if (checked.length > req) {
+            alert(`You can only select exactly ${req} leaders.`);
+            event.target.checked = false;
+        }
+    }
+
+    function startPlayerDraft() {
+        const req = players.length / 3;
+        const checked = Array.from(document.querySelectorAll('.captain-checkbox input:checked')).map(el => el.value);
+        if (checked.length !== req) return alert(`Please select exactly ${req} leaders.`);
+        
+        captains = checked;
+        players = players.filter(p => !captains.includes(p)); // Remove captains from pool
+
+        teams = captains.map((c, i) => ({ id: i, captain: c, members: [{ name: c, uma: null }] }));
+
+        const tIds = teams.map(t => t.id);
+        const randomizedTids = shuffleArray([...tIds]); 
+        
+        playerDraftOrder = [];
+        playerDraftOrder.push(...randomizedTids); // Round 1
+        playerDraftOrder.push(...[...randomizedTids].reverse()); // Round 2 (Snake)
+        playerDraftIndex = 0;
+
+        renderPlayerDraft();
+        goToStep(3);
+    }
+
+    // --- STEP 3: PLAYER DRAFT ---
+    function renderPlayerDraft() {
+        if (playerDraftIndex >= playerDraftOrder.length) {
+            stopTimer();
+            if(!document.getElementById('proceedToUmaBtn')) {
+                document.getElementById('step-3').innerHTML += `<div style="text-align:center; margin-top:30px;"><button id="proceedToUmaBtn" class="copy-btn" onclick="startUmaDraft()" style="background: var(--accent-color); color: var(--card-bg); font-weight: bold; font-size: 1.1rem; padding: 12px 24px; margin: 0 auto;">Proceed to Uma Draft →</button></div>`;
+                document.querySelector('#step-3 .turn-banner').style.display = 'none';
+                document.getElementById('draftPoolGrid').innerHTML = '<div style="opacity:0.5; font-style:italic;">Draft Complete.</div>';
+            }
+            renderTeamsDisplay();
+            return;
+        }
+
+        startPhaseTimer(60, 'player'); // 60s per pick
+
+        const currentTeamId = playerDraftOrder[playerDraftIndex];
+        const team = teams.find(t => t.id === currentTeamId);
+        document.getElementById('currentPlayerTurn').innerText = `${team.captain}'s Turn`;
+
+        const poolGrid = document.getElementById('draftPoolGrid');
+        poolGrid.innerHTML = players.map((p, i) => `
+            <div class="draft-pool-item" onclick="draftPlayer(${i})">
+                <div style="font-weight:bold;">${p}</div>
+                <div style="font-size:0.75rem; color:var(--accent-color);">${getStatStr(p, 'trainer')}</div>
+            </div>
+        `).join('');
+
+        renderTeamsDisplay();
+    }
+
+    function renderTeamsDisplay() {
+        const grid = document.getElementById('teamsDisplayGrid');
+        grid.innerHTML = teams.map(t => `
+            <div class="team-card ${t.id === playerDraftOrder[playerDraftIndex] && currentPhase === 'player' ? 'active-team' : ''}">
+                <div class="team-card-head">Team ${t.captain}</div>
+                <div class="team-card-members">
+                    ${t.members.map(m => `<div class="tc-mem">${m.name === t.captain ? '👑 ' : ''}${m.name}</div>`).join('')}
+                    ${Array.from({length: 3 - t.members.length}).map(() => `<div class="tc-mem empty">- Empty Slot -</div>`).join('')}
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function draftPlayer(playerIndex) {
+        const picked = players.splice(playerIndex, 1)[0];
+        const currentTeamId = playerDraftOrder[playerDraftIndex];
+        const team = teams.find(t => t.id === currentTeamId);
+        
+        team.members.push({ name: picked, uma: null });
+        playerDraftIndex++;
+        renderPlayerDraft();
+    }
+
+    // --- STEP 4: UMA DRAFT ---
+    function startUmaDraft() {
+        const tIds = teams.map(t => t.id);
+        const randOrder = shuffleArray([...tIds]); 
+        umaDraftOrder = [];
+        umaDraftOrder.push(...randOrder);             // R1
+        umaDraftOrder.push(...[...randOrder].reverse()); // R2
+        umaDraftOrder.push(...randOrder);             // R3
+        umaDraftIndex = 0;
+        renderUmaDraft();
+        goToStep(4);
+    }
+
+    function renderUmaDraft() {
+        if (umaDraftIndex >= umaDraftOrder.length) {
+            generateSummary();
+            goToStep(5);
+            return;
+        }
+
+        startPhaseTimer(60, 'uma'); // 60s per pick
+
+        const currentTeamId = umaDraftOrder[umaDraftIndex];
+        const team = teams.find(t => t.id === currentTeamId);
+        const draftingMember = team.members.find(m => m.uma === null);
+
+        document.getElementById('currentUmaTurn').innerText = `Team ${team.captain}`;
+        document.getElementById('draftingForSubtext').innerHTML = `Selecting for: <strong style="color:var(--text-color);">${draftingMember.name}</strong>`;
+
+        filterUmas();
+        renderLiveRosters();
+    }
+
+    function draftUma(umaName) {
+        const currentTeamId = umaDraftOrder[umaDraftIndex];
+        const team = teams.find(t => t.id === currentTeamId);
+        const draftingMember = team.members.find(m => m.uma === null);
+        
+        draftingMember.uma = umaName;
+        umaDraftIndex++;
+        renderUmaDraft();
+    }
+
+    function filterUmas() {
+        const query = document.getElementById('umaSearch').value.toLowerCase();
+        const grid = document.getElementById('draftUmaGrid');
+        
+        grid.innerHTML = availableUmas.map(uma => {
+            if (!uma.toLowerCase().includes(query)) return '';
+            
+            let isDrafted = false;
+            teams.forEach(t => t.members.forEach(m => { if(m.uma === uma) isDrafted = true; }));
+
+            const locked = isDrafted;
+            const action = `draftUma('${uma}')`;
+            
+            let statusBadge = '';
+            if(isDrafted) statusBadge = '<div class="uma-status sb-draft">DRAFTED</div>';
+
+            return `
+                <div class="uma-card ${locked ? 'locked' : ''}" onclick="${locked ? '' : action}">
+                    ${getIconHtml(uma)}
+                    <div class="uma-card-name">${uma}</div>
+                    <div style="font-size:0.65rem; color:var(--accent-color); margin-top:4px;">${getStatStr(uma, 'uma')}</div>
+                    ${statusBadge}
+                </div>
+            `;
+        }).join('');
+    }
+
+    function addCustomUma() {
+        const name = prompt("Enter the exact name of the Uma (e.g. 'Rice Shower (Halloween)'):");
+        if(name && name.trim()) {
+            availableUmas.push(name.trim());
+            availableUmas.sort();
+            filterUmas();
+        }
+    }
+
+    function renderLiveRosters() {
+        const grid = document.getElementById('liveRosterDisplay');
+        const activeTid = umaDraftOrder[umaDraftIndex];
+
+        grid.innerHTML = teams.map(t => `
+            <div class="team-card ${t.id === activeTid ? 'active-team' : ''}" style="padding: 15px;">
+                <div class="team-card-head" style="font-size:0.9rem;">Team ${t.captain}</div>
+                <div style="display:flex; flex-direction:column; gap:8px;">
+                    ${t.members.map(m => `
+                        <div style="display:flex; align-items:center; gap:10px; font-size:0.85rem; background: rgba(0,0,0,0.2); padding: 5px 10px; border-radius:6px; border: 1px solid var(--border-color);">
+                            <span style="width: 80px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${m.name}</span>
+                            ${m.uma ? `<div style="display:flex; align-items:center; gap:8px;">${getIconHtml(m.uma)} <span style="opacity:0.8; font-size:0.75rem;">${m.uma}</span></div>` : '<span style="opacity:0.4; font-style:italic;">Picking...</span>'}
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // --- STEP 5: SUMMARY & EXPORT ---
+    function generateSummary() {
+        stopTimer();
+        
+        const penDiv = document.getElementById('penaltyDisplay');
+        if(penalties.length > 0) {
+            penDiv.innerHTML = "🚨 TIME PENALTIES ISSUED:<br>" + penalties.map(p => `Team ${p.captain}: ${p.amount} pts (Phase: ${p.phase})`).join('<br>');
+        }
+
+        const grid = document.getElementById('finalTeamsGrid');
+        grid.innerHTML = teams.map(t => `
+            <div class="team-card" style="border-color: var(--accent-color); padding: 20px;">
+                <div class="team-card-head" style="font-size: 1.2rem; margin-bottom: 15px;">Team ${t.captain}</div>
+                <div style="display:flex; flex-direction:column; gap:12px;">
+                    ${t.members.map(m => `
+                        <div style="display:flex; align-items:center; gap:12px; background: rgba(0,0,0,0.2); padding: 10px; border-radius:8px; border: 1px solid var(--border-color);">
+                            ${getIconHtml(m.uma)}
+                            <div>
+                                <div style="font-weight: 800; font-size: 0.95rem; color: var(--text-color);">${m.name === t.captain ? '👑 ' : ''}${m.name}</div>
+                                <div style="font-size: 0.8rem; opacity: 0.8; color: var(--accent-color);">${m.uma}</div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function copyFinalRosters() {
+        const surface = document.getElementById('draftSurface').value;
+        const distance = document.getElementById('draftDistance').value;
+
+        let text = `**RACC OPEN - DRAFT RESULTS**\nTrack: ${distance} - ${surface}\n\n`;
+
+        text += "**⚔️ FINAL TEAMS ⚔️**\n";
+        teams.forEach(t => {
+            text += `**Team ${t.captain}**\n`;
+            t.members.forEach(m => {
+                text += `- ${m.name}: ${m.uma}\n`;
+            });
+            text += "\n";
+        });
+
+        if(penalties.length > 0) {
+            text += "**🚨 PENALTIES 🚨**\n";
+            penalties.forEach(p => text += `Team ${p.captain}: ${p.amount} pts\n`);
+        }
+
+        navigator.clipboard.writeText(text.trim()).then(() => alert("Results copied to clipboard! Ready to paste in Discord.")).catch(err => alert("Failed to copy."));
+    }
+</script>
+
+</body>
+</html>
