@@ -12,6 +12,18 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
+/**
+ * Ensures mapOrArray is returned as an array, regardless of whether
+ * it is currently stored as a map or an array.
+ */
+export const mapToArray = (mapOrArray) => {
+    if (!mapOrArray) return [];
+    if (Array.isArray(mapOrArray)) return mapOrArray;
+
+    // If it's a map/object, extract the values into an array
+    return Object.values(mapOrArray);
+};
+
 async function fetchTournaments() {
     try {
         await signInAnonymously(auth);
@@ -25,7 +37,14 @@ async function fetchTournaments() {
 
         const tournaments = [];
         snapshot.forEach(doc => {
-            tournaments.push({ id: doc.id, ...doc.data() });
+            const data = doc.data();
+
+            tournaments.push({
+                id: doc.id,
+                ...data,
+                players: mapToArray(data.players),
+                races: mapToArray(data.races)
+            });
         });
 
         // Dispatch event to script.js
