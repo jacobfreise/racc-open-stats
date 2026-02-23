@@ -97,15 +97,20 @@ function renderLiveTournaments() {
     let html = '';
 
     liveFirebaseData.forEach(t => {
+        // Ensure all iterable fields are strictly arrays to prevent Firebase coercion errors
+        const tPlayers = Array.isArray(t.players) ? t.players : (t.players ? Object.values(t.players) : []);
+        const tRaces = Array.isArray(t.races) ? t.races : (t.races ? Object.values(t.races) : []);
+        const tBans = Array.isArray(t.bans) ? t.bans : (t.bans ? Object.values(t.bans) : []);
+        const tTeams = Array.isArray(t.teams) ? t.teams : (t.teams ? Object.values(t.teams) : []);
+
         const playerMap = {};
-        if (t.players && Array.isArray(t.players)) {
-            t.players.forEach(p => {
-                playerMap[p.id] = { name: p.name, uma: p.uma };
-            });
-        }
+        tPlayers.forEach(p => {
+            playerMap[p.id] = { name: p.name, uma: p.uma };
+        });
 
         html += `<div class="live-tourney-card">`;
         
+        // --- 1. HEADER ---
         let statusClass = t.status === 'active' ? 'status-active' : 'status-completed';
         html += `
             <div class="live-header">
@@ -124,13 +129,14 @@ function renderLiveTournaments() {
             </div>
             <div class="live-meta">
                 <span><strong>Stage:</strong> ${t.stage || '-'}</span>
-                <span><strong>Teams:</strong> ${t.teams ? t.teams.length : 0}</span>
+                <span><strong>Teams:</strong> ${tTeams.length}</span>
                 <span><strong>ID:</strong> <span style="font-family:monospace; opacity:0.7;">${t.id}</span></span>
             </div>
         `;
 
-        if (t.bans && t.bans.length > 0) {
-            const banHtml = t.bans.map(b => `<span class="variant-tag" style="border: 1px solid var(--border-color); font-size: 0.85em; padding: 4px 8px;">🚫 ${b}</span>`).join('');
+        // --- 2. LIVE BANS ---
+        if (tBans.length > 0) {
+            const banHtml = tBans.map(b => `<span class="variant-tag" style="border: 1px solid var(--border-color); font-size: 0.85em; padding: 4px 8px;">🚫 ${b}</span>`).join('');
             html += `
             <div style="margin-bottom: 20px;">
                 <strong style="color: var(--accent-color); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em;">Banned Umas</strong>
@@ -138,9 +144,10 @@ function renderLiveTournaments() {
             </div>`;
         }
 
-        if (t.races && t.races.length > 0) {
+        // --- 3. INDIVIDUAL RACE RESULTS ---
+        if (tRaces.length > 0) {
             const groupOrder = { 'A': 1, 'B': 2, 'C': 3, 'Finals': 4 };
-            const sortedRaces = [...t.races].sort((a, b) => {
+            const sortedRaces = [...tRaces].sort((a, b) => {
                 const rankA = groupOrder[a.group] || 99;
                 const rankB = groupOrder[b.group] || 99;
                 if (rankA !== rankB) return rankA - rankB;
@@ -202,14 +209,17 @@ function copyTournamentResults(tournamentId) {
     if (!tournament) return;
     let text = `${tournament.name}\n\n`;
     
+    const tPlayers = Array.isArray(tournament.players) ? tournament.players : (tournament.players ? Object.values(tournament.players) : []);
+    const tRaces = Array.isArray(tournament.races) ? tournament.races : (tournament.races ? Object.values(tournament.races) : []);
+
     const getPlayer = (id) => {
-        const p = tournament.players.find(pl => pl.id === id);
+        const p = tPlayers.find(pl => pl.id === id);
         return p ? { name: p.name, uma: p.uma || "Unknown" } : { name: "Unknown", uma: "Unknown" };
     };
 
     const groups = ["A", "B", "C", "Finals"];
     groups.forEach(group => {
-        const races = tournament.races.filter(r => {
+        const races = tRaces.filter(r => {
             if (group === "Finals") return r.stage === "finals";
             return r.group === group && r.stage === "groups";
         });
@@ -1096,3 +1106,4 @@ window.onload = function() {
     }
     switchSeason();
 };
+
