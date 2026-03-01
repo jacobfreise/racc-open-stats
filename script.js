@@ -1113,38 +1113,53 @@ async function generateAiScoutReport() {
     reportDiv.style.display = "block";
     reportDiv.innerHTML = "<span style='opacity:0.7;'>Analyzing advanced meta presence and track data...</span>";
 
-    // --- CALCULATE ADVANCED STATS ---
+    // --- CALCULATE ADVANCED STATS (FIXED FOR DOMINANCE META) ---
     const trainerRaces = currentRawData.filter(r => r.Trainer === selectedName);
-    const surfaceStats = { 'Turf': { runs: 0, wins: 0 }, 'Dirt': { runs: 0, wins: 0 } };
-    const distStats = { 'Short': { runs: 0, wins: 0 }, 'Mile': { runs: 0, wins: 0 }, 'Medium': { runs: 0, wins: 0 }, 'Long': { runs: 0, wins: 0 } };
     
-    // Calculate Roster Depth (How many unique Umas they play to survive bans)
+    // Calculate Roster Depth (Unique Umas)
     const uniqueUmas = new Set(trainerRaces.map(r => r.UniqueName)).size;
 
-    trainerRaces.forEach(r => {
-        let surf = r.Surface.includes('Dirt') ? 'Dirt' : 'Turf';
-        surfaceStats[surf].runs += r.RacesRun;
-        surfaceStats[surf].wins += r.Wins;
+    // Track total opponents beaten vs possible opponents per category
+    const surfaceStats = { 'Turf': { beaten: 0, opp: 0 }, 'Dirt': { beaten: 0, opp: 0 } };
+    const distStats = { 'Short': { beaten: 0, opp: 0 }, 'Mile': { beaten: 0, opp: 0 }, 'Medium': { beaten: 0, opp: 0 }, 'Long': { beaten: 0, opp: 0 } };
 
-        let dist = r.DistanceCategory; 
-        if(distStats[dist]) {
-            distStats[dist].runs += r.RacesRun;
-            distStats[dist].wins += r.Wins;
+    // Pull the detailed point data
+    const detailedStats = tData.detailedTourneyStats || {};
+
+    trainerRaces.forEach(r => {
+        // Find the points data for this specific tournament run
+        const tStats = detailedStats[r.RawLength]; 
+        if (tStats) {
+            let surf = r.Surface.includes('Dirt') ? 'Dirt' : 'Turf';
+            surfaceStats[surf].beaten += tStats.beaten;
+            surfaceStats[surf].opp += tStats.totalOpp;
+
+            let dist = r.DistanceCategory; 
+            if(distStats[dist]) {
+                distStats[dist].beaten += tStats.beaten;
+                distStats[dist].opp += tStats.totalOpp;
+            }
         }
     });
 
-    const getBest = (statsObj) => {
-        let best = { name: 'None', wr: -1, runs: 0 };
+    // Helper to find their highest DOMINANCE category
+    const getBestDom = (statsObj) => {
+        let best = { name: 'None', dom: -1, opp: 0 };
         for (const [key, val] of Object.entries(statsObj)) {
-            if (val.runs > 0) {
-                let wr = val.wins / val.runs;
-                if (wr > best.wr || (wr === best.wr && val.runs > best.runs)) {
-                    best = { name: key, wr: wr, runs: val.runs };
+            if (val.opp > 0) {
+                let dom = val.beaten / val.opp;
+                // Require at least 16 opponents (roughly 2 tournaments) so 1 lucky race doesn't skew it
+                if ((dom > best.dom && val.opp >= 16) || best.dom === -1) {
+                    best = { name: key, dom: dom, opp: val.opp };
                 }
             }
         }
-        return best.name !== 'None' ? `${best.name} (${(best.wr*100).toFixed(1)}% WR over ${best.runs} runs)` : 'N/A';
+        return best.name !== 'None' ? `${best.name} (${(best.dom*100).toFixed(1)}% Dominance)` : 'N/A';
     };
+
+    // Clean HTML tags from Ace and Favorite strings
+    const cleanAce = tData.ace ? tData.ace.replace(/<[^>]*>?/gm, '').trim() : "None";
+    const cleanFav = tData.favorite ? tData.favorite.replace(/<[^>]*>?/gm, '').trim() : "None";
 
     const cleanData = {
         name: tData.name,
@@ -1154,13 +1169,14 @@ async function generateAiScoutReport() {
         dom: tData.dom,
         avgPos: tData.avgPos,
         tournamentWins: tData.tournamentWins,
-        favorite: tData.favorite.replace(/<[^>]*>?/gm, '').trim(),
-        ace: tData.ace.replace(/<[^>]*>?/gm, '').trim(),
-        bestSurface: getBest(surfaceStats),
-        bestDistance: getBest(distStats)
+        favorite: cleanFav,
+        ace: cleanAce,
+        bestSurface: getBestDom(surfaceStats),
+        bestDistance: getBestDom(distStats)
     };
 
     try {
+        // Your live Vercel API URL
         const WORKER_URL = "https://racc-open-stats.vercel.app/api/scout"; 
         
         const response = await fetch(WORKER_URL, {
@@ -1222,4 +1238,3 @@ window.onload = function() {
     }
     switchSeason();
 };
-
