@@ -1108,25 +1108,58 @@ async function generateAiScoutReport() {
     const tData = currentCalculatedStats.trainerStats.find(t => t.name === selectedName);
     if (!tData) return;
 
-    // UI Loading State
     btn.innerHTML = "⏳ Scouting...";
     btn.disabled = true;
     reportDiv.style.display = "block";
-    reportDiv.innerHTML = "<span style='opacity:0.7;'>Analyzing meta presence and race data...</span>";
+    reportDiv.innerHTML = "<span style='opacity:0.7;'>Analyzing advanced meta presence and track data...</span>";
 
-    // Clean the HTML out of your data before sending it (removes the <img> and <span> tags)
+    // --- NEW: CALCULATE TRACK & DISTANCE PREFERENCES ---
+    const trainerRaces = currentRawData.filter(r => r.Trainer === selectedName);
+    const surfaceStats = { 'Turf': { runs: 0, wins: 0 }, 'Dirt': { runs: 0, wins: 0 } };
+    const distStats = { 'Short': { runs: 0, wins: 0 }, 'Mile': { runs: 0, wins: 0 }, 'Medium': { runs: 0, wins: 0 }, 'Long': { runs: 0, wins: 0 } };
+
+    trainerRaces.forEach(r => {
+        let surf = r.Surface.includes('Dirt') ? 'Dirt' : 'Turf';
+        surfaceStats[surf].runs += r.RacesRun;
+        surfaceStats[surf].wins += r.Wins;
+
+        let dist = r.DistanceCategory; // "Short", "Mile", "Medium", "Long"
+        if(distStats[dist]) {
+            distStats[dist].runs += r.RacesRun;
+            distStats[dist].wins += r.Wins;
+        }
+    });
+
+    // Helper to find their highest win rate category
+    const getBest = (statsObj) => {
+        let best = { name: 'None', wr: -1, runs: 0 };
+        for (const [key, val] of Object.entries(statsObj)) {
+            if (val.runs > 0) {
+                let wr = val.wins / val.runs;
+                if (wr > best.wr || (wr === best.wr && val.runs > best.runs)) {
+                    best = { name: key, wr: wr, runs: val.runs };
+                }
+            }
+        }
+        return best.name !== 'None' ? `${best.name} (${(best.wr*100).toFixed(1)}% WR over ${best.runs} runs)` : 'N/A';
+    };
+
     const cleanData = {
         name: tData.name,
+        totalRaces: trainerRaces.reduce((sum, r) => sum + r.RacesRun, 0),
         winRate: tData.winRate,
         dom: tData.dom,
         avgPos: tData.avgPos,
         tournamentWins: tData.tournamentWins,
         favorite: tData.favorite.replace(/<[^>]*>?/gm, '').trim(),
-        ace: tData.ace.replace(/<[^>]*>?/gm, '').trim()
+        ace: tData.ace.replace(/<[^>]*>?/gm, '').trim(),
+        // Add the new advanced stats to the payload
+        bestSurface: getBest(surfaceStats),
+        bestDistance: getBest(distStats)
     };
 
     try {
-        const WORKER_URL = "https://racc-open-stats.vercel.app/api/scout";
+        const WORKER_URL = "https://racc-open-stats.vercel.app/api/scout"; 
         
         const response = await fetch(WORKER_URL, {
             method: "POST",
@@ -1137,9 +1170,8 @@ async function generateAiScoutReport() {
         const data = await response.json();
         
         if (data.insight) {
-            // Split paragraphs so it looks nice
             const formattedText = data.insight.split('\n').map(p => `<p style="margin-top:0; margin-bottom:8px;">${p}</p>`).join('');
-            reportDiv.innerHTML = `<strong style="color: #a855f7;">🤖 AI Scout Report:</strong><br>${formattedText}`;
+            reportDiv.innerHTML = `<strong style="color: #a855f7;">🤖 Advanced AI Scout Report:</strong><br>${formattedText}`;
         } else {
             reportDiv.innerHTML = "<em>Failed to get scouting report. Please try again.</em>";
         }
@@ -1147,12 +1179,10 @@ async function generateAiScoutReport() {
         console.error("AI Error:", error);
         reportDiv.innerHTML = "<em>Error connecting to the scouting server.</em>";
     } finally {
-        // Reset button
         btn.innerHTML = "🤖 AI Scout Report";
         btn.disabled = false;
     }
 }
-
 // --- SNEAKY AI UNLOCKER ---
 let secretClickCount = 0;
 let secretClickTimer;
@@ -1196,7 +1226,3 @@ window.onload = function() {
     }
     switchSeason();
 };
-
-
-
-
