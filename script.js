@@ -1126,8 +1126,7 @@ async function generateAiScoutReport() {
     };
 
     try {
-        // ⚠️ REPLACE THIS WITH YOUR ACTUAL CLOUDFLARE WORKER URL
-        const WORKER_URL = "https://racc-scout-ai.kenesu.workers.dev"; 
+        const WORKER_URL = "https://racc-open-stats.vercel.app/api/scout";
         
         const response = await fetch(WORKER_URL, {
             method: "POST",
@@ -1163,5 +1162,6 @@ window.onload = function() {
     }
     switchSeason();
 };
+
 
 
