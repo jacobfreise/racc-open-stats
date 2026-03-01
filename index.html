@@ -285,14 +285,14 @@
                <button onclick="downloadTrainerCard()" class="copy-btn" style="background: var(--accent-color); color: var(--card-bg); font-weight: bold; border: none; padding: 10px 20px; font-size: 0.9rem;">
                     📸 Download Card
                 </button>
-                <button onclick="generateAiScoutReport()" id="aiScoutBtn" class="copy-btn" style="background: #a855f7; color: #fff; font-weight: bold; border: none; padding: 10px 20px; font-size: 0.9rem;">
+                <button onclick="generateAiScoutReport()" id="aiScoutBtn" class="copy-btn" style="display: none; background: #a855f7; color: #fff; font-weight: bold; border: none; padding: 10px 20px; font-size: 0.9rem;">
                     🤖 AI Scout Report
                 </button>
             </div>
 
             <div id="captureCard" class="tc-container">
                 <div class="tc-header">
-                    <div id="tc-avatar" class="tc-avatar-placeholder"></div>
+                    <div id="tc-avatar" class="tc-avatar-placeholder" onclick="secretAiUnlock()"></div>
                     <div class="tc-title">
                         <h2 id="tc-name">Trainer Name</h2>
                         <div class="tc-subtitle">Racc Open Competitor</div>
@@ -418,6 +418,7 @@
 
 </body>
 </html>
+
 
 
 
