@@ -1113,24 +1113,26 @@ async function generateAiScoutReport() {
     reportDiv.style.display = "block";
     reportDiv.innerHTML = "<span style='opacity:0.7;'>Analyzing advanced meta presence and track data...</span>";
 
-    // --- NEW: CALCULATE TRACK & DISTANCE PREFERENCES ---
+    // --- CALCULATE ADVANCED STATS ---
     const trainerRaces = currentRawData.filter(r => r.Trainer === selectedName);
     const surfaceStats = { 'Turf': { runs: 0, wins: 0 }, 'Dirt': { runs: 0, wins: 0 } };
     const distStats = { 'Short': { runs: 0, wins: 0 }, 'Mile': { runs: 0, wins: 0 }, 'Medium': { runs: 0, wins: 0 }, 'Long': { runs: 0, wins: 0 } };
+    
+    // Calculate Roster Depth (How many unique Umas they play to survive bans)
+    const uniqueUmas = new Set(trainerRaces.map(r => r.UniqueName)).size;
 
     trainerRaces.forEach(r => {
         let surf = r.Surface.includes('Dirt') ? 'Dirt' : 'Turf';
         surfaceStats[surf].runs += r.RacesRun;
         surfaceStats[surf].wins += r.Wins;
 
-        let dist = r.DistanceCategory; // "Short", "Mile", "Medium", "Long"
+        let dist = r.DistanceCategory; 
         if(distStats[dist]) {
             distStats[dist].runs += r.RacesRun;
             distStats[dist].wins += r.Wins;
         }
     });
 
-    // Helper to find their highest win rate category
     const getBest = (statsObj) => {
         let best = { name: 'None', wr: -1, runs: 0 };
         for (const [key, val] of Object.entries(statsObj)) {
@@ -1147,13 +1149,13 @@ async function generateAiScoutReport() {
     const cleanData = {
         name: tData.name,
         totalRaces: trainerRaces.reduce((sum, r) => sum + r.RacesRun, 0),
+        rosterDepth: uniqueUmas,
         winRate: tData.winRate,
         dom: tData.dom,
         avgPos: tData.avgPos,
         tournamentWins: tData.tournamentWins,
         favorite: tData.favorite.replace(/<[^>]*>?/gm, '').trim(),
         ace: tData.ace.replace(/<[^>]*>?/gm, '').trim(),
-        // Add the new advanced stats to the payload
         bestSurface: getBest(surfaceStats),
         bestDistance: getBest(distStats)
     };
@@ -1220,3 +1222,4 @@ window.onload = function() {
     }
     switchSeason();
 };
+
