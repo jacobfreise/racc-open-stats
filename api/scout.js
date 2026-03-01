@@ -22,22 +22,27 @@ export default async function handler(req, res) {
     Write a short, punchy 2-paragraph scouting report for this trainer. 
 
     CRITICAL META CONTEXT (READ CAREFULLY):
-    - Races feature 9 or more competitors (always multiples of 3, typically 9). 
-    - Because there are at least 9 runners per race, a "true average" win rate is around 11.1% (and even lower in 12+ player races).
-    - Win Rate Grading: 10-12% is standard/average. 15-18% is highly competitive. 20%+ is absolute top-tier dominance. NEVER call a win rate above 12% "low", "poor", or "struggling".
-    - Average Position (Avg Pos): This scales from 1.0 (always 1st) to 9.0+ (always last). 5.0 is middle-of-the-pack. Anything in the 3.0-4.5 range is elite consistency.
-    - Dominance: This measures their overall point-scoring pressure across all placements. Higher is better.
+    - Races feature 9 or more competitors. Therefore, a "true average" win rate is around 11.1%.
+    - Win Rate: 10-12% is standard. 15-18% is highly competitive. 20%+ is absolute top-tier dominance. NEVER call a win rate above 12% "low".
+    - Average Position (Avg Pos): Scales from 1.0 (always 1st) to 9.0+ (always last). 5.0 is average. 3.0-4.5 is elite consistency.
+    - Dominance: Measures point-scoring pressure across all placements. Higher is better.
     
-    Using the context above, interpret the numbers. Don't just list the stats—tell a story about the trainer's playstyle. Highlight their best Uma (Ace) and whether they are consistently placing high or relying on boom-or-bust wins. Keep the tone exciting, analytical, and professional. Do not use markdown headers.
+    Using the data below, interpret the numbers. Don't just list stats—tell a story about the trainer's playstyle. 
+    - Highlight their best Uma (Ace) and whether they are loyal to a specific Favorite pick.
+    - SPECIFICALLY analyze their track preferences using the "Best Track Surface" and "Best Track Distance" data provided. Talk about what kind of races they excel at (e.g., "They are a terror on Turf tracks..." or "They specialize in Medium distance races...").
+    - Keep the tone exciting, analytical, and professional. Do not use markdown headers.
     
     Trainer Data:
     Name: ${trainerData.name}
+    Total Races Run: ${trainerData.totalRaces}
     Win Rate: ${trainerData.winRate}%
     Dominance: ${trainerData.dom}%
     Avg Position: ${trainerData.avgPos}
     Tourney Wins: ${trainerData.tournamentWins}
     Favorite Pick: ${trainerData.favorite}
     Ace (Most Wins): ${trainerData.ace}
+    Best Track Surface: ${trainerData.bestSurface}
+    Best Track Distance: ${trainerData.bestDistance}
     `;
 
     // 2. Call Gemini using Vercel's secret environment variables
