@@ -1153,6 +1153,40 @@ async function generateAiScoutReport() {
     }
 }
 
+// --- SNEAKY AI UNLOCKER ---
+let secretClickCount = 0;
+let secretClickTimer;
+
+function secretAiUnlock() {
+    secretClickCount++;
+    
+    // Clear the timer every time they click
+    clearTimeout(secretClickTimer);
+    
+    // If they stop clicking for 2 seconds, reset the count
+    secretClickTimer = setTimeout(() => { 
+        secretClickCount = 0; 
+    }, 2000); 
+
+    // If they click 5 times fast, reveal the magic
+    if (secretClickCount >= 5) {
+        const aiBtn = document.getElementById('aiScoutBtn');
+        const reportDiv = document.getElementById('tc-ai-report');
+        
+        if (aiBtn.style.display === 'none') {
+            // Un-hide the button
+            aiBtn.style.display = 'inline-block';
+        } else {
+            // Hide it again if they do the 5-tap to toggle it off
+            aiBtn.style.display = 'none';
+            reportDiv.style.display = 'none';
+        }
+        
+        // Reset the count so they can toggle it again later
+        secretClickCount = 0; 
+    }
+}
+
 window.onload = function() {
     const savedTheme = localStorage.getItem('siteTheme');
     if (savedTheme) {
@@ -1162,6 +1196,7 @@ window.onload = function() {
     }
     switchSeason();
 };
+
 
 
 
