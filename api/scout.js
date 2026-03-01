@@ -1,5 +1,4 @@
 export default async function handler(req, res) {
-  // 1. Handle CORS so your GitHub Pages site can talk to Vercel
   res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Origin', '*'); 
   res.setHeader('Access-Control-Allow-Methods', 'OPTIONS,POST');
@@ -18,7 +17,7 @@ export default async function handler(req, res) {
   try {
     const trainerData = req.body;
 
-   const prompt = `You are an expert esports color commentator and analyst for the 'Racc Open', a highly competitive, team-based Uma Musume tournament. 
+    const prompt = `You are an expert esports color commentator and analyst for the 'Racc Open', a highly competitive, team-based Uma Musume tournament. 
     Write a short, punchy 2-paragraph scouting report for this trainer. 
 
     CRITICAL TOURNAMENT RULES & META CONTEXT (READ CAREFULLY):
@@ -50,29 +49,66 @@ export default async function handler(req, res) {
     Best Track Surface: ${trainerData.bestSurface}
     Best Track Distance: ${trainerData.bestDistance}
     `;
-    
-    // 2. Call Gemini using Vercel's secret environment variables
-    const apiKey = process.env.GEMINI_API_KEY;
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
 
-    const aiResponse = await fetch(apiUrl, {
+    // ==========================================
+    // ENGINE 1: GOOGLE GEMINI (Primary)
+    // ==========================================
+    try {
+      const geminiKey = process.env.GEMINI_API_KEY;
+      const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${geminiKey}`;
+
+      const geminiResponse = await fetch(geminiUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }]
+        })
+      });
+
+      const geminiData = await geminiResponse.json();
+
+      // If Gemini successfully generated text, send it back and stop here!
+      if (geminiData.candidates && geminiData.candidates.length > 0) {
+        const insightText = geminiData.candidates[0].content.parts[0].text;
+        res.status(200).json({ insight: insightText });
+        return; 
+      } else {
+        // If it failed (like hitting the 429 quota), we just log it and let the code continue to Engine 2
+        console.warn("Gemini Engine failed or rate limited, falling back to Groq...", geminiData);
+      }
+    } catch (geminiError) {
+      console.warn("Gemini fetch error, falling back to Groq...", geminiError);
+    }
+
+    // ==========================================
+    // ENGINE 2: GROQ LLAMA 3 (Fallback)
+    // ==========================================
+    const groqKey = process.env.GROQ_API_KEY;
+    const groqUrl = "https://api.groq.com/openai/v1/chat/completions";
+
+    const groqResponse = await fetch(groqUrl, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Authorization": `Bearer ${groqKey}`,
+        "Content-Type": "application/json" 
+      },
       body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }]
+        model: "llama3-8b-8192", 
+        messages: [{ role: "user", content: prompt }],
+        temperature: 0.7
       })
     });
 
-    const aiData = await aiResponse.json();
+    const groqData = await groqResponse.json();
 
-    if (!aiData.candidates) {
-      res.status(500).json({ insight: `GEMINI ERROR: ${JSON.stringify(aiData)}` });
+    // If Groq ALSO fails, then we actually throw an error to the frontend
+    if (groqData.error) {
+      res.status(500).json({ insight: `BOTH ENGINES FAILED. Groq Error: ${groqData.error.message}` });
       return;
     }
     
-    const insightText = aiData.candidates[0].content.parts[0].text;
-    
-    // 3. Send it back to the frontend
+    // Send Groq's answer back
+    const insightText = groqData.choices[0].message.content;
     res.status(200).json({ insight: insightText });
 
   } catch (error) {
