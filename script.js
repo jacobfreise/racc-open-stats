@@ -1097,6 +1097,37 @@ function runSimulation() {
     </div>`;
 }
 
+let secretClickCount = 0;
+let secretClickTimer;
+window.raccAiMode = "toxic";
+
+function secretAiUnlock() {
+    secretClickCount++;
+    clearTimeout(secretClickTimer);
+    
+    secretClickTimer = setTimeout(() => { 
+        secretClickCount = 0; 
+    }, 2000); 
+
+    const aiBtn = document.getElementById('aiScoutBtn');
+    const reportDiv = document.getElementById('tc-ai-report');
+
+    if (!aiBtn) return;
+
+    if (secretClickCount === 5) {
+        window.raccAiMode = "toxic";
+        aiBtn.style.display = 'inline-block';
+        aiBtn.style.background = '#ef4444';
+        aiBtn.innerHTML = "🔥 Toxic Scout";
+    } else if (secretClickCount === 10) {
+        window.raccAiMode = "succubus";
+        aiBtn.style.display = 'inline-block';
+        aiBtn.style.background = '#d946ef';
+        aiBtn.innerHTML = "🦇 Succubus Scout";
+        secretClickCount = 0;
+    }
+}
+
 async function generateAiScoutReport() {
     const selector = document.getElementById('cardTrainerSelector');
     const reportDiv = document.getElementById('tc-ai-report');
@@ -1108,26 +1139,21 @@ async function generateAiScoutReport() {
     const tData = currentCalculatedStats.trainerStats.find(t => t.name === selectedName);
     if (!tData) return;
 
-    btn.innerHTML = "⏳ Scouting...";
+    // Save original button text to reset it later
+    const originalBtnText = btn.innerHTML;
+    btn.innerHTML = "⏳ Summoning...";
     btn.disabled = true;
     reportDiv.style.display = "block";
-    reportDiv.innerHTML = "<span style='opacity:0.7;'>Analyzing advanced meta presence and track data...</span>";
+    reportDiv.innerHTML = "<span style='opacity:0.7;'>Gazing into the abyss...</span>";
 
-    // --- CALCULATE ADVANCED STATS (FIXED FOR DOMINANCE META) ---
     const trainerRaces = currentRawData.filter(r => r.Trainer === selectedName);
-    
-    // Calculate Roster Depth (Unique Umas)
     const uniqueUmas = new Set(trainerRaces.map(r => r.UniqueName)).size;
 
-    // Track total opponents beaten vs possible opponents per category
     const surfaceStats = { 'Turf': { beaten: 0, opp: 0 }, 'Dirt': { beaten: 0, opp: 0 } };
     const distStats = { 'Short': { beaten: 0, opp: 0 }, 'Mile': { beaten: 0, opp: 0 }, 'Medium': { beaten: 0, opp: 0 }, 'Long': { beaten: 0, opp: 0 } };
-
-    // Pull the detailed point data
     const detailedStats = tData.detailedTourneyStats || {};
 
     trainerRaces.forEach(r => {
-        // Find the points data for this specific tournament run
         const tStats = detailedStats[r.RawLength]; 
         if (tStats) {
             let surf = r.Surface.includes('Dirt') ? 'Dirt' : 'Turf';
@@ -1142,13 +1168,11 @@ async function generateAiScoutReport() {
         }
     });
 
-    // Helper to find their highest DOMINANCE category
     const getBestDom = (statsObj) => {
         let best = { name: 'None', dom: -1, opp: 0 };
         for (const [key, val] of Object.entries(statsObj)) {
             if (val.opp > 0) {
                 let dom = val.beaten / val.opp;
-                // Require at least 16 opponents (roughly 2 tournaments) so 1 lucky race doesn't skew it
                 if ((dom > best.dom && val.opp >= 16) || best.dom === -1) {
                     best = { name: key, dom: dom, opp: val.opp };
                 }
@@ -1157,7 +1181,6 @@ async function generateAiScoutReport() {
         return best.name !== 'None' ? `${best.name} (${(best.dom*100).toFixed(1)}% Dominance)` : 'N/A';
     };
 
-    // Clean HTML tags from Ace and Favorite strings
     const cleanAce = tData.ace ? tData.ace.replace(/<[^>]*>?/gm, '').trim() : "None";
     const cleanFav = tData.favorite ? tData.favorite.replace(/<[^>]*>?/gm, '').trim() : "None";
 
@@ -1172,11 +1195,11 @@ async function generateAiScoutReport() {
         favorite: cleanFav,
         ace: cleanAce,
         bestSurface: getBestDom(surfaceStats),
-        bestDistance: getBestDom(distStats)
+        bestDistance: getBestDom(distStats),
+        persona: window.raccAiMode 
     };
 
     try {
-        // Your live Vercel API URL
         const WORKER_URL = "https://racc-open-stats.vercel.app/api/scout"; 
         
         const response = await fetch(WORKER_URL, {
@@ -1189,43 +1212,23 @@ async function generateAiScoutReport() {
         
         if (data.insight) {
             const formattedText = data.insight.split('\n').map(p => `<p style="margin-top:0; margin-bottom:8px;">${p}</p>`).join('');
-            reportDiv.innerHTML = `<strong style="color: #a855f7;">🤖 Advanced AI Scout Report:</strong><br>${formattedText}`;
+            
+            // Change the header color based on the persona
+            const headerColor = window.raccAiMode === "succubus" ? "#d946ef" : "#ef4444";
+            const icon = window.raccAiMode === "succubus" ? "🦇" : "🔥";
+            const title = window.raccAiMode === "succubus" ? "Succubus Insight" : "Toxic Scout Report";
+
+            reportDiv.innerHTML = `<strong style="color: ${headerColor};">${icon} ${title}:</strong><br>${formattedText}`;
+            reportDiv.style.borderLeft = `4px solid ${headerColor}`;
         } else {
-            reportDiv.innerHTML = "<em>Failed to get scouting report. Please try again.</em>";
+            reportDiv.innerHTML = "<em>The summoning failed. Try again.</em>";
         }
     } catch (error) {
         console.error("AI Error:", error);
-        reportDiv.innerHTML = "<em>Error connecting to the scouting server.</em>";
+        reportDiv.innerHTML = "<em>Connection to the underworld lost.</em>";
     } finally {
-        btn.innerHTML = "🤖 AI Scout Report";
+        btn.innerHTML = originalBtnText;
         btn.disabled = false;
-    }
-}
-// --- SNEAKY AI UNLOCKER ---
-let secretClickCount = 0;
-let secretClickTimer;
-
-function secretAiUnlock() {
-    secretClickCount++;
-    
-    clearTimeout(secretClickTimer);
-    
-    secretClickTimer = setTimeout(() => { 
-        secretClickCount = 0; 
-    }, 2000); 
-    
-    if (secretClickCount >= 5) {
-        const aiBtn = document.getElementById('aiScoutBtn');
-        const reportDiv = document.getElementById('tc-ai-report');
-        
-        if (aiBtn.style.display === 'none') {
-            aiBtn.style.display = 'inline-block';
-        } else {
-            aiBtn.style.display = 'none';
-            reportDiv.style.display = 'none';
-        }
-        
-        secretClickCount = 0; 
     }
 }
 
@@ -1238,3 +1241,4 @@ window.onload = function() {
     }
     switchSeason();
 };
+
