@@ -1097,6 +1097,63 @@ function runSimulation() {
     </div>`;
 }
 
+async function generateAiScoutReport() {
+    const selector = document.getElementById('cardTrainerSelector');
+    const reportDiv = document.getElementById('tc-ai-report');
+    const btn = document.getElementById('aiScoutBtn');
+    
+    if (!selector || !currentCalculatedStats) return;
+
+    const selectedName = selector.value;
+    const tData = currentCalculatedStats.trainerStats.find(t => t.name === selectedName);
+    if (!tData) return;
+
+    // UI Loading State
+    btn.innerHTML = "⏳ Scouting...";
+    btn.disabled = true;
+    reportDiv.style.display = "block";
+    reportDiv.innerHTML = "<span style='opacity:0.7;'>Analyzing meta presence and race data...</span>";
+
+    // Clean the HTML out of your data before sending it (removes the <img> and <span> tags)
+    const cleanData = {
+        name: tData.name,
+        winRate: tData.winRate,
+        dom: tData.dom,
+        avgPos: tData.avgPos,
+        tournamentWins: tData.tournamentWins,
+        favorite: tData.favorite.replace(/<[^>]*>?/gm, '').trim(),
+        ace: tData.ace.replace(/<[^>]*>?/gm, '').trim()
+    };
+
+    try {
+        // ⚠️ REPLACE THIS WITH YOUR ACTUAL CLOUDFLARE WORKER URL
+        const WORKER_URL = "https://racc-scout-ai.kenesu.workers.dev"; 
+        
+        const response = await fetch(WORKER_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(cleanData)
+        });
+
+        const data = await response.json();
+        
+        if (data.insight) {
+            // Split paragraphs so it looks nice
+            const formattedText = data.insight.split('\n').map(p => `<p style="margin-top:0; margin-bottom:8px;">${p}</p>`).join('');
+            reportDiv.innerHTML = `<strong style="color: #a855f7;">🤖 AI Scout Report:</strong><br>${formattedText}`;
+        } else {
+            reportDiv.innerHTML = "<em>Failed to get scouting report. Please try again.</em>";
+        }
+    } catch (error) {
+        console.error("AI Error:", error);
+        reportDiv.innerHTML = "<em>Error connecting to the scouting server.</em>";
+    } finally {
+        // Reset button
+        btn.innerHTML = "🤖 AI Scout Report";
+        btn.disabled = false;
+    }
+}
+
 window.onload = function() {
     const savedTheme = localStorage.getItem('siteTheme');
     if (savedTheme) {
@@ -1106,4 +1163,5 @@ window.onload = function() {
     }
     switchSeason();
 };
+
 
