@@ -17,8 +17,13 @@ export default async function handler(req, res) {
   try {
     const { type, topWr, topDom } = req.body;
 
+    // Clean arrays for our fallback/validation (removes the stats, keeps just the names)
+    const cleanWr = topWr.map(x => x.split(' (')[0]);
+    const cleanDom = topDom.map(x => x.split(' (')[0]);
+    const fallbackPool = [...new Set([...cleanWr, ...cleanDom])];
+
     const prompt = `You are a strict data-parsing script for a tournament simulator.
-    Your job is to select exactly 3 optimal ${type === 'trainer' ? 'players' : 'umas'} from the provided lists to form a mathematically balanced team. Balance high win-rate elements with high-dominance elements.
+    Your job is to select exactly 3 unique ${type === 'trainer' ? 'players' : 'umas'} from the provided lists to form a mathematically balanced team. Balance high win-rate elements with high-dominance elements.
 
     Available High Win-Rate Options:
     ${topWr.join(' | ')}
@@ -27,7 +32,7 @@ export default async function handler(req, res) {
     ${topDom.join(' | ')}
 
     --- STRICT INSTRUCTIONS ---
-    1. Select EXACTLY 3 unique names from the lists above.
+    1. Select EXACTLY 3 completely different names from the lists above. DO NOT PICK THE SAME NAME TWICE.
     2. Output ONLY a valid JSON array of strings. Do not include markdown formatting, backticks, or conversational text.
     3. Do NOT include the percentage stats in the output, just the raw names exactly as they appear before the parenthesis.
     Example Output Format: ["Name 1", "Name 2", "Name 3"]`;
@@ -44,7 +49,7 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         model: "llama-3.1-8b-instant", 
         messages: [{ role: "user", content: prompt }],
-        temperature: 0.1 // Keeping it incredibly low so it outputs strict, predictable JSON
+        temperature: 0.1 
       })
     });
 
@@ -55,19 +60,37 @@ export default async function handler(req, res) {
       return;
     }
     
-    // Clean up potential markdown backticks just in case the AI disobeys
+    // Clean up potential markdown backticks
     let rawContent = groqData.choices[0].message.content.trim();
     rawContent = rawContent.replace(/```json/gi, '').replace(/```/g, '').trim();
 
     let parsedTeam;
     try {
         parsedTeam = JSON.parse(rawContent);
+        if (!Array.isArray(parsedTeam)) throw new Error("Not an array");
     } catch (e) {
-        // Ultimate failsafe: if Groq messes up the formatting, grab top 2 WR and top 1 Dom manually
-        parsedTeam = [topWr[0].split(' (')[0], topWr[1].split(' (')[0], topDom[0].split(' (')[0]]; 
+        parsedTeam = []; // If AI totally fails, start with an empty array
     }
 
-    res.status(200).json({ team: parsedTeam });
+    // ==========================================
+    // THE IRONCLAD UNIQUENESS ENFORCER
+    // ==========================================
+    // 1. Remove any accidental duplicates the AI hallucinated
+    let finalTeam = [...new Set(parsedTeam)];
+
+    // 2. If the AI didn't give us exactly 3 unique names, force-fill the rest from the top stats pool
+    for (let name of fallbackPool) {
+        if (finalTeam.length >= 3) break;
+        if (!finalTeam.includes(name)) {
+            finalTeam.push(name);
+        }
+    }
+
+    // 3. Trim it down just in case it somehow went over 3
+    finalTeam = finalTeam.slice(0, 3);
+
+    // Send the guaranteed 3-unique-member team back to the frontend
+    res.status(200).json({ team: finalTeam });
 
   } catch (error) {
     res.status(500).json({ error: `Calculation Error: ${error.message}` });
