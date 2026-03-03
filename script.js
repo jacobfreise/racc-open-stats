@@ -874,6 +874,7 @@ function updateTrainerCard() {
     // Grid Data
     document.getElementById('tc-wr').innerText = `${tData.winRate}%`;
     document.getElementById('tc-avg-pos').innerText = tData.avgPos;
+    document.getElementById('tc-volatility').innerText = tData.volatility;
     document.getElementById('tc-dom').innerText = `${tData.dom}%`;
     document.getElementById('tc-twins').innerText = tData.tournamentWins;
 
@@ -1332,6 +1333,7 @@ window.onload = function() {
     }
     switchSeason();
 };
+
 
 
 
