@@ -5,7 +5,7 @@ const TOURNAMENT_ORDER = [
     "Open 21", "Open 22", "Open 23", "Open 24", "Open 25", "Open 26", "Open 27", "Open 28", "Open 29", "Open 30", 
     "Open 31", "Open 32", "Open 33", 
     "S2-1", "S2-2", "S2-3", "S2-4", "S2-5", "S2-6", "S2-7", "S2-8", "S2-9", "S2-10", "S2-11", "S2-12", "S2-13", 
-    "S2-14", "S2-15", "S2-16", "S2-17", "S2-18", "S2-19", "S2-20", "S2-21", "S2-22"
+    "S2-14", "S2-15", "S2-16", "S2-17", "S2-18", "S2-19", "S2-20", "S2-21", "S2-22", "S2-23", "S2-24", "S2-25"
 ];
 
 // Maps an Uma to the exact tournament they were released
@@ -29,5 +29,5 @@ const UMA_RELEASE_MAP = {
     "Sakura Chiyono O (Original)": "S2-14",
     "Mihono Bourbon (Valentine)": "S2-16",
     "Eishin Flash (Valentine)": "S2-16",
-    "Mejiro Ardan (Original): "S2-22",
+    "Mejiro Ardan (Original)": "S2-22",
 };
