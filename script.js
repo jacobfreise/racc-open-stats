@@ -1233,49 +1233,30 @@ async function generateAiScoutReport() {
 }
 
 async function generateAutoDraft() {
-    const selector = document.getElementById('tcrafTrainerSelector');
-    const container = document.getElementById('tcraf-results');
+    const typeEl = document.getElementById('simTypeSelector');
     const btn = document.getElementById('autoDraftBtn');
+    const s1 = document.getElementById('simSlot1');
+    const s2 = document.getElementById('simSlot2');
+    const s3 = document.getElementById('simSlot3');
 
-    if (!selector || !currentCalculatedStats || !container) return;
+    if (!typeEl || !currentCalculatedStats || !s1) return;
 
-    const selectedName = selector.value;
-    const allTrainers = currentCalculatedStats.trainerStats;
-    const tData = allTrainers.find(t => t.name === selectedName);
-    if (!tData) return;
+    const type = typeEl.value; // Checks if we are drafting 'trainer' or 'uma'
+    const list = type === 'trainer' ? currentCalculatedStats.trainerStats : currentCalculatedStats.umaStats;
 
     // Loading State
     const originalBtnText = btn.innerHTML;
-    btn.innerHTML = "⏳ Scouting Draft Pool...";
+    btn.innerHTML = "⏳ Calculating...";
     btn.disabled = true;
 
-    // Helper function to format a trainer's data for the AI
-    const getTrainerInfo = (t) => {
-        const history = Object.entries(t.characterHistory).map(([key, val]) => ({ name: key, ...val }));
-        const topUmas = history.sort((a, b) => b.picks - a.picks).slice(0, 3).map(u => u.name).join(', ');
-        return `${t.name} (WR: ${t.winRate}%, Dom: ${t.dom}%, Comfort: ${topUmas})`;
-    };
-
-    const targetTrainerInfo = getTrainerInfo(tData);
-
-    // Grab the rest of the available players to form a draft pool
-    const others = allTrainers.filter(t => t.name !== selectedName);
-    
-    // Find the top 5 Aces (Highest Win Rate) and top 5 Anchors (Highest Dominance)
-    const topAces = [...others].sort((a, b) => parseFloat(b.winRate) - parseFloat(a.winRate)).slice(0, 5).map(getTrainerInfo);
-    const topAnchors = [...others].sort((a, b) => parseFloat(b.dom) - parseFloat(a.dom)).slice(0, 5).map(getTrainerInfo);
-
-    // Global Meta
-    const globalMeta = [...currentCalculatedStats.umaStats]
-        .sort((a, b) => b.dom - a.dom)
-        .slice(0, 5)
-        .map(u => u.name);
+    // Give the AI the top 15 win-rates and top 15 dominances to build a team from
+    const topWr = [...list].sort((a, b) => parseFloat(b.winRate) - parseFloat(a.winRate)).slice(0, 15).map(x => `${x.name} (${x.winRate}% WR)`);
+    const topDom = [...list].sort((a, b) => parseFloat(b.dom) - parseFloat(a.dom)).slice(0, 15).map(x => `${x.name} (${x.dom}% Dom)`);
 
     const payload = {
-        targetTrainer: targetTrainerInfo,
-        topAces: topAces,
-        topAnchors: topAnchors,
-        globalMeta: globalMeta
+        type: type,
+        topWr: topWr,
+        topDom: topDom
     };
 
     try {
@@ -1288,21 +1269,27 @@ async function generateAutoDraft() {
         });
         
         const data = await response.json();
+        
+        // The AI will return a strict JSON array: ["Name1", "Name2", "Name3"]
+        if (data.team && data.team.length === 3) {
+            
+            // Helper to cleanly select an option in the dropdown
+            const setSlot = (slot, value) => {
+                for (let i = 0; i < slot.options.length; i++) {
+                    if (slot.options[i].value === value) {
+                        slot.selectedIndex = i;
+                        break;
+                    }
+                }
+            };
 
-        // Inject silently above standard theorycraft grids
-        const draftHtml = `
-            <div style="background: rgba(0,0,0,0.1); border: 1px solid var(--accent-color); border-radius: 8px; padding: 15px; margin-bottom: 20px;">
-                <h3 style="margin: 0 0 12px 0; color: var(--accent-color); display: flex; align-items: center; gap: 8px;">
-                    ✨ Calculated Optimal 3-Man Draft
-                </h3>
-                <div style="font-size: 0.95rem; line-height: 1.5;">
-                    ${data.teamHTML}
-                </div>
-            </div>
-        `;
+            setSlot(s1, data.team[0]);
+            setSlot(s2, data.team[1]);
+            setSlot(s3, data.team[2]);
 
-        generateTheorycraft(); 
-        container.insertAdjacentHTML('afterbegin', draftHtml);
+            // Force the simulator UI to calculate the new team
+            runSimulation(); 
+        }
 
     } catch (error) {
         console.error("Draft Error:", error);
@@ -1322,6 +1309,7 @@ window.onload = function() {
     }
     switchSeason();
 };
+
 
 
 
