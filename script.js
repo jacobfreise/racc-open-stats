@@ -488,18 +488,21 @@ const formatItem = (item, type) => {
         
         const pStats = type === 'trainer' ? pointsData.trainer[item.name] : pointsData.uma[item.name];
         let avgPos = "-";
-        let volatility = "-";
+        let volatility = "-"; 
+        let podiumRateVal = "0.0";
         let bestTourney = "-";
 
         if (pStats) {
             if (pStats.totalOpp > 0) dominanceVal = ((pStats.beaten / pStats.totalOpp) * 100).toFixed(1);
             if (pStats.positions && pStats.positions.length > 0) {
-                // Calculate Average Position (Mean)
+                
                 const sum = pStats.positions.reduce((a, b) => a + b, 0);
                 const mean = sum / pStats.positions.length;
                 avgPos = mean.toFixed(2);
 
-                // Calculate Typical Finish Range (Mean ± Standard Deviation)
+                const podiums = pStats.positions.filter(pos => pos <= 3).length;
+                podiumRateVal = ((podiums / pStats.positions.length) * 100).toFixed(1);
+
                 if (pStats.positions.length > 1) {
                     const variance = pStats.positions.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / pStats.positions.length;
                     const stdDev = Math.sqrt(variance);
@@ -513,7 +516,6 @@ const formatItem = (item, type) => {
                         volatility = `${lowerBound}${getOrdinal(lowerBound)} - ${upperBound}${getOrdinal(upperBound)}`;
                     }
                 } else if (pStats.positions.length === 1) {
-                    // Only 1 race run, so the range is just their exact finish
                     let pos = pStats.positions[0];
                     volatility = `${pos}${getOrdinal(pos)}`;
                 }
@@ -534,6 +536,7 @@ const formatItem = (item, type) => {
             ...item,
             displayName: formatName(item.name, type === 'trainer' ? 'trainer' : 'uma'),
             winRate: winRateVal,
+            podiumRate: podiumRateVal,
             dom: dominanceVal,
             avgPos: avgPos,
             volatility: volatility,
@@ -700,17 +703,17 @@ function updateData() {
     const stats = calculateStats(filtered);
     currentCalculatedStats = stats;
 
-   if (document.getElementById('umaTable')) {
+if (document.getElementById('umaTable')) {
         stats.umaStats.sort((a, b) => b.dom - a.dom);
         renderTable('umaTable', stats.umaStats, 
-            ['name', 'picks', 'pickPct', 'truePickPct', 'wins', 'winRate', 'dom', 'avgPos', 'volatility', 'bestTourney', 'tourneyStatsDisplay', 'banStatsDisplay', 'presenceDisplay']
+            ['name', 'picks', 'pickPct', 'truePickPct', 'wins', 'winRate', 'podiumRate', 'dom', 'avgPos', 'volatility', 'bestTourney', 'tourneyStatsDisplay', 'banStatsDisplay', 'presenceDisplay']
         );
     }
 
     if (document.getElementById('trainerTable')) {
         stats.trainerStats.sort((a, b) => b.dom - a.dom);
         renderTable('trainerTable', stats.trainerStats, 
-            ['name', 'entries', 'wins', 'winRate', 'dom', 'avgPos', 'volatility', 'bestTourney', 'tourneyStatsDisplay', 'favorite', 'ace']
+            ['name', 'entries', 'wins', 'winRate', 'podiumRate', 'dom', 'avgPos', 'volatility', 'bestTourney', 'tourneyStatsDisplay', 'favorite', 'ace']
         );
     }
 
@@ -1333,10 +1336,3 @@ window.onload = function() {
     }
     switchSeason();
 };
-
-
-
-
-
-
-
