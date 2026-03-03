@@ -15,44 +15,22 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { targetTrainer, topAces, topAnchors, globalMeta } = req.body;
+    const { type, topWr, topDom } = req.body;
 
-    const prompt = `You are an automated data-to-HTML parser for an esports dashboard. 
-    Analyze the draft pool and output an optimal 3-player team built around the Target Trainer.
+    const prompt = `You are a strict data-parsing script for a tournament simulator.
+    Your job is to select exactly 3 optimal ${type === 'trainer' ? 'players' : 'umas'} from the provided lists to form a mathematically balanced team. Balance high win-rate elements with high-dominance elements.
 
-    --- TOURNAMENT RULES ---
-    - Teams consist of EXACTLY 3 different players.
-    - Each player races EXACTLY 1 Uma.
-    - Max 2 duplicate Umas allowed per team.
-    - Max 2 of the same running style allowed per team.
+    Available High Win-Rate Options:
+    ${topWr.join(' | ')}
 
-    --- DRAFT DATA ---
-    Target Trainer (MUST BE ON THE TEAM): ${targetTrainer}
-    Available Aces (High Win Rate Pool): ${topAces.join(' | ')}
-    Available Anchors (High Dominance Pool): ${topAnchors.join(' | ')}
-    Global Meta Umas: ${globalMeta.join(', ')}
+    Available High Dominance Options:
+    ${topDom.join(' | ')}
 
     --- STRICT INSTRUCTIONS ---
-    1. Select EXACTLY 2 additional players from the Available pools to join the Target Trainer.
-    2. Assign EXACTLY 1 Uma to each of the 3 players (based on their Comfort picks or the Global Meta).
-    3. Return ONLY the raw HTML list. 
-    4. DO NOT include markdown tags like \`\`\`html.
-    5. DO NOT include conversational text. Output EXACTLY this HTML structure:
-
-    <ul style="list-style-type: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px;">
-        <li style="background: rgba(0,0,0,0.2); padding: 10px; border-radius: 6px; border-left: 3px solid #ffd700;">
-            <strong style="color: #ffd700;">[Player 1 Name]</strong> - <em>Running: [Uma Name]</em><br>
-            <span style="font-size: 0.85em; opacity: 0.8;">[1 short, analytical sentence explaining why this player and Uma combination strengthens the team]</span>
-        </li>
-        <li style="background: rgba(0,0,0,0.2); padding: 10px; border-radius: 6px; border-left: 3px solid #c0c0c0;">
-            <strong style="color: #c0c0c0;">[Player 2 Name]</strong> - <em>Running: [Uma Name]</em><br>
-            <span style="font-size: 0.85em; opacity: 0.8;">[1 short, analytical sentence explaining why this player and Uma combination strengthens the team]</span>
-        </li>
-        <li style="background: rgba(0,0,0,0.2); padding: 10px; border-radius: 6px; border-left: 3px solid #cd7f32;">
-            <strong style="color: #cd7f32;">[Player 3 Name]</strong> - <em>Running: [Uma Name]</em><br>
-            <span style="font-size: 0.85em; opacity: 0.8;">[1 short, analytical sentence explaining why this player and Uma combination strengthens the team]</span>
-        </li>
-    </ul>`;
+    1. Select EXACTLY 3 unique names from the lists above.
+    2. Output ONLY a valid JSON array of strings. Do not include markdown formatting, backticks, or conversational text.
+    3. Do NOT include the percentage stats in the output, just the raw names exactly as they appear before the parenthesis.
+    Example Output Format: ["Name 1", "Name 2", "Name 3"]`;
 
     const groqKey = process.env.GROQ_API_KEY;
     const groqUrl = "https://api.groq.com/openai/v1/chat/completions";
@@ -66,7 +44,7 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         model: "llama-3.1-8b-instant", 
         messages: [{ role: "user", content: prompt }],
-        temperature: 0.4
+        temperature: 0.1 // Keeping it incredibly low so it outputs strict, predictable JSON
       })
     });
 
@@ -77,10 +55,19 @@ export default async function handler(req, res) {
       return;
     }
     
-    let cleanHTML = groqData.choices[0].message.content;
-    cleanHTML = cleanHTML.replace(/```html/g, '').replace(/```/g, '').trim();
+    // Clean up potential markdown backticks just in case the AI disobeys
+    let rawContent = groqData.choices[0].message.content.trim();
+    rawContent = rawContent.replace(/```json/gi, '').replace(/```/g, '').trim();
 
-    res.status(200).json({ teamHTML: cleanHTML });
+    let parsedTeam;
+    try {
+        parsedTeam = JSON.parse(rawContent);
+    } catch (e) {
+        // Ultimate failsafe: if Groq messes up the formatting, grab top 2 WR and top 1 Dom manually
+        parsedTeam = [topWr[0].split(' (')[0], topWr[1].split(' (')[0], topDom[0].split(' (')[0]]; 
+    }
+
+    res.status(200).json({ team: parsedTeam });
 
   } catch (error) {
     res.status(500).json({ error: `Calculation Error: ${error.message}` });
