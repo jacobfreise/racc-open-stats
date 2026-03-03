@@ -1240,30 +1240,41 @@ async function generateAutoDraft() {
     if (!selector || !currentCalculatedStats || !container) return;
 
     const selectedName = selector.value;
-    const tData = currentCalculatedStats.trainerStats.find(t => t.name === selectedName);
+    const allTrainers = currentCalculatedStats.trainerStats;
+    const tData = allTrainers.find(t => t.name === selectedName);
     if (!tData) return;
 
     // Loading State
     const originalBtnText = btn.innerHTML;
-    btn.innerHTML = "⏳ Calculating...";
+    btn.innerHTML = "⏳ Scouting Draft Pool...";
     btn.disabled = true;
 
-    // Gather Top Played
-    const historyArr = Object.entries(tData.characterHistory).map(([key, val]) => ({ name: key, ...val }));
-    const topPlayed = historyArr
-        .sort((a, b) => b.picks - a.picks)
-        .slice(0, 5)
-        .map(u => `${u.name} (${u.picks} picks, ${u.racesRun > 0 ? (u.wins/u.racesRun*100).toFixed(1) : 0}% WR)`);
+    // Helper function to format a trainer's data for the AI
+    const getTrainerInfo = (t) => {
+        const history = Object.entries(t.characterHistory).map(([key, val]) => ({ name: key, ...val }));
+        const topUmas = history.sort((a, b) => b.picks - a.picks).slice(0, 3).map(u => u.name).join(', ');
+        return `${t.name} (WR: ${t.winRate}%, Dom: ${t.dom}%, Comfort: ${topUmas})`;
+    };
 
-    // Gather Global Meta
+    const targetTrainerInfo = getTrainerInfo(tData);
+
+    // Grab the rest of the available players to form a draft pool
+    const others = allTrainers.filter(t => t.name !== selectedName);
+    
+    // Find the top 5 Aces (Highest Win Rate) and top 5 Anchors (Highest Dominance)
+    const topAces = [...others].sort((a, b) => parseFloat(b.winRate) - parseFloat(a.winRate)).slice(0, 5).map(getTrainerInfo);
+    const topAnchors = [...others].sort((a, b) => parseFloat(b.dom) - parseFloat(a.dom)).slice(0, 5).map(getTrainerInfo);
+
+    // Global Meta
     const globalMeta = [...currentCalculatedStats.umaStats]
         .sort((a, b) => b.dom - a.dom)
         .slice(0, 5)
-        .map(u => `${u.name} (${u.dom}% Dom)`);
+        .map(u => u.name);
 
     const payload = {
-        trainerName: selectedName,
-        topPlayed: topPlayed,
+        targetTrainer: targetTrainerInfo,
+        topAces: topAces,
+        topAnchors: topAnchors,
         globalMeta: globalMeta
     };
 
@@ -1282,7 +1293,7 @@ async function generateAutoDraft() {
         const draftHtml = `
             <div style="background: rgba(0,0,0,0.1); border: 1px solid var(--accent-color); border-radius: 8px; padding: 15px; margin-bottom: 20px;">
                 <h3 style="margin: 0 0 12px 0; color: var(--accent-color); display: flex; align-items: center; gap: 8px;">
-                    ✨ Calculated Optimal Team
+                    ✨ Calculated Optimal 3-Man Draft
                 </h3>
                 <div style="font-size: 0.95rem; line-height: 1.5;">
                     ${data.teamHTML}
@@ -1290,10 +1301,7 @@ async function generateAutoDraft() {
             </div>
         `;
 
-        // Render the standard static grids first so the UI resets
         generateTheorycraft(); 
-        
-        // Drop the calculated draft on top
         container.insertAdjacentHTML('afterbegin', draftHtml);
 
     } catch (error) {
@@ -1314,5 +1322,6 @@ window.onload = function() {
     }
     switchSeason();
 };
+
 
 
