@@ -1232,6 +1232,79 @@ async function generateAiScoutReport() {
     }
 }
 
+async function generateAutoDraft() {
+    const selector = document.getElementById('tcrafTrainerSelector');
+    const container = document.getElementById('tcraf-results');
+    const btn = document.getElementById('autoDraftBtn');
+
+    if (!selector || !currentCalculatedStats || !container) return;
+
+    const selectedName = selector.value;
+    const tData = currentCalculatedStats.trainerStats.find(t => t.name === selectedName);
+    if (!tData) return;
+
+    // Loading State
+    const originalBtnText = btn.innerHTML;
+    btn.innerHTML = "⏳ Calculating...";
+    btn.disabled = true;
+
+    // Gather Top Played
+    const historyArr = Object.entries(tData.characterHistory).map(([key, val]) => ({ name: key, ...val }));
+    const topPlayed = historyArr
+        .sort((a, b) => b.picks - a.picks)
+        .slice(0, 5)
+        .map(u => `${u.name} (${u.picks} picks, ${u.racesRun > 0 ? (u.wins/u.racesRun*100).toFixed(1) : 0}% WR)`);
+
+    // Gather Global Meta
+    const globalMeta = [...currentCalculatedStats.umaStats]
+        .sort((a, b) => b.dom - a.dom)
+        .slice(0, 5)
+        .map(u => `${u.name} (${u.dom}% Dom)`);
+
+    const payload = {
+        trainerName: selectedName,
+        topPlayed: topPlayed,
+        globalMeta: globalMeta
+    };
+
+    try {
+        const WORKER_URL = "https://racc-open-stats.vercel.app/api/teambuilder"; 
+        
+        const response = await fetch(WORKER_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        });
+        
+        const data = await response.json();
+
+        // Inject silently above standard theorycraft grids
+        const draftHtml = `
+            <div style="background: rgba(0,0,0,0.1); border: 1px solid var(--accent-color); border-radius: 8px; padding: 15px; margin-bottom: 20px;">
+                <h3 style="margin: 0 0 12px 0; color: var(--accent-color); display: flex; align-items: center; gap: 8px;">
+                    ✨ Calculated Optimal Team
+                </h3>
+                <div style="font-size: 0.95rem; line-height: 1.5;">
+                    ${data.teamHTML}
+                </div>
+            </div>
+        `;
+
+        // Render the standard static grids first so the UI resets
+        generateTheorycraft(); 
+        
+        // Drop the calculated draft on top
+        container.insertAdjacentHTML('afterbegin', draftHtml);
+
+    } catch (error) {
+        console.error("Draft Error:", error);
+        alert("Calculation failed. Please try again.");
+    } finally {
+        btn.innerHTML = originalBtnText;
+        btn.disabled = false;
+    }
+}
+
 window.onload = function() {
     const savedTheme = localStorage.getItem('siteTheme');
     if (savedTheme) {
@@ -1241,4 +1314,5 @@ window.onload = function() {
     }
     switchSeason();
 };
+
 
