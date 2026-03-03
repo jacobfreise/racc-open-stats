@@ -488,7 +488,7 @@ const formatItem = (item, type) => {
         
         const pStats = type === 'trainer' ? pointsData.trainer[item.name] : pointsData.uma[item.name];
         let avgPos = "-";
-        let volatility = "0.00"; // NEW: Default volatility
+        let volatility = "-";
         let bestTourney = "-";
 
         if (pStats) {
@@ -499,9 +499,23 @@ const formatItem = (item, type) => {
                 const mean = sum / pStats.positions.length;
                 avgPos = mean.toFixed(2);
 
+                // Calculate Typical Finish Range (Mean ± Standard Deviation)
                 if (pStats.positions.length > 1) {
                     const variance = pStats.positions.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / pStats.positions.length;
-                    volatility = Math.sqrt(variance).toFixed(2);
+                    const stdDev = Math.sqrt(variance);
+                    
+                    let lowerBound = Math.max(1, Math.round(mean - stdDev));
+                    let upperBound = Math.round(mean + stdDev);
+                    
+                    if (lowerBound === upperBound) {
+                        volatility = `${lowerBound}${getOrdinal(lowerBound)}`;
+                    } else {
+                        volatility = `${lowerBound}${getOrdinal(lowerBound)} - ${upperBound}${getOrdinal(upperBound)}`;
+                    }
+                } else if (pStats.positions.length === 1) {
+                    // Only 1 race run, so the range is just their exact finish
+                    let pos = pStats.positions[0];
+                    volatility = `${pos}${getOrdinal(pos)}`;
                 }
             }
             if (pStats.tourneyPoints) {
@@ -1318,6 +1332,7 @@ window.onload = function() {
     }
     switchSeason();
 };
+
 
 
 
