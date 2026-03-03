@@ -66,12 +66,21 @@
             <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 20px; padding: 0 10px;">
                 <h2 style="margin: 0;">TRAINER PRESETS</h2>
                 <div style="display: flex; gap: 10px; align-items: center;">
+                    
+                    <button id="autoDraftBtn" onclick="generateAutoDraft()" class="copy-btn" style="background: var(--accent-color); color: var(--bg-color); border: none; font-weight: bold; cursor: pointer;">
+                        ✨ Calculate Draft
+                    </button>
+
                     <label style="margin: 0;">Target Trainer:</label>
                     <div class="select-wrapper" style="min-width: 200px;">
                         <select id="tcrafTrainerSelector" onchange="generateTheorycraft()"></select>
                     </div>
                 </div>
             </div>
+            
+            <div id="tcraf-results" style="padding: 10px;">
+                </div>
+        </div>
             
             <div id="tcraf-results" style="padding: 10px;">
                 </div>
