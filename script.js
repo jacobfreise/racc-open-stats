@@ -482,19 +482,27 @@ function calculateStats(filteredData) {
         });
     }
 
-    const formatItem = (item, type) => {
+const formatItem = (item, type) => {
         const winRateVal = item.totalRacesRun > 0 ? (item.wins / item.totalRacesRun * 100).toFixed(1) : "0.0";
         let dominanceVal = "0.0";
         
         const pStats = type === 'trainer' ? pointsData.trainer[item.name] : pointsData.uma[item.name];
         let avgPos = "-";
+        let volatility = "0.00"; // NEW: Default volatility
         let bestTourney = "-";
 
         if (pStats) {
             if (pStats.totalOpp > 0) dominanceVal = ((pStats.beaten / pStats.totalOpp) * 100).toFixed(1);
             if (pStats.positions && pStats.positions.length > 0) {
+                // Calculate Average Position (Mean)
                 const sum = pStats.positions.reduce((a, b) => a + b, 0);
-                avgPos = (sum / pStats.positions.length).toFixed(2);
+                const mean = sum / pStats.positions.length;
+                avgPos = mean.toFixed(2);
+
+                if (pStats.positions.length > 1) {
+                    const variance = pStats.positions.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / pStats.positions.length;
+                    volatility = Math.sqrt(variance).toFixed(2);
+                }
             }
             if (pStats.tourneyPoints) {
                 let maxPts = -1;
@@ -514,6 +522,7 @@ function calculateStats(filteredData) {
             winRate: winRateVal,
             dom: dominanceVal,
             avgPos: avgPos,
+            volatility: volatility,
             bestTourney: bestTourney,
             tourneyWinPct: tWinPct,
             detailedUmaStats: pStats ? pStats.umaStats : {},
@@ -677,17 +686,17 @@ function updateData() {
     const stats = calculateStats(filtered);
     currentCalculatedStats = stats;
 
-    if (document.getElementById('umaTable')) {
+   if (document.getElementById('umaTable')) {
         stats.umaStats.sort((a, b) => b.dom - a.dom);
         renderTable('umaTable', stats.umaStats, 
-            ['name', 'picks', 'pickPct', 'truePickPct', 'wins', 'winRate', 'dom', 'avgPos', 'bestTourney', 'tourneyStatsDisplay', 'banStatsDisplay', 'presenceDisplay']
+            ['name', 'picks', 'pickPct', 'truePickPct', 'wins', 'winRate', 'dom', 'avgPos', 'volatility', 'bestTourney', 'tourneyStatsDisplay', 'banStatsDisplay', 'presenceDisplay']
         );
     }
 
     if (document.getElementById('trainerTable')) {
         stats.trainerStats.sort((a, b) => b.dom - a.dom);
         renderTable('trainerTable', stats.trainerStats, 
-            ['name', 'entries', 'wins', 'winRate', 'dom', 'avgPos', 'bestTourney', 'tourneyStatsDisplay', 'favorite', 'ace']
+            ['name', 'entries', 'wins', 'winRate', 'dom', 'avgPos', 'volatility', 'bestTourney', 'tourneyStatsDisplay', 'favorite', 'ace']
         );
     }
 
@@ -1309,6 +1318,7 @@ window.onload = function() {
     }
     switchSeason();
 };
+
 
 
 
