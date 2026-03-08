@@ -399,7 +399,107 @@ const S2_DATA = {
         ["Homie", "Mejiro Dober (Original)", 1, "2300m Turf (L)", "S2-24", "Mejiro Dober", "Original", 10],
         ["Spyder", "Mihono Bourbon (Valentine)", 0, "2300m Turf (L)", "S2-24", "Mihono Bourbon", "Valentine", 10],
         ["Teki", "Agnes Tachyon (Original)", 0, "2300m Turf (L)", "S2-24", "Agnes Tachyon", "Original", 10],
-        ["Kenesu", "Mihono Bourbon (Original)", 1, "2300m Turf (L)", "S2-24", "Mihono Bourbon", "Original", 5]
+        ["Kenesu", "Mihono Bourbon (Original)", 1, "2300m Turf (L)", "S2-24", "Mihono Bourbon", "Original", 5],
+        // --- S2-25 Group A ---
+        ["Roidee", "Daiwa Scarlet (Original)", 3, "2400m Turf (R)", "S2-25", "Daiwa Scarlet", "Original", 10],
+        ["a", "Agnes Tachyon (Original)", 2, "2400m Turf (R)", "S2-25", "Agnes Tachyon", "Original", 5],
+        ["Cefiro", "Silence Suzuka (Original)", 0, "2400m Turf (R)", "S2-25", "Silence Suzuka", "Original", 5],
+        ["Raccoon", "Meisho Doto (Original)", 1, "2400m Turf (R)", "S2-25", "Meisho Doto", "Original", 10],
+        ["KN", "Mejiro Dober (Original)", 0, "2400m Turf (R)", "S2-25", "Mejiro Dober", "Original", 10],
+        ["Jedmumu", "T.M. Opera O (New Year)", 1, "2400m Turf (R)", "S2-25", "T.M. Opera O", "New Year", 5],
+        ["LeBricc", "Tamamo Cross (Original)", 0, "2400m Turf (R)", "S2-25", "Tamamo Cross", "Original", 5],
+        ["Kenesu", "Taiki Shuttle (Original)", 0, "2400m Turf (R)", "S2-25", "Taiki Shuttle", "Original", 5],
+        ["Minty", "Tokai Teio (Original)", 0, "2400m Turf (R)", "S2-25", "Tokai Teio", "Original", 5],
+        // --- S2-25 Group B ---
+        ["FuHua", "Agnes Tachyon (Original)", 1, "2400m Turf (R)", "S2-25", "Agnes Tachyon", "Original", 10],
+        ["NiSE", "Daiwa Scarlet (Original)", 0, "2400m Turf (R)", "S2-25", "Daiwa Scarlet", "Original", 10],
+        ["Coldes", "Meisho Doto (Original)", 0, "2400m Turf (R)", "S2-25", "Meisho Doto", "Original", 5],
+        ["Synocra", "Silence Suzuka (Original)", 1, "2400m Turf (R)", "S2-25", "Silence Suzuka", "Original", 10],
+        ["Run982", "Air Groove (Original)", 0, "2400m Turf (R)", "S2-25", "Air Groove", "Original", 10],
+        ["Boop", "T.M. Opera O (Original)", 0, "2400m Turf (R)", "S2-25", "T.M. Opera O", "Original", 5],
+        ["Pines", "Maruzensky (Original)", 0, "2400m Turf (R)", "S2-25", "Maruzensky", "Original", 5],
+        ["Spyder", "Mejiro Dober (Original)", 1, "2400m Turf (R)", "S2-25", "Mejiro Dober", "Original", 10],
+        ["Eva", "Agnes Tachyon (Original)", 5, "2400m Turf (R)", "S2-25", "Agnes Tachyon", "Original", 10],
+        // --- S2-26 Group A ---
+        ["Spyder", "Mejiro McQueen (Anime Collab)", 2, "2600m Turf (R)", "S2-26", "Mejiro McQueen", "Anime Collab", 5],
+        ["FuHua", "Narita Taishin (Original)", 1, "2600m Turf (R)", "S2-26", "Narita Taishin", "Original", 10],
+        ["LeBricc", "Symboli Rudolf (Original)", 2, "2600m Turf (R)", "S2-26", "Symboli Rudolf", "Original", 10],
+        ["Jedmumu", "Fine Motion (Original)", 0, "2600m Turf (R)", "S2-26", "Fine Motion", "Original", 5],
+        ["KN", "Gold Ship (Original)", 1, "2600m Turf (R)", "S2-26", "Gold Ship", "Original", 10],
+        ["Nissal", "Seiun Sky (Original)", 0, "2600m Turf (R)", "S2-26", "Seiun Sky", "Original", 10],
+        ["Roidee", "Seiun Sky (Original)", 2, "2600m Turf (R)", "S2-26", "Seiun Sky", "Original", 10],
+        ["Bresto", "Gold Ship (Original)", 0, "2600m Turf (R)", "S2-26", "Gold Ship", "Original", 10],
+        ["Kenesu", "Special Week (Original)", 0, "2600m Turf (R)", "S2-26", "Special Week", "Original", 5],
+        // --- S2-26 Group B ---
+        ["NiSE", "Rice Shower (Halloween)", 5, "2600m Turf (R)", "S2-26", "Rice Shower", "Halloween", 10],
+        ["Coldes", "Meisho Doto (Original)", 0, "2600m Turf (R)", "S2-26", "Meisho Doto", "Original", 10],
+        ["Run982", "Symboli Rudolf (Original)", 0, "2600m Turf (R)", "S2-26", "Symboli Rudolf", "Original", 5],
+        ["a", "Mayano Top Gun (Wedding)", 0, "2600m Turf (R)", "S2-26", "Mayano Top Gun", "Wedding", 5],
+        ["Pines", "Seiun Sky (Original)", 1, "2600m Turf (R)", "S2-26", "Seiun Sky", "Original", 5],
+        ["Raccoon", "Seiun Sky (Original)", 0, "2600m Turf (R)", "S2-26", "Seiun Sky", "Original", 5],
+        ["Cefiro", "Biwa Hayahide (Original)", 0, "2600m Turf (R)", "S2-26", "Biwa Hayahide", "Original", 5],
+        ["HoriYon", "Agnes Tachyon (Original)", 1, "2600m Turf (R)", "S2-26", "Agnes Tachyon", "Original", 5],
+        ["Teki", "Silence Suzuka (Original)", 0, "2600m Turf (R)", "S2-26", "Silence Suzuka", "Original", 10],
+        // --- S2-27 Group A ---
+        ["Cefiro", "Mejiro McQueen (Anime Collab)", 1, "2000m Turf (L)", "S2-27", "Mejiro McQueen", "Anime Collab", 5],
+        ["a", "Agnes Tachyon (Original)", 3, "2000m Turf (L)", "S2-27", "Agnes Tachyon", "Original", 10],
+        ["Jedmumu", "Mejiro McQueen (Original)", 1, "2000m Turf (L)", "S2-27", "Mejiro McQueen", "Original", 10],
+        ["Justy", "Gold City (Original)", 0, "2000m Turf (L)", "S2-27", "Gold City", "Original", 5],
+        ["Run982", "Taiki Shuttle (Original)", 1, "2000m Turf (L)", "S2-27", "Taiki Shuttle", "Original", 5],
+        ["HoriYon", "Taiki Shuttle (Original)", 0, "2000m Turf (L)", "S2-27", "Taiki Shuttle", "Original", 5],
+        ["Prince of Uranus", "King Halo (Original)", 0, "2000m Turf (L)", "S2-27", "King Halo", "Original", 10],
+        ["Kenesu", "Silence Suzuka (Original)", 0, "2000m Turf (L)", "S2-27", "Silence Suzuka", "Original", 5],
+        ["Synocra", "Silence Suzuka (Original)", 0, "2000m Turf (L)", "S2-27", "Silence Suzuka", "Original", 5],
+        // --- S2-27 Group B ---
+        ["Roidee", "Mejiro McQueen (Original)", 7, "2000m Turf (L)", "S2-27", "Mejiro McQueen", "Original", 10],
+        ["FuHua", "Mejiro McQueen (Original)", 2, "2000m Turf (L)", "S2-27", "Mejiro McQueen", "Original", 10],
+        ["Boop", "Super Creek (Halloween)", 0, "2000m Turf (L)", "S2-27", "Super Creek", "Halloween", 5],
+        ["Spyder", "Super Creek (Halloween)", 0, "2000m Turf (L)", "S2-27", "Super Creek", "Halloween", 10],
+        ["NiSE", "Tamamo Cross (Original)", 0, "2000m Turf (L)", "S2-27", "Tamamo Cross", "Original", 10],
+        ["Eva", "Oguri Cap (Original)", 0, "2000m Turf (L)", "S2-27", "Oguri Cap", "Original", 5],
+        ["Nissal", "Daiwa Scarlet (Original)", 0, "2000m Turf (L)", "S2-27", "Daiwa Scarlet", "Original", 5],
+        ["Raccoon", "Tamamo Cross (Original)", 0, "2000m Turf (L)", "S2-27", "Tamamo Cross", "Original", 10],
+        ["Teki", "Gold Ship (Original)", 0, "2000m Turf (L)", "S2-27", "Gold Ship", "Original", 10],
+        // --- S2-28 Group A ---
+        ["Nissal", "Maruzensky (Summer)", 3, "1700m Dirt (R)", "S2-28", "Maruzensky", "Summer", 10],
+        ["Pines", "Maruzensky (Original)", 1, "1700m Dirt (R)", "S2-28", "Maruzensky", "Original", 10],
+        ["HoriYon", "Agnes Digital (Original)", 0, "1700m Dirt (R)", "S2-28", "Agnes Digital", "Original", 5],
+        ["FuHua", "Hishi Akebono (Original)", 0, "1700m Dirt (R)", "S2-28", "Hishi Akebono", "Original", 5],
+        ["Morphso", "Oguri Cap (Original)", 2, "1700m Dirt (R)", "S2-28", "Oguri Cap", "Original", 10],
+        ["Raccoon", "Oguri Cap (Original)", 3, "1700m Dirt (R)", "S2-28", "Oguri Cap", "Original", 10],
+        ["Spyder", "Haru Urara (New Year)", 0, "1700m Dirt (R)", "S2-28", "Haru Urara", "New Year", 5],
+        ["NiSE", "Maruzensky (Summer)", 0, "1700m Dirt (R)", "S2-28", "Maruzensky", "Summer", 10],
+        ["Boop", "Smart Falcon (Original)", 0, "1700m Dirt (R)", "S2-28", "Smart Falcon", "Original", 10],
+        // --- S2-28 Group B ---
+        ["Run982", "Smart Falcon (Original)", 1, "1700m Dirt (R)", "S2-28", "Smart Falcon", "Original", 5],
+        ["Justy", "El Condor Pasa (Original)", 3, "1700m Dirt (R)", "S2-28", "El Condor Pasa", "Original", 10],
+        ["Jedmumu", "El Condor Pasa (Fantasy)", 0, "1700m Dirt (R)", "S2-28", "El Condor Pasa", "Fantasy", 5],
+        ["Roidee", "Oguri Cap (Original)", 1, "1700m Dirt (R)", "S2-28", "Oguri Cap", "Original", 5],
+        ["Synocra", "Smart Falcon (Original)", 0, "1700m Dirt (R)", "S2-28", "Smart Falcon", "Original", 5],
+        ["KN", "Gold City (Original)", 1, "1700m Dirt (R)", "S2-28", "Gold City", "Original", 5],
+        ["Minty", "Haru Urara (Original)", 0, "1700m Dirt (R)", "S2-28", "Haru Urara", "Original", 10],
+        ["Rihito", "Maruzensky (Summer)", 0, "1700m Dirt (R)", "S2-28", "Maruzensky", "Summer", 5],
+        ["Draguin", "Oguri Cap (Original)", 0, "1700m Dirt (R)", "S2-28", "Oguri Cap", "Original", 10],
+        // --- S2-29 Group A ---
+        ["NiSE", "Oguri Cap (Christmas)", 5, "3600m Turf (R)", "S2-29", "Oguri Cap", "Christmas", 10],
+        ["Cefiro", "Manhattan Cafe (Original)", 0, "3600m Turf (R)", "S2-29", "Manhattan Cafe", "Original", 5],
+        ["Justy", "Agnes Tachyon (Original)", 0, "3600m Turf (R)", "S2-29", "Agnes Tachyon", "Original", 10],
+        ["HoriYon", "Agnes Tachyon (Original)", 1, "3600m Turf (R)", "S2-29", "Agnes Tachyon", "Original", 10],
+        ["a", "Manhattan Cafe (Original)", 0, "3600m Turf (R)", "S2-29", "Manhattan Cafe", "Original", 10],
+        ["Kenesu", "Narita Brian (Original)", 0, "3600m Turf (R)", "S2-29", "Narita Brian", "Original", 5],
+        ["Bresto", "Mejiro McQueen (Anime)", 0, "3600m Turf (R)", "S2-29", "Mejiro McQueen", "Anime", 5],
+        ["KN", "T.M. Opera O (New Year)", 0, "3600m Turf (R)", "S2-29", "T.M. Opera O", "New Year", 10],
+        ["Nymaera", "T.M. Opera O (New Year)", 0, "3600m Turf (R)", "S2-29", "T.M. Opera O", "New Year", 10],
+        // --- S2-29 Group B ---
+        ["Jedmumu", "Tokai Teio (Anime)", 7, "3600m Turf (R)", "S2-29", "Tokai Teio", "Anime", 10],
+        ["FuHua", "Rice Shower (Halloween)", 0, "3600m Turf (R)", "S2-29", "Rice Shower", "Halloween", 10],
+        ["Nissal", "Maruzensky (Summer)", 0, "3600m Turf (R)", "S2-29", "Maruzensky", "Summer", 5],
+        ["Roidee", "Super Creek (Original)", 2, "3600m Turf (R)", "S2-29", "Super Creek", "Original", 5],
+        ["Raccoon", "Maruzensky (Summer)", 0, "3600m Turf (R)", "S2-29", "Maruzensky", "Summer", 5],
+        ["Morphso", "Symboli Rudolf (Original)", 0, "3600m Turf (R)", "S2-29", "Symboli Rudolf", "Original", 5],
+        ["Spyder", "Special Week (Summer)", 0, "3600m Turf (R)", "S2-29", "Special Week", "Summer", 5],
+        ["Run982", "Fine Motion (Original)", 0, "3600m Turf (R)", "S2-29", "Fine Motion", "Original", 5],
+        ["Draguin", "Maruzensky (Summer)", 0, "3600m Turf (R)", "S2-29", "Maruzensky", "Summer", 10]
     ],
     
     tournamentWinners: {
@@ -427,6 +527,11 @@ const S2_DATA = {
         "S2-22": ["Spyder", "Eva", "HoriYon"],
         "S2-23": ["NiSE", "Kenesu", "Boop"],
         "S2-24": ["Roidee", "Homie", "Teki"],
+        "S2-25": ["Roidee", "Raccoon", "KN"],
+        "S2-26": ["KN", "Roidee", "FuHua"],
+        "S2-27": ["Roidee", "Teki", "Raccoon"],
+        "S2-28": ["Raccoon", "Nissal", "Boop"],
+        "S2-29": ["Jedmumu", "Draguin", "FuHua"],
     },
     
     tournamentBans: {
@@ -593,6 +698,44 @@ const S2_DATA = {
             "Seiun Sky (Original)",
             "Maruzensky (Original)",
             "Oguri Cap (Original)"
+        ],
+        "S2-25": [
+            "Mihono Bourbon (Valentine)",
+            "Oguri Cap (Christmas)",
+            "Maruzensky (Summer)",
+            "Fine Motion (Original)",
+            "Mejiro McQueen (Original)",
+            "Seiun Sky (Original)",
+            "Rice Shower (Original)"
+        ],
+        "S2-26": [
+            "Oguri Cap (Christmas)",
+            "Mihono Bourbon (Valentine)",
+            "Manhattan Cafe (Original)",
+            "Maruzensky (Original)",
+            "Maruzensky (Summer)",
+            "Super Creek (Original)",
+            "Tamamo Cross (Original)",
+            "Oguri Cap (Original)"
+        ],
+        "S2-27": [
+            "Meisho Doto (Original)",
+            "Oguri Cap (Christmas)",
+            "Mihono Bourbon (Valentine)",
+            "Seiun Sky (Original)",
+            "Maruzensky (Summer)",
+            "El Condor Pasa (Original)",
+            "Narita Taishin (Original)"
+        ],
+        "S2-28": [
+            "Oguri Cap (Christmas)"
+        ],
+        "S2-29": [
+            "Grass Wonder (Fantasy)",
+            "Mejiro McQueen (Original)",
+            "Gold Ship (Original)",
+            "Narita Taishin (Original)",
+            "Tamamo Cross (Original)"
         ],
     },
     
@@ -1036,6 +1179,121 @@ const S2_DATA = {
                 ["Roidee", "Cefiro", "Teki", "Homie", "Raccoon", "Spyder", "Boop", "Morphso", "FuHua"],
                 ["FuHua", "Roidee", "Spyder", "Morphso", "Homie", "Cefiro", "Raccoon", "Boop", "Teki"]
             ]
+        },
+        "S2-25": {
+            "Group A": [
+                ["Roidee", "a", "Cefiro", "Raccoon", "KN", "Jedmumu", "LeBricc", "Kenesu", "Minty"],
+                ["a", "Jedmumu", "LeBricc", "Roidee", "Raccoon", "Cefiro", "KN", "Kenesu", "Minty"],
+                ["Jedmumu", "LeBricc", "KN", "a", "Raccoon", "Kenesu", "Roidee", "Cefiro", "Minty"],
+                ["Roidee", "Raccoon", "Jedmumu", "KN", "Cefiro", "LeBricc", "Kenesu", "a", "Minty"],
+                ["a", "KN", "Roidee", "Jedmumu", "LeBricc", "Raccoon", "Kenesu", "Cefiro", "Minty"]
+            ],
+            "Group B": [
+                ["FuHua", "NiSE", "Coldes", "Synocra", "Run982", "Boop", "Pines", "Spyder", "Eva"],
+                ["Eva", "FuHua", "Synocra", "Coldes", "Spyder", "Run982", "NiSE", "Pines", "Boop"],
+                ["Eva", "Spyder", "Synocra", "Pines", "NiSE", "Run982", "Boop", "Coldes", "FuHua"],
+                ["Eva", "FuHua", "NiSE", "Spyder", "Boop", "Pines", "Run982", "Synocra", "Coldes"],
+                ["Spyder", "Eva", "FuHua", "Run982", "Coldes", "Synocra", "Boop", "NiSE", "Pines"]
+            ],
+            "Finals": [
+                ["Eva", "Roidee", "Raccoon", "KN", "Synocra", "NiSE", "FuHua", "Spyder", "Run982"],
+                ["Roidee", "FuHua", "Raccoon", "NiSE", "KN", "Spyder", "Synocra", "Run982", "Eva"],
+                ["Raccoon", "Roidee", "NiSE", "Eva", "Synocra", "Run982", "KN", "Spyder", "FuHua"],
+                ["Eva", "FuHua", "NiSE", "Raccoon", "Run982", "Roidee", "Synocra", "Spyder", "KN"],
+                ["Synocra", "Spyder", "Roidee", "Raccoon", "Run982", "KN", "NiSE", "Eva", "FuHua"]
+            ]
+        },
+        "S2-26": {
+            "Group A": [
+                ["Spyder", "FuHua", "LeBricc", "Jedmumu", "KN", "Nissal", "Roidee", "Bresto", "Kenesu"],
+                ["Roidee", "Jedmumu", "KN", "Spyder", "Bresto", "LeBricc", "Kenesu", "Nissal", "FuHua"],
+                ["Spyder", "KN", "LeBricc", "Nissal", "Roidee", "Jedmumu", "Bresto", "FuHua", "Kenesu"],
+                ["LeBricc", "FuHua", "Spyder", "KN", "Roidee", "Kenesu", "Jedmumu", "Bresto", "Nissal"],
+                ["LeBricc", "Nissal", "Bresto", "Spyder", "KN", "FuHua", "Roidee", "Jedmumu", "Kenesu"]
+            ],
+            "Group B": [
+                ["NiSE", "Coldes", "Run982", "a", "Pines", "Raccoon", "Cefiro", "HoriYon", "Teki"],
+                ["Pines", "a", "Raccoon", "Coldes", "NiSE", "Run982", "Teki", "Cefiro", "HoriYon"],
+                ["NiSE", "Run982", "Coldes", "Raccoon", "Cefiro", "Pines", "a", "Teki", "HoriYon"],
+                ["NiSE", "Raccoon", "HoriYon", "Coldes", "Pines", "Run982", "a", "Cefiro", "Teki"],
+                ["HoriYon", "NiSE", "Coldes", "Raccoon", "Run982", "Pines", "Cefiro", "a", "Teki"]
+            ],
+            "Finals": [
+                ["KN", "Coldes", "LeBricc", "Roidee", "NiSE", "Teki", "FuHua", "Nissal", "NPC-chan"],
+                ["NiSE", "LeBricc", "FuHua", "Coldes", "Roidee", "KN", "Nissal", "Teki", "NPC-chan"],
+                ["NiSE", "KN", "Coldes", "Roidee", "Bresto", "LeBricc", "Teki", "Nissal", "FuHua"],
+                ["Roidee", "LeBricc", "NiSE", "Coldes", "Nissal", "KN", "Bresto", "Teki", "FuHua"],
+                ["FuHua", "LeBricc", "Teki", "KN", "Roidee", "Coldes", "NiSE", "Bresto", "Nissal"]
+            ]
+        },
+        "S2-27": {
+            "Group A": [
+                ["Cefiro", "a", "Jedmumu", "Justy", "Run982", "HoriYon", "Prince of Uranus", "Kenesu", "Synocra"],
+                ["a", "HoriYon", "Justy", "Jedmumu", "Run982", "Prince of Uranus", "Cefiro", "Kenesu", "Synocra"],
+                ["Run982", "Justy", "HoriYon", "Jedmumu", "Cefiro", "a", "Prince of Uranus", "Synocra", "Kenesu"],
+                ["a", "Jedmumu", "Cefiro", "HoriYon", "Justy", "Prince of Uranus", "Run982", "Kenesu", "Synocra"],
+                ["a", "Jedmumu", "Cefiro", "HoriYon", "Justy", "Run982", "Prince of Uranus", "Kenesu", "Synocra"]
+            ],
+            "Group B": [
+                ["Roidee", "FuHua", "Boop", "Spyder", "NiSE", "Eva", "Nissal", "Raccoon", "Teki"],
+                ["Roidee", "NiSE", "Eva", "Boop", "Raccoon", "FuHua", "Teki", "Spyder", "Nissal"],
+                ["FuHua", "Boop", "Roidee", "Eva", "Raccoon", "Teki", "NiSE", "Nissal", "Spyder"],
+                ["Roidee", "NiSE", "Raccoon", "Eva", "FuHua", "Spyder", "Boop", "Nissal", "Teki"],
+                ["FuHua", "Eva", "Roidee", "NiSE", "Nissal", "Teki", "Spyder", "Raccoon", "Boop"]
+            ],
+            "Finals": [
+                ["Roidee", "Prince of Uranus", "Spyder", "a", "NiSE", "FuHua", "Jedmumu", "Raccoon", "Teki"],
+                ["Roidee", "NiSE", "a", "Spyder", "Teki", "Raccoon", "Jedmumu", "FuHua", "Prince of Uranus"],
+                ["Roidee", "Teki", "NiSE", "a", "Prince of Uranus", "Jedmumu", "Spyder", "Raccoon", "FuHua"],
+                ["Jedmumu", "Roidee", "FuHua", "Teki", "NiSE", "a", "Spyder", "Prince of Uranus", "Raccoon"],
+                ["Roidee", "NiSE", "Spyder", "FuHua", "a", "Jedmumu", "Raccoon", "Teki", "Prince of Uranus"]
+            ]
+        },
+        "S2-28": {
+            "Group A": [
+                ["Nissal", "Pines", "HoriYon", "FuHua", "Morphso", "Raccoon", "Spyder", "NiSE", "Boop"],
+                ["Raccoon", "Nissal", "Pines", "Morphso", "NiSE", "Boop", "FuHua", "HoriYon", "Spyder"],
+                ["Morphso", "Raccoon", "HoriYon", "Nissal", "Pines", "FuHua", "NiSE", "Spyder", "Boop"],
+                ["Nissal", "Morphso", "Raccoon", "HoriYon", "Pines", "Spyder", "FuHua", "Boop", "NiSE"],
+                ["Nissal", "Raccoon", "Pines", "NiSE", "Spyder", "HoriYon", "Morphso", "Boop", "FuHua"]
+            ],
+            "Group B": [
+                ["Run982", "Justy", "Jedmumu", "Roidee", "Synocra", "KN", "Minty", "Rihito", "Draguin"],
+                ["Justy", "Draguin", "Minty", "Jedmumu", "Roidee", "Synocra", "KN", "Run982", "Rihito"],
+                ["KN", "Justy", "Roidee", "Run982", "Draguin", "Rihito", "Minty", "Jedmumu", "Synocra"],
+                ["Justy", "KN", "Minty", "Rihito", "Run982", "Draguin", "Jedmumu", "Roidee", "Synocra"],
+                ["Roidee", "Justy", "Draguin", "Run982", "Jedmumu", "Minty", "KN", "Synocra", "Rihito"]
+            ],
+            "Finals": [
+                ["Morphso", "Nissal", "Draguin", "Justy", "NiSE", "Pines", "Boop", "Minty", "Raccoon"],
+                ["Raccoon", "Nissal", "Pines", "Justy", "Draguin", "Morphso", "NiSE", "Minty", "NPC-chan"],
+                ["Justy", "Raccoon", "Pines", "Morphso", "Nissal", "NiSE", "Minty", "Draguin", "NPC-chan"],
+                ["Raccoon", "Draguin", "Nissal", "Justy", "Pines", "Minty", "NiSE", "Morphso", "NPC-chan"],
+                ["Pines", "Raccoon", "Justy", "Draguin", "NiSE", "Nissal", "Morphso", "Minty", "NPC-chan"]
+            ]
+        },
+        "S2-29": {
+            "Group A": [
+                ["NiSE", "Cefiro", "Justy", "HoriYon", "a", "Kenesu", "Bresto", "KN", "Nymaera"],
+                ["NiSE", "Justy", "HoriYon", "a", "KN", "Cefiro", "Bresto", "Nymaera", "Kenesu"],
+                ["NiSE", "HoriYon", "Nymaera", "a", "Cefiro", "Bresto", "KN", "Kenesu", "Justy"],
+                ["HoriYon", "Justy", "Cefiro", "KN", "NiSE", "Bresto", "a", "Nymaera", "Kenesu"],
+                ["NiSE", "Justy", "a", "HoriYon", "Nymaera", "Cefiro", "Kenesu", "KN", "NPC-chan"]
+            ],
+            "Group B": [
+                ["Jedmumu", "FuHua", "Nissal", "Roidee", "Raccoon", "Morphso", "Spyder", "Run982", "Draguin"],
+                ["Jedmumu", "Nissal", "Draguin", "Raccoon", "Morphso", "Spyder", "Run982", "Roidee", "FuHua"],
+                ["Roidee", "FuHua", "Draguin", "Nissal", "Raccoon", "Jedmumu", "Run982", "Morphso", "Spyder"],
+                ["Roidee", "Spyder", "Jedmumu", "Draguin", "Nissal", "FuHua", "Raccoon", "Run982", "Morphso"],
+                ["Jedmumu", "Draguin", "Nissal", "Raccoon", "FuHua", "Roidee", "Run982", "Spyder", "Morphso"]
+            ],
+            "Finals": [
+                ["Jedmumu", "Justy", "a", "FuHua", "Draguin", "KN", "NiSE", "Nymaera", "HoriYon"],
+                ["Jedmumu", "Justy", "NiSE", "Draguin", "FuHua", "a", "KN", "Nymaera", "HoriYon"],
+                ["Jedmumu", "HoriYon", "NiSE", "Draguin", "a", "FuHua", "Nymaera", "KN", "Justy"],
+                ["Jedmumu", "NiSE", "Draguin", "FuHua", "a", "KN", "Nymaera", "HoriYon", "Justy"],
+                ["NiSE", "a", "Jedmumu", "Justy", "HoriYon", "FuHua", "Draguin", "Nymaera", "KN"]
+            ]
         }
     }
 };
@@ -1043,6 +1301,7 @@ const S2_DATA = {
 if (typeof module !== 'undefined') {
     module.exports = { S2_DATA };
 }
+
 
 
 
