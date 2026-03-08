@@ -487,11 +487,11 @@ const S2_DATA = {
         ["HoriYon", "Agnes Tachyon (Original)", 1, "3600m Turf (R)", "S2-29", "Agnes Tachyon", "Original", 10],
         ["a", "Manhattan Cafe (Original)", 0, "3600m Turf (R)", "S2-29", "Manhattan Cafe", "Original", 10],
         ["Kenesu", "Narita Brian (Original)", 0, "3600m Turf (R)", "S2-29", "Narita Brian", "Original", 5],
-        ["Bresto", "Mejiro McQueen (Anime)", 0, "3600m Turf (R)", "S2-29", "Mejiro McQueen", "Anime", 5],
+        ["Bresto", "Mejiro McQueen (Anime Collab)", 0, "3600m Turf (R)", "S2-29", "Mejiro McQueen", "Anime Collab", 5],
         ["KN", "T.M. Opera O (New Year)", 0, "3600m Turf (R)", "S2-29", "T.M. Opera O", "New Year", 10],
         ["Nymaera", "T.M. Opera O (New Year)", 0, "3600m Turf (R)", "S2-29", "T.M. Opera O", "New Year", 10],
         // --- S2-29 Group B ---
-        ["Jedmumu", "Tokai Teio (Anime)", 7, "3600m Turf (R)", "S2-29", "Tokai Teio", "Anime", 10],
+        ["Jedmumu", "Tokai Teio (Anime Collab)", 7, "3600m Turf (R)", "S2-29", "Tokai Teio", "Anime Collab", 10],
         ["FuHua", "Rice Shower (Halloween)", 0, "3600m Turf (R)", "S2-29", "Rice Shower", "Halloween", 10],
         ["Nissal", "Maruzensky (Summer)", 0, "3600m Turf (R)", "S2-29", "Maruzensky", "Summer", 5],
         ["Roidee", "Super Creek (Original)", 2, "3600m Turf (R)", "S2-29", "Super Creek", "Original", 5],
@@ -1301,6 +1301,7 @@ const S2_DATA = {
 if (typeof module !== 'undefined') {
     module.exports = { S2_DATA };
 }
+
 
 
 
